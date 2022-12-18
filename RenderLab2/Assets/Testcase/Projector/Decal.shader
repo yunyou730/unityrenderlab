@@ -6,16 +6,20 @@ Shader "Ayy/Decal"
     }
     SubShader
     {
-
+        Tags {
+            "RenderType"="Transparent"  // ??不懂...
+            "RenderQueue"="Geometry+1"  // 必须注意绘制顺序
+            "DisableBatching" = "True"  // 必须关闭。1个的时候肯跟体现不出来？会导致 矩阵有可能是不符合预期的
+            "LightMode" = "ForwardBase" // 用处没体会到
+        }
         LOD 100
 
         Pass
         {
-            Tags {"RenderType"="Transparent" "RenderQueue"="Geometry+1" "DisableBatching" = "True"  "LightMode" = "ForwardBase" }
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
-            ZTest Off 
-            Cull Front      // notice here
+            ZTest Off       // ZTest不关闭的话，会导致无法显示
+            Cull Front      // 不 Cull Front 的话，默认 cull back ,相机进入立方体之后，就不显示内容了
             
             
             //Blend Off
@@ -26,7 +30,6 @@ Shader "Ayy/Decal"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            
             
 
             #include "UnityCG.cginc"
