@@ -9,16 +9,15 @@ namespace lan.game.battlefield
     {
         protected BattleFieldSettings _settings = null;
         
-        
-
         public BattleField(BattleFieldSettings settings)
         {
             _settings = settings;
         }
-
+        
         public void Init()
         {
             CreateChessboardEntity();
+            CreateActorAtCell(0, 0);
         }
         
         protected void CreateChessboardEntity()
@@ -27,8 +26,14 @@ namespace lan.game.battlefield
             go = GameObject.Instantiate(go);
 
             Chessboard chessboard = go.GetComponent<Chessboard>();
-            chessboard.SetRowColCnt(7,10);
+            chessboard.SetRowColCnt(_settings._rowCnt,_settings._colCnt);
             chessboard.Refresh();
         }
+
+        protected void CreateActorAtCell(int row,int col)
+        {
+            
+        }
+
     }
 }

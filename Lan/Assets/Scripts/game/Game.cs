@@ -24,10 +24,17 @@ namespace lan.game
             _state = GameState.Battlefield;
 
             BattleFieldSettings settings = new BattleFieldSettings();
-            settings.InitWithFakeData();
+            FillBattleFieldSettings(settings);
             
             _battleField = new BattleField(settings);
             _battleField.Init();
+        }
+
+
+        protected void FillBattleFieldSettings(BattleFieldSettings settings)
+        {
+            settings._rowCnt = 25;
+            settings._colCnt = 30;
         }
     }
 }

@@ -47,17 +47,23 @@
      <Compile Include="Assets/Scripts/game/battlefield/BattleFieldSettings.cs" />
      <Compile Include="Assets/Scripts/managers/ResourceManager.cs" />
      <Compile Include="Assets/Scripts/game/battlefield/gfx/Chessboard.cs" />
+     <Compile Include="Assets/Scripts/game/battlefield/utils/CoordinateHelper.cs" />
+     <Compile Include="Assets/Scripts/game/battlefield/entity/Entity.cs" />
      <Folder Include="Assets" />
+     <Folder Include="Assets/Scripts/game/battlefield/component" />
      <Folder Include="Assets/Scripts" />
      <Folder Include="Assets/AssetLib/Prefabs" />
      <Folder Include="Assets/AssetLib" />
      <Folder Include="Assets/Scripts/game/battlefield/gfx" />
      <Folder Include="Assets/Scripts/game/battlefield" />
      <Folder Include="Assets/Scripts/game" />
+     <Folder Include="Assets/Scripts/game/battlefield/utils" />
      <Folder Include="Assets/Scripts/managers" />
      <None Include="Assets/AssetLib/Prefabs/chessboard/Chessboard.shader" />
+     <Folder Include="Assets/Scripts/game/battlefield/system" />
      <Folder Include="Assets/Scenes" />
      <Folder Include="Assets/AssetLib/Prefabs/chessboard" />
+     <Folder Include="Assets/Scripts/game/battlefield/entity" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.3.15f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
