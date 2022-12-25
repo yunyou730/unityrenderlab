@@ -29,10 +29,14 @@ namespace lan.game.battlefield
             chessboard.SetRowColCnt(_settings._rowCnt,_settings._colCnt);
             chessboard.Refresh();
         }
-
+        
         protected void CreateActorAtCell(int row,int col)
         {
+            GameObject go = Entry.Res().GetPrefab("Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/liulangzhe.prefab");
+            go = GameObject.Instantiate(go);
             
+            Vector3 pos = CoordinateHelper.GetPosAtCell(row, col);
+            go.transform.position = pos;
         }
 
     }

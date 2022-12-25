@@ -11,12 +11,14 @@ namespace lan
     public class Entry : MonoBehaviour
     {
         private static Entry s_instance = null;
-        Game   _game = null;
-
-        private ResourceManager _resourceManager = null;
         
+        private Game   _game = null;
+        private ResourceManager _resourceManager = null;
+        private ABManager _abManager = null;
 
-
+        private Transform _entry = null;
+        private Transform _uiRoot = null;
+        
         public static Entry Instance()
         {
             return s_instance;
@@ -36,19 +38,31 @@ namespace lan
         {
             Debug.Assert(s_instance == null,"More than one entry instance!");
             s_instance = this;
+            
+            _entry = transform.Find("[lan]Entry");
+            _uiRoot = transform.Find("[lan]UIRoot");
         }
 
         private void Start()
         {
+            ShowDebugMenu();
+            
+            _abManager = new ABManager(Application.streamingAssetsPath);
             _resourceManager = new ResourceManager();
             
             _game = new Game();
             _game.EnterBattleField();
         }
-
+        
         public void Update()
         {
             
+        }
+
+        private void ShowDebugMenu()
+        {
+            GameObject go = Resources.Load<GameObject>("menu/Menu_DebugInfo");
+            Instantiate(go, _uiRoot, true);
         }
     }
 }

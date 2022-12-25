@@ -49,21 +49,63 @@
      <Compile Include="Assets/Scripts/game/battlefield/gfx/Chessboard.cs" />
      <Compile Include="Assets/Scripts/game/battlefield/utils/CoordinateHelper.cs" />
      <Compile Include="Assets/Scripts/game/battlefield/entity/Entity.cs" />
+     <Compile Include="Assets/Scripts/managers/ABManager.cs" />
+     <Compile Include="Assets/Scripts/gui/MenuDebugInfo.cs" />
      <Folder Include="Assets" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/textures" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader" />
+     <Folder Include="Assets/TextMesh Pro/Sprites" />
      <Folder Include="Assets/Scripts/game/battlefield/component" />
+     <Folder Include="Assets/TextMesh Pro/Resources/Sprite Assets" />
      <Folder Include="Assets/Scripts" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors" />
+     <Folder Include="Assets/TextMesh Pro/Resources/Fonts &amp; Materials" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc" />
      <Folder Include="Assets/AssetLib/Prefabs" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader" />
+     <Folder Include="Assets/TextMesh Pro/Resources" />
+     <Folder Include="Assets/AssetLib/Prefabs/menu" />
      <Folder Include="Assets/AssetLib" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader" />
+     <Folder Include="Assets/TextMesh Pro" />
      <Folder Include="Assets/Scripts/game/battlefield/gfx" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/materials" />
      <Folder Include="Assets/Scripts/game/battlefield" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader" />
+     <None Include="Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF.shader" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader" />
+     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc" />
      <Folder Include="Assets/Scripts/game" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc" />
+     <Folder Include="Assets/TextMesh Pro/Shaders" />
      <Folder Include="Assets/Scripts/game/battlefield/utils" />
      <Folder Include="Assets/Scripts/managers" />
+     <Folder Include="Assets/TextMesh Pro/Resources/Style Sheets" />
+     <Folder Include="Assets/TextMesh Pro/Fonts" />
+     <Folder Include="Assets/StreamingAssets" />
+     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt" />
+     <Folder Include="Assets/Scripts/gui" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/textures/sph" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader" />
      <None Include="Assets/AssetLib/Prefabs/chessboard/Chessboard.shader" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets/Scripts/game/battlefield/system" />
      <Folder Include="Assets/Scenes" />
+     <None Include="Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt" />
+     <Folder Include="Assets/TextMesh Pro/Documentation" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader" />
      <Folder Include="Assets/AssetLib/Prefabs/chessboard" />
      <Folder Include="Assets/Scripts/game/battlefield/entity" />
+     <None Include="Assets/TextMesh Pro/Sprites/EmojiOne.json" />
+     <None Include="Assets/TextMesh Pro/Shaders/TMP_Sprite.shader" />
+     <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/textures/tex" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.3.15f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
@@ -765,6 +807,9 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.State">
      <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.VisualScripting.State.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.AssetBundleBrowser.Editor">
+     <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

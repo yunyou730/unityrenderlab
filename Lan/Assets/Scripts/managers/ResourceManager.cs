@@ -10,7 +10,10 @@ namespace lan.managers
     {
         public GameObject GetPrefab(string prefabPath)
         {
-            var result = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            GameObject result = null;
+            #if UNITY_EDITOR
+            result = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            #endif
             return result;
         }
     }
