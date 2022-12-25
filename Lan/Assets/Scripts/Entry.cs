@@ -33,6 +33,11 @@ namespace lan
         {
             return s_instance._resourceManager;
         }
+        
+        public static ABManager AB()
+        {
+            return s_instance._abManager;
+        }
 
         private void Awake()
         {

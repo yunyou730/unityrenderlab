@@ -66,7 +66,7 @@
      <Folder Include="Assets/AssetLib/Prefabs" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader" />
      <Folder Include="Assets/TextMesh Pro/Resources" />
-     <Folder Include="Assets/AssetLib/Prefabs/menu" />
+     <Folder Include="Assets/Resources" />
      <Folder Include="Assets/AssetLib" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader" />
      <Folder Include="Assets/TextMesh Pro" />
@@ -86,6 +86,7 @@
      <Folder Include="Assets/TextMesh Pro/Shaders" />
      <Folder Include="Assets/Scripts/game/battlefield/utils" />
      <Folder Include="Assets/Scripts/managers" />
+     <Folder Include="Assets/Resources/menu" />
      <Folder Include="Assets/TextMesh Pro/Resources/Style Sheets" />
      <Folder Include="Assets/TextMesh Pro/Fonts" />
      <Folder Include="Assets/StreamingAssets" />

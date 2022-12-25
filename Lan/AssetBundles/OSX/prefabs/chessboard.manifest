@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 714645637
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8a9300f27a6caa80bffb87f6f218948c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: bf6d3de94200c6cd2bea71685e8ce56e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 872efacb69a0a42bb8152f9e33d4f235, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/AssetLib/Prefabs/chessboard/Chessboard.prefab
+Dependencies: []

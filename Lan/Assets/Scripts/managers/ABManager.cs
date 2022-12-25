@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
+using System.Linq;
+// using UnityEditor.VersionControl;
 using UnityEngine;
+using Object = System.Object;
 
 
 namespace lan.managers
@@ -31,7 +33,6 @@ namespace lan.managers
 
             _mainBundle = AssetBundle.LoadFromFile(_rootPath + _platformKey);
             Debug.Assert(_mainBundle != null,"main bundle is null!");
-            //_mainManifest = _mainBundle.mainAsset.ge;
         }
         
         private string GetPlatformKey()
@@ -44,34 +45,68 @@ namespace lan.managers
             return "iOS";
 #elif UNITY_ANROID
             return "Android";
-#endif
+#else
             throw new Exception();
             return "";
+#endif
         }
 
-        bool LoadAB(string abName)
+        public AssetBundle LoadBundle(string abName)
         {
-            AssetBundle bundle = AssetBundle.LoadFromFile(abName);
-            if (bundle == null)
-                return false;
+            if (_loadedBundles.Keys.Contains(abName))
+            {
+                Debug.Log("ab:" + abName + " has been loaded,don't do that again.");
+                return _loadedBundles[abName];
+            }
+            AssetBundle bundle = AssetBundle.LoadFromFile(_rootPath + abName);
+            Debug.Assert(bundle != null,"Load AB " + abName + "is null!");
+            _loadedBundles.Add(abName,bundle);
 
-            
-            
-            return true;
+            return bundle;
         }
-
-        void UnloadAB(string abName)
+        
+        public void UnloadBundle(string abName)
         {
-            
+            if (_loadedBundles.ContainsKey(abName))
+            {
+                AssetBundle bundle = _loadedBundles[abName];
+                bundle.Unload(false);
+            }
         }
 
-        void UnloadAllAB()
+        public void UnloadAllBundles()
         {
             foreach (var ab in _loadedBundles.Values)
             {
-                
+                ab.Unload(false);
             }
             _loadedBundles.Clear();
+        }
+
+        public bool HasBundleLoaded(string abName)
+        {
+            return _loadedBundles.ContainsKey(abName);
+        }
+
+        public T LoadRes<T>(string abName,string resName) where T:UnityEngine.Object
+        {
+            AssetBundle bundle = null;
+            if (!HasBundleLoaded(abName))
+            {
+                bundle = LoadBundle(abName);
+            }
+            else
+            {
+                bundle = _loadedBundles[abName];
+            }
+
+            if (bundle != null)
+            {
+                T asset = bundle.LoadAsset<T>(resName);
+                return asset;
+            }
+
+            return null;
         }
 
     }

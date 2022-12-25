@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 2102541976
+CRC: 4251007624
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: actor
+      Name: prefabs/actors
+      Dependencies: {}
+    Info_1:
+      Name: prefabs/chessboard
       Dependencies: {}
