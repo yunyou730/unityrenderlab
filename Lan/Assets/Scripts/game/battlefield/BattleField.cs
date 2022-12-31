@@ -17,7 +17,9 @@ namespace lan.game.battlefield
         public void Init()
         {
             CreateChessboardEntity();
-            CreateActorAtCell(0, 0);
+            CreateActorAtCell("Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/liulangzhe.prefab",0, 0);
+            CreateActorAtCell("Assets/AssetLib/Prefabs/actors/genjin_falushan/falushan.prefab",-3, 1);
+            
         }
         
         protected void CreateChessboardEntity()
@@ -30,9 +32,9 @@ namespace lan.game.battlefield
             chessboard.Refresh();
         }
         
-        protected void CreateActorAtCell(int row,int col)
+        protected void CreateActorAtCell(string prefabPath,int row,int col)
         {
-            GameObject go = Entry.Res().GetPrefab("Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/liulangzhe.prefab");
+            GameObject go = Entry.Res().GetPrefab(prefabPath);
             go = GameObject.Instantiate(go);
             
             Vector3 pos = CoordinateHelper.GetPosAtCell(row, col);

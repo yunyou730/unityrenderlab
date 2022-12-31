@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2988947578
+CRC: 1233675019
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 99a37919c01627fd14bc14aa12380cf0
+    Hash: 2f5e4d5a85ed88383231f299f6ed850f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7e5f7198c3aae3e508d445ae7d83de05
@@ -30,4 +30,5 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/liulangzhe.prefab
+- Assets/AssetLib/Prefabs/actors/genjin_falushan/falushan.prefab
 Dependencies: []

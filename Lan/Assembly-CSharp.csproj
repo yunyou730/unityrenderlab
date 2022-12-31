@@ -42,15 +42,15 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets/Scripts/Entry.cs" />
+     <Compile Include="Assets/Scripts/game/battlefield/BattleFieldSettings.cs" />
+     <Compile Include="Assets/Scripts/managers/ABManager.cs" />
+     <Compile Include="Assets/Scripts/game/battlefield/gfx/Chessboard.cs" />
+     <Compile Include="Assets/Scripts/gui/MenuDebugInfo.cs" />
      <Compile Include="Assets/Scripts/game/Game.cs" />
      <Compile Include="Assets/Scripts/game/battlefield/BattleField.cs" />
-     <Compile Include="Assets/Scripts/game/battlefield/BattleFieldSettings.cs" />
      <Compile Include="Assets/Scripts/managers/ResourceManager.cs" />
-     <Compile Include="Assets/Scripts/game/battlefield/gfx/Chessboard.cs" />
-     <Compile Include="Assets/Scripts/game/battlefield/utils/CoordinateHelper.cs" />
      <Compile Include="Assets/Scripts/game/battlefield/entity/Entity.cs" />
-     <Compile Include="Assets/Scripts/managers/ABManager.cs" />
-     <Compile Include="Assets/Scripts/gui/MenuDebugInfo.cs" />
+     <Compile Include="Assets/Scripts/game/battlefield/utils/CoordinateHelper.cs" />
      <Folder Include="Assets" />
      <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
      <Folder Include="Assets/AssetLib/Prefabs/actors/genjin_liulangzhe/textures" />
@@ -60,6 +60,7 @@
      <Folder Include="Assets/TextMesh Pro/Resources/Sprite Assets" />
      <Folder Include="Assets/Scripts" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />
+     <Folder Include="Assets/StreamingAssets/prefabs" />
      <Folder Include="Assets/AssetLib/Prefabs/actors" />
      <Folder Include="Assets/TextMesh Pro/Resources/Fonts &amp; Materials" />
      <None Include="Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc" />
@@ -734,6 +735,9 @@
      <Reference Include="Unity.VisualScripting.Flow.Editor">
      <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.VisualScripting.Flow.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.AssetBundleBrowser.Editor">
+     <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.VSCode.Editor">
      <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
      </Reference>
@@ -808,9 +812,6 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.State">
      <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.VisualScripting.State.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.AssetBundleBrowser.Editor">
-     <HintPath>/Users/Shared/coding/rendering/Lan/Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

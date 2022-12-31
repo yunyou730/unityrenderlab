@@ -51,8 +51,8 @@ public class MenuDebugInfo : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.W))
         {
             _txtPathShowing.text += "w press";
-            GameObject go = null;//new GameObject();
-            go.name = "sss";
+            //GameObject go = null;//new GameObject();
+            //go.name = "sss";
         }
     }
 }
