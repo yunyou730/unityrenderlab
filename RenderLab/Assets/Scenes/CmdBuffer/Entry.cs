@@ -27,12 +27,14 @@ namespace ayy.cmdbuffer
             // Create RT
             int screenCopyID = Shader.PropertyToID("_ScreenCopyID");
             buf.GetTemporaryRT(screenCopyID,-1, -1, 0, FilterMode.Bilinear);
+            
+            // -1,-1 means RT size same with Viewport
+            // -2,-2 means RT size is Viewport.width/2, Viewport.height / 2
             //buf.GetTemporaryRT(screenCopyID,-2, -2, 0, FilterMode.Bilinear);
             
             // Blit drawing result to RT
-            buf.Blit(BuiltinRenderTextureType.CurrentActive,screenCopyID);
-            //buf.Blit(_camera.activeTexture,screenCopyID);
-            
+            //buf.Blit(BuiltinRenderTextureType.CurrentActive,screenCopyID);
+            buf.Blit(_camera.activeTexture,screenCopyID);
             
             buf.SetGlobalTexture("_Ayy_GrabTexture",screenCopyID);
 

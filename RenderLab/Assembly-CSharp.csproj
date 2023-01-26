@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scenes\DepthTextureTest\CameraCtrl.cs" />
      <None Include="Assets\Scenes\CmdBuffer\CmdBufTest.shader" />
      <None Include="Assets\Scenes\DepthTextureTest\DepthShowing.shader" />
+     <None Include="Assets\Scenes\ScreenCoord\ScreenCoord.shader" />
      <None Include="Assets\Scenes\CmdBuffer\CmdBufTest2.shader" />
      <None Include="Assets\Scenes\CmdBuffer\CmdBufTest1.shader" />
      <None Include="Assets\Scenes\CmdBuffer\TestShader1.shader" />
