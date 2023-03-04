@@ -56,6 +56,7 @@
      <Folder Include="Assets/Scenes/Decal" />
      <None Include="Assets/Scenes/CmdBuffer/CmdBufTest2.shader" />
      <Folder Include="Assets/SimpleNaturePack/Textures" />
+     <None Include="Assets/Scenes/Decal/ShowDepthTexture.shader" />
      <None Include="Assets/Scenes/CmdBuffer/CmdBufTest1.shader" />
      <None Include="Assets/Scenes/Decal/Decal.shader" />
      <Folder Include="Assets/SimpleNaturePack/Materials" />

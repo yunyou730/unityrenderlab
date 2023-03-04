@@ -14,12 +14,10 @@
         
         ZWrite Off 
         ZTest Off
+        Cull Front         
         
-        
-        //Cull Back
         Blend SrcAlpha OneMinusSrcAlpha
         
-
         Pass
         {
             CGPROGRAM
@@ -53,8 +51,6 @@
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 
                 o.screenPos = ComputeScreenPos(o.vertex);
-                //o.screenPos.xy = o.screenPos.xy / o.screenPos.w;
-                
                 return o;
             }
 
@@ -62,28 +58,48 @@
             {
                 float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture,screenPos)));
                 float4 ndcPos = (screenPos/screenPos.w) * 2 - 1;    // map [0,1] => [-1,+1]
-                float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _ProjectionParams.z; // z=1,far plane
+                float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _ProjectionParams.z; // z = far plane = mvp result w
+
                 float3 viewPos = mul(unity_CameraInvProjection,clipPos.xyzz).xyz * depth;
                 float3 worldPos = mul(UNITY_MATRIX_I_V,float4(viewPos,1)).xyz;
                 return worldPos;
             }
 
+            // Without Decal
+            // fixed4 frag (v2f i) : SV_Target
+            // {
+            //     fixed4 color = fixed4(1.0,0.0,0.0,1.0);
+            //     return color;
+            // }
+            
+            
+            // Decal with pure color
+            // fixed4 frag (v2f i) : SV_Target
+            // {
+            //     float3 worldPos = DepthToWorldPosition(i.screenPos);
+            //     float4 localPos = mul(unity_WorldToObject,float4(worldPos,1.0));
+            //     clip(float3(0.5,0.5,0.5) - abs(localPos.xyz)); // cube mesh data ,center at (0,0,0),side len = 1.0
+            //     
+            //     fixed4 color = fixed4(1.0,0.0,0.0,1.0);
+            //     return color;
+            // }
+            
+            // Decal with texture 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                //fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 color = fixed4(0.0,0.0,0.0,1.0);
                 float3 worldPos = DepthToWorldPosition(i.screenPos);
                 float4 localPos = mul(unity_WorldToObject,float4(worldPos,1.0));
+            
                 clip(float3(0.5,0.5,0.5) - abs(localPos.xyz)); // cube mesh data ,center at (0,0,0),side len = 1.0
-
+            
+                // handle uv & sample texture 
                 fixed2 decalUV = fixed2(localPos.x,localPos.z);
                 decalUV = decalUV + 0.5;
-                color = tex2D(_MainTex,decalUV);
+                fixed4 color = tex2D(_MainTex,decalUV);
                 
-                //color = fixed4(localPos.xyz,1.0);
                 return color;
             }
+            
             ENDCG
         }
     }
