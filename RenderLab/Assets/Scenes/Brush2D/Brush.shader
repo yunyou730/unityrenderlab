@@ -63,7 +63,7 @@ Shader "Ayy/Brush2D/Brush"
                 float4 result = float4(0.0,0.0,0.0,0.0);
                 if(length(uv - center) <= _BrushSize)
                 {
-                    result = float4(0.0,1.0,0.0,1.0);
+                    result = float4(0.0,0.0,0.0,1.0);
                 }
                 return result;
             }
@@ -86,7 +86,7 @@ Shader "Ayy/Brush2D/Brush"
                     float theta = acos(dot(ap,ab));
                     float dis = sin(theta) * apLen;
                     if(dis < _BrushSize)
-                         result = float4(0.0,1.0,0.0,1.0);
+                         result = float4(0.0,0.0,0.0,1.0);
                 }
                 return result;
             }

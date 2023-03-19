@@ -16,13 +16,13 @@ public class Brush2D : MonoBehaviour
     
     public Material _presentMaterial = null;
     public Material _blitAndBrushMaterial = null;
-    private static readonly int BrushTex = Shader.PropertyToID("_BrushTex");
 
     private Vector2? _prevFramePoint = null;
     private Vector2? _curFramePoint = null;
 
     public float _brushSize = 0.03f;
-    
+    public Color _brushColor = Color.white;
+
     void Start()
     {
         PrepareRT();
@@ -80,8 +80,10 @@ public class Brush2D : MonoBehaviour
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
+        //if (_prevFramePoint != null && _curFramePoint != null)
         SwapRenderTexture();
-        _presentMaterial.SetTexture(Shader.PropertyToID("_BrushTex"),_activeRT);
+        _presentMaterial.SetTexture(Shader.PropertyToID("_BrushTex"), _activeRT);
+        _presentMaterial.SetColor(Shader.PropertyToID("_BrushColor"), _brushColor);
         Graphics.Blit(src,dest,_presentMaterial);
     }
 

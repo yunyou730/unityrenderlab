@@ -4,6 +4,7 @@ Shader "Ayy/Brush/Present"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _BrushTex ("Texture",2D) = "white" {}
+        _BrushColor ("BrushColor",Color) = (1.0,1.0,1.0,1.0)
     }
     SubShader
     {
@@ -34,6 +35,7 @@ Shader "Ayy/Brush/Present"
             float4 _MainTex_ST;
 
             sampler2D _BrushTex;
+            float4 _BrushColor;
             
             v2f vert (appdata v)
             {
@@ -48,20 +50,12 @@ Shader "Ayy/Brush/Present"
                 float2 uv = i.uv;
                 fixed4 frameBufferColor = tex2D(_MainTex, uv);
                 fixed4 brushColor = tex2D(_BrushTex,uv);
-                //fixed4 col = lerp(brushColor,frameBufferColor,1.0 - brushColor.a);
 
                 fixed4 col = frameBufferColor;
                 if(brushColor.a > 0.0)
                 {
-                    col = brushColor;
+                    col = _BrushColor;
                 }
-                /*
-                if(uv.y >= 0.5)
-                {
-                    col = tex2D(_BrushTex,uv);
-                }
-                */
-                
                 return col;
             }
             ENDCG
