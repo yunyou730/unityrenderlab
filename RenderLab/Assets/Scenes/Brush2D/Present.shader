@@ -1,10 +1,9 @@
-Shader "Ayy/Brush/Present"
+Shader "Ayy/Brush2D/Present"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _BrushTex ("Texture",2D) = "white" {}
-        _BrushColor ("BrushColor",Color) = (1.0,1.0,1.0,1.0)
     }
     SubShader
     {
@@ -35,7 +34,6 @@ Shader "Ayy/Brush/Present"
             float4 _MainTex_ST;
 
             sampler2D _BrushTex;
-            float4 _BrushColor;
             
             v2f vert (appdata v)
             {
@@ -52,10 +50,13 @@ Shader "Ayy/Brush/Present"
                 fixed4 brushColor = tex2D(_BrushTex,uv);
 
                 fixed4 col = frameBufferColor;
+
+                //col += brushColor;
                 if(brushColor.a > 0.0)
                 {
-                    col = _BrushColor;
+                     col = brushColor;
                 }
+                
                 return col;
             }
             ENDCG

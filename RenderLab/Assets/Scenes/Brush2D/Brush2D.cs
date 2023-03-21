@@ -15,7 +15,7 @@ public class Brush2D : MonoBehaviour
     private bool _pingpongFlag = true;
     
     public Material _presentMaterial = null;
-    public Material _blitAndBrushMaterial = null;
+    public Material _brushMaterial = null;
 
     private Vector2? _prevFramePoint = null;
     private Vector2? _curFramePoint = null;
@@ -33,7 +33,7 @@ public class Brush2D : MonoBehaviour
     private void Update()
     {
         HandleTouchPoint();
-        PassBrushArgsToMaterial();
+        UpdateBrushMaterial();
     }
 
     private void HandleTouchPoint()
@@ -41,7 +41,6 @@ public class Brush2D : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Vector2 pt = new Vector2(Input.mousePosition.x/GetScreenSize().x, Input.mousePosition.y/GetScreenSize().y);
-            
             if (_prevFramePoint == null)
             {
                 _prevFramePoint = pt;
@@ -59,31 +58,30 @@ public class Brush2D : MonoBehaviour
         }
     }
 
-    private void PassBrushArgsToMaterial()
+    private void UpdateBrushMaterial()
     {
         if (_prevFramePoint != null && _curFramePoint != null)
         {
             Vector4 touchPos = new Vector4(_prevFramePoint.Value.x, _prevFramePoint.Value.y, _curFramePoint.Value.x, _curFramePoint.Value.y); 
-            _blitAndBrushMaterial.SetVector(Shader.PropertyToID("_FromTo"),touchPos);
+            _brushMaterial.SetVector(Shader.PropertyToID("_FromTo"),touchPos);
         }
         else
         {
             PassInvalidTouchPoint();
         }
-        _blitAndBrushMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),_brushSize);
+        _brushMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),_brushSize);
+        _brushMaterial.SetColor(Shader.PropertyToID("_BrushColor"),_brushColor);
     }
 
     private void PassInvalidTouchPoint()
     {
-        _blitAndBrushMaterial.SetVector(Shader.PropertyToID("_FromTo"),new Vector4(-1.0f,-1.0f,-1.0f,-1.0f));
+        _brushMaterial.SetVector(Shader.PropertyToID("_FromTo"),new Vector4(-1.0f,-1.0f,-1.0f,-1.0f));
     }
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        //if (_prevFramePoint != null && _curFramePoint != null)
         SwapRenderTexture();
         _presentMaterial.SetTexture(Shader.PropertyToID("_BrushTex"), _activeRT);
-        _presentMaterial.SetColor(Shader.PropertyToID("_BrushColor"), _brushColor);
         Graphics.Blit(src,dest,_presentMaterial);
     }
 
@@ -96,7 +94,7 @@ public class Brush2D : MonoBehaviour
         _rt2 = new RenderTexture(width, height, 0, RenderTextureFormat.Default);
 
         // Clear RTs
-        Color clearColor = new Vector4(1.0f,1.0f,1.0f,0.0f);
+        Color clearColor = new Vector4(0.0f,0.0f,0.0f,0.0f);
         CommandBuffer cmdClearRT = new CommandBuffer();
         cmdClearRT.SetRenderTarget(_rt1);
         cmdClearRT.ClearRenderTarget(RTClearFlags.All, clearColor,0,0);
@@ -113,12 +111,12 @@ public class Brush2D : MonoBehaviour
     {
         if (_pingpongFlag)
         {
-            Graphics.Blit(_rt1,_rt2,_blitAndBrushMaterial);
+            Graphics.Blit(_rt1,_rt2,_brushMaterial);
             _activeRT = _rt2;
         }
         else
         {
-            Graphics.Blit(_rt2, _rt1, _blitAndBrushMaterial);
+            Graphics.Blit(_rt2, _rt1, _brushMaterial);
             _activeRT = _rt1;
         }
 
@@ -127,11 +125,10 @@ public class Brush2D : MonoBehaviour
 
     private void HandleWindowSizeChange()
     {
-        _blitAndBrushMaterial.SetFloat(Shader.PropertyToID("_ScreenWidth"),GetScreenSize().x);
-        _blitAndBrushMaterial.SetFloat(Shader.PropertyToID("_ScreenHeight"),GetScreenSize().y);
+        _brushMaterial.SetFloat(Shader.PropertyToID("_ScreenWidth"),GetScreenSize().x);
+        _brushMaterial.SetFloat(Shader.PropertyToID("_ScreenHeight"),GetScreenSize().y);
     }
-
-
+    
     Vector2 GetScreenSize()
     {
         return new Vector2(Screen.width, Screen.height);

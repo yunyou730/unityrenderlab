@@ -7,6 +7,7 @@ Shader "Ayy/Brush2D/Brush"
         _ScreenWidth ("Screen Width",Float) = 0.0
         _ScreenHeight ("Screen Height",Float) = 0.0
         _BrushSize("Brush Size",Float) = 0.05
+        _BrushColor("Brush Color",Color) = (1,1,1,1)
     }
     
     SubShader
@@ -42,6 +43,7 @@ Shader "Ayy/Brush2D/Brush"
             float4 _FromTo;
 
             float _BrushSize;
+            float4 _BrushColor;
 
             v2f vert (appdata v)
             {
@@ -63,7 +65,7 @@ Shader "Ayy/Brush2D/Brush"
                 float4 result = float4(0.0,0.0,0.0,0.0);
                 if(length(uv - center) <= _BrushSize)
                 {
-                    result = float4(0.0,0.0,0.0,1.0);
+                    result = float4(_BrushColor.r,_BrushColor.g,_BrushColor.b,1.0);
                 }
                 return result;
             }
@@ -86,7 +88,10 @@ Shader "Ayy/Brush2D/Brush"
                     float theta = acos(dot(ap,ab));
                     float dis = sin(theta) * apLen;
                     if(dis < _BrushSize)
-                         result = float4(0.0,0.0,0.0,1.0);
+                    {
+                        result = float4(_BrushColor.r,_BrushColor.g,_BrushColor.b,1.0);
+                    }
+                         
                 }
                 return result;
             }
@@ -101,9 +106,19 @@ Shader "Ayy/Brush2D/Brush"
 
                 if(p1.x >= 0 && p1.y >= 0 && p2.x >= 0 && p2.y >= 0)
                 {
-                    col = max(drawPoint(uv,p1),col);
-                    col = max(drawPoint(uv,p2),col);
-                    col = max(drawLine(uv,p1,p2),col);
+                    //col = max(drawPoint(uv,p1),col);
+                    //col = max(drawPoint(uv,p2),col);
+                    //col = max(drawLine(uv,p1,p2),col);
+
+                    float4 tmp = drawPoint(uv,p1);
+                    tmp = max(drawPoint(uv,p2),tmp);
+                    tmp = max(drawLine(uv,p1,p2),tmp);
+                    
+                    if(tmp.a > 0.0)
+                    {
+                        col = tmp;
+                    }
+                    
                 }
                 return col;
             }
