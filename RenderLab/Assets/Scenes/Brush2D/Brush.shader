@@ -106,10 +106,6 @@ Shader "Ayy/Brush2D/Brush"
 
                 if(p1.x >= 0 && p1.y >= 0 && p2.x >= 0 && p2.y >= 0)
                 {
-                    //col = max(drawPoint(uv,p1),col);
-                    //col = max(drawPoint(uv,p2),col);
-                    //col = max(drawLine(uv,p1,p2),col);
-
                     float4 tmp = drawPoint(uv,p1);
                     tmp = max(drawPoint(uv,p2),tmp);
                     tmp = max(drawLine(uv,p1,p2),tmp);
@@ -118,7 +114,6 @@ Shader "Ayy/Brush2D/Brush"
                     {
                         col = tmp;
                     }
-                    
                 }
                 return col;
             }

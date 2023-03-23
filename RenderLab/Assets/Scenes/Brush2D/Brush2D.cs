@@ -19,7 +19,8 @@ public class Brush2D : MonoBehaviour
 
     private Vector2? _prevFramePoint = null;
     private Vector2? _curFramePoint = null;
-
+    
+    [Range(0.005f,0.3f)]
     public float _brushSize = 0.03f;
     public Color _brushColor = Color.white;
 
@@ -101,7 +102,7 @@ public class Brush2D : MonoBehaviour
         cmdClearRT.SetRenderTarget(_rt2);
         cmdClearRT.ClearRenderTarget(RTClearFlags.All, clearColor,0,0);
         Graphics.ExecuteCommandBuffer(cmdClearRT);
-        
+
         // init for ping pong 
         _pingpongFlag = true;
         _activeRT = _rt1;
