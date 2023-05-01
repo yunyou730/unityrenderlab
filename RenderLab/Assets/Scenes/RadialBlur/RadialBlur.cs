@@ -9,18 +9,6 @@ public class RadialBlur : MonoBehaviour
 {
     public Material _material = null;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
         if (_material != null)

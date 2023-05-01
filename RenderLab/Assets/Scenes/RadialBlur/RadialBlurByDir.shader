@@ -54,7 +54,6 @@ Shader "Ayy/PostEffect/RadialBlurDir"
             }
 
             float4 frag (v2f i) : SV_Target {
-                
                 float2 blurDir = normalize(float2(_DirX,_DirY));
                 
                 float2 delta = blurDir * _BlurAmount;
@@ -70,7 +69,7 @@ Shader "Ayy/PostEffect/RadialBlurDir"
                 }
                 float4 blurColor = sum / (float(_SampleSteps) * 2.0 + 1.0);
                 return lerp(color,blurColor,dirValid);
-            }            
+            }
             
             ENDCG
         }
