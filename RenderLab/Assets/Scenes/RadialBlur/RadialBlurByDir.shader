@@ -57,13 +57,10 @@ Shader "Ayy/PostEffect/RadialBlurDir"
                 
                 float2 blurDir = normalize(float2(_DirX,_DirY));
                 
-                float2 texelSize = _MainTex_TexelSize.xy;
-
                 float2 delta = blurDir * _BlurAmount;
-
-                float s = step(0.0,length(delta));
+                float dirValid = step(0.0,length(delta));
                 
-                
+                float2 texelSize = _MainTex_TexelSize.xy;
                 float4 color = tex2D(_MainTex, i.uv);
                 float4 sum = color;
                 for (int j = 1; j <= _SampleSteps; j++) {
@@ -72,8 +69,7 @@ Shader "Ayy/PostEffect/RadialBlurDir"
                     sum += tex2D(_MainTex, i.uv - offset * texelSize);
                 }
                 float4 blurColor = sum / (float(_SampleSteps) * 2.0 + 1.0);
-
-                return lerp(color,blurColor,s);
+                return lerp(color,blurColor,dirValid);
             }            
             
             ENDCG
