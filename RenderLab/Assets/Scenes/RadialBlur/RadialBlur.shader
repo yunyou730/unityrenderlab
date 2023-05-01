@@ -52,17 +52,32 @@ Shader "Ayy/PostEffect/RadialBlur"
             }
 
             float4 frag (v2f i) : SV_Target {
+
+                // center : range [0,1]
                 float2 center = float2(_CenterX,_CenterY);
                 
-                float2 texelSize = _MainTex_TexelSize.xy;
-                float2 delta = (i.uv - center) * _BlurAmount;
+                /*
+                 * Because UV range in [0,1], center range in [0,1]
+                 * delta range in [0,1]
+                 */
+                float2 delta = i.uv - center;
 
+                // naming texelSize for readable 
+                float2 texelSize = _MainTex_TexelSize.xy;
+                
                 float4 color = tex2D(_MainTex, i.uv);
                 float4 sum = color;
+                float2 offset;
                 for (int j = 1; j <= _SampleSteps; j++) {
-                    float2 offset = delta * j;
-                    sum += tex2D(_MainTex, i.uv + offset * texelSize);
-                    sum += tex2D(_MainTex, i.uv - offset * texelSize);
+
+                    /*
+                     * j * _BlurAmount => offset pixel count
+                     * j * _BlurAmount * texelSize => offset distance and direction
+                     */
+                    offset = delta * (j * _BlurAmount * texelSize);
+                    
+                    sum += tex2D(_MainTex, i.uv + offset);
+                    sum += tex2D(_MainTex, i.uv - offset);
                 }
                 return sum / (float(_SampleSteps) * 2.0 + 1.0);
             }            
