@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CellularNoise
-  m_Shader: {fileID: 4800000, guid: dc12ee10760434c3989d62c419cfb7f0, type: 3}
+  m_Name: SDF2D
+  m_Shader: {fileID: 4800000, guid: 3afd73d9b5f65440bbc23695635b7858, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -70,10 +70,10 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _MyFloat: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ScreenHeight: 0
-    - _ScreenWidth: 0
+    - _Radius: 0.64
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -82,5 +82,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MousePosition: {r: 0.20381613, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

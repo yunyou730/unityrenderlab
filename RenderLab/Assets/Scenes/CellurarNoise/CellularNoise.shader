@@ -112,9 +112,9 @@ Shader "ayy/CellularNoise"
 
                         // pt.x, pt.y range in [0,1]
                         float2 pt = random2(i_st + neighbor);
-
                         // pt range [0,1], but now it has relative with Time
-                        pt = 0.5 + 0.5 * sin(_Time.y + 6.2823 * pt);
+                        pt = 0.5 + 0.5 * sin(_Time.y + 3.14 * 2.0 * pt);    // 6.28 = 2 * pi,make phase difference
+
                         
                         float2 diff = neighbor + pt - f_st;
                         float dist = length(diff);
@@ -133,11 +133,47 @@ Shader "ayy/CellularNoise"
                 
                 return float4(col,1.0);
             }
+
+
+            float4 voronoiByFixedPoints(float2 uv)
+            {
+                const int POINT_NUM = 5;
+                float2 featurePoints[POINT_NUM];
+                featurePoints[0] = float2(0.83,0.75);
+                featurePoints[1] = float2(0.60,0.64);
+                featurePoints[2] = float2(0.28,0.64);
+                featurePoints[3] = float2(0.31,0.26);
+                featurePoints[4] = _MousePosition.xy;
+                
+                float3 col = float3(0.0,0.0,0.0);
+
+                float2 pt = featurePoints[0];
+                float minDis = 1.0;
+                for(int i = 0;i < POINT_NUM;i++)
+                {
+                    float dist = distance(uv,featurePoints[i]);
+                    if(dist < minDis)
+                    {
+                        minDis = dist;
+                        pt = featurePoints[i];
+                    }
+                    minDis = min(minDis,dist);
+                }
+                
+                // draw center
+                col.r += 1.0 - step(0.01,minDis);
+
+                // draw voronoi color
+                col.rg += pt.xy;
+                
+                return float4(col,1.0);
+            }
             
             fixed4 frag (v2f i) : SV_Target
             {
                 //return cellularNoiseByFixedPoints(i.uv);
-                return cellularNoiseByTiling(i.uv);
+                //return cellularNoiseByTiling(i.uv);
+                return voronoiByFixedPoints(i.uv);
             }
             ENDCG
         }
