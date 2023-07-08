@@ -34,6 +34,13 @@ Shader "ayy/PointsInPoly"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            const int maxPolyPoints = 500;
+            int _polygonPointCount = 0;
+            float _polygonPoints[1000];
+
+
+            int _bFill = 1;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -41,7 +48,9 @@ Shader "ayy/PointsInPoly"
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
-            
+
+            // Drawing with fixed points
+            /*
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed2 uv = i.uv;
@@ -85,6 +94,55 @@ Shader "ayy/PointsInPoly"
                 }
                 return col;
             }
+            */
+
+            // drawing with dynamic points
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed2 uv = i.uv;
+                fixed4 col = tex2D(_MainTex,uv);
+
+                // fill color
+                const float y = uv.y;
+                const float checkX = uv.x;
+
+                int intersect = 0;
+                int j = _polygonPointCount - 1;
+                for(int i = 0;i < _polygonPointCount;i++)
+                {
+                    fixed2 p1 = fixed2(_polygonPoints[j * 2],_polygonPoints[j * 2 + 1]);
+                    fixed2 p2 = fixed2(_polygonPoints[i * 2],_polygonPoints[i * 2 + 1]);
+
+                    // draw points
+                    if(length(uv - p2) < 0.01)
+                    {
+                        col = fixed4(1.0,1.0,0.0,1.0);
+                    }
+                    
+
+                    if((p1.y > y && p2.y < y) || (p1.y < y && p2.y > y))
+                    {
+                        float x = (y - p2.y) * (p1.x - p2.x) / (p1.y - p2.y) + p2.x;
+                        if(checkX < x)
+                        {
+                            intersect++;
+                        }    
+                    }
+                    j = i;
+                }
+                intersect = intersect % 2;
+                
+                
+                
+                // draw fill color
+                if(_bFill == 1 && intersect == 1)
+                {
+                    col = fixed4(1.0,0.0,0.0,1.0);   
+                }
+                return col;
+            }
+
+            
             ENDCG
         }
     }
