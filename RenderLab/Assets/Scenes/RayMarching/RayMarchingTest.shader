@@ -66,7 +66,7 @@ Shader "ayy/RayMarchingTest"
 
             float sceneSDF(float3 samplePoint)
             {
-                return sphereSDF(float3(0,0,8),0.7,samplePoint);
+                return sphereSDF(float3(0,0,5),1.0,samplePoint);
             }
             
             float shortestDistanceToSurface(float3 eye,float3 marchingDir,float start,float end)
@@ -161,11 +161,11 @@ Shader "ayy/RayMarchingTest"
                 float3 rayOrigin = float3(0,0,0);
                 
                 float rayDist = shortestDistanceToSurface(rayOrigin,rayDir,MIN_DIS,MAX_DIS);
-                fixed4 col = float4(1.0,0.0,0.0,1.0);
+                
                 if(rayDist > MAX_DIS - EPSILON)
                 {
                     // hit nothing 
-                    col = float4(0.0,0.0,0.0,0.0);
+                    return float4(0.0,0.0,0.0,0.0);
                 }
 
                 // hit the ball
