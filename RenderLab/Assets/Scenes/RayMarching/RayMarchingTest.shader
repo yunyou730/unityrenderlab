@@ -93,12 +93,10 @@ Shader "ayy/RayMarchingTest"
 
             float3 estimateNormal(float3 p)
             {
-                return normalize(
-                    float3(
+                return normalize(float3(
                         sceneSDF(float3(p.x + EPSILON,p.y,p.z)) - sceneSDF(float3(p.x - EPSILON,p.y,p.z)),
                         sceneSDF(float3(p.x,p.y + EPSILON,p.z)) - sceneSDF(float3(p.x,p.y - EPSILON,p.z)), 
-                        sceneSDF(float3(p.x,p.y,p.z + EPSILON)) - sceneSDF(float3(p.x,p.y,p.z - EPSILON))
-                    )
+                        sceneSDF(float3(p.x,p.y,p.z + EPSILON)) - sceneSDF(float3(p.x,p.y,p.z - EPSILON)))
                 );
             }
 
@@ -135,16 +133,12 @@ Shader "ayy/RayMarchingTest"
                 float3 ambientLight = 0.5 * float3(1,1,1);
                 float3 color = ambientLight * k_a;
                 
-                float3 light1Pos = float3(4 * sin(_Time.y),
-                                            2,
-                                            4 * cos(_Time.y));
+                float3 light1Pos = float3(4 * sin(_Time.y),2,4 * cos(_Time.y));
                 float3 light1Intensity = float3(0.4,0.4,0.4);
                 color += phongContribForLight(k_d,k_s,alpha,p,eye,light1Pos,light1Intensity);
 
 
-                float3 light2Pos = float3(2.0 * sin(0.37 * _Time.y),
-                                            2.0 * cos(0.37 * _Time.y),
-                                            2.0);
+                float3 light2Pos = float3(2.0 * sin(0.37 * _Time.y),2.0 * cos(0.37 * _Time.y),2.0);
                 float light2Intensity = float3(0.4,0.4,0.4);
                 color += phongContribForLight(k_d,k_s,alpha,p,eye,light2Pos,light2Intensity);
                 
@@ -175,10 +169,9 @@ Shader "ayy/RayMarchingTest"
                 float3 k_d = float3(0.7,0.2,0.2);
                 float3 k_s = float3(1.0,1.0,1.0);
                 float shininess = 10.0;
-                float3 col3 = phongIllumination(k_a,k_d,k_s,shininess,p,rayOrigin);
+                float3 col = phongIllumination(k_a,k_d,k_s,shininess,p,rayOrigin);
                 
-                
-                return float4(col3,1.0);
+                return float4(col,1.0);
             }
             ENDCG
         }
