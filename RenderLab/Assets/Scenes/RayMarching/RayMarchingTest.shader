@@ -64,9 +64,43 @@ Shader "ayy/RayMarchingTest"
                 return length(p - center) - radius;
             }
 
+            float cubeSDF(float3 p)
+            {
+                float3 d = abs(p) - float3(1,1,1);
+                float insideDistance = min(max(d.x,max(d.y,d.z)),0);
+                float outsideDistance = length(max(d,0));
+                return insideDistance + outsideDistance;
+            }
+
+            float intersectSDF(float distA,float distB)
+            {
+                return max(distA,distB);
+            }
+
+            float unionSDF(float distA,float distB)
+            {
+                return min(distA,distB);
+            }
+
+            float differenceSDF(float distA,float distB)
+            {
+                return max(distA,-distB);
+            }
+
             float sceneSDF(float3 samplePoint)
             {
-                return sphereSDF(float3(0,0,5),1.0,samplePoint);
+                
+                //return sphereSDF(float3(0,0,0),1.0,samplePoint);
+                //return sphereSDF(samplePoint);
+                //return cubeSDF(samplePoint);
+
+                //float distA = sphereSDF(float3(0,0,0),1.5,samplePoint);
+                float distA = sphereSDF(samplePoint / 1.2) * 1.2;
+                //float distB = cubeSDF(samplePoint + float3(0,sin(_Time.y),0));
+                float distB = sphereSDF(samplePoint + float3(0,sin(_Time.y),0));
+                return unionSDF(distA,distB);
+                //return intersectSDF(distA,distB);
+                //return differenceSDF(distA,distB);
             }
             
             float shortestDistanceToSurface(float3 eye,float3 marchingDir,float start,float end)
@@ -137,7 +171,6 @@ Shader "ayy/RayMarchingTest"
                 float3 light1Intensity = float3(0.4,0.4,0.4);
                 color += phongContribForLight(k_d,k_s,alpha,p,eye,light1Pos,light1Intensity);
 
-
                 float3 light2Pos = float3(2.0 * sin(0.37 * _Time.y),2.0 * cos(0.37 * _Time.y),2.0);
                 float light2Intensity = float3(0.4,0.4,0.4);
                 color += phongContribForLight(k_d,k_s,alpha,p,eye,light2Pos,light2Intensity);
@@ -146,30 +179,49 @@ Shader "ayy/RayMarchingTest"
             }
 
 
+            float4x4 viewMatrix(float3 eye,float3 center,float3 up)
+            {
+                float3 f = normalize(center - eye);
+                float3 s = normalize(cross(f,up));
+                float3 u = cross(s,f);
+
+                return float4x4(
+                    float4(s,0.0),
+                    float4(u,0.0),
+                    float4(f,0.0),
+                    float4(0.0,0.0,0.0,1.0)
+                    //float4(eye.x,eye.y,eye.z,1.0)
+                );
+            }
+            
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 screenSize = float2(_ScreenParams.x,_ScreenParams.y);
-                float2 screenPos = float2(screenSize.x * i.uv.x, screenSize.y * i.uv.y);
-                float3 rayDir = rayDirection(45.0, screenSize, screenPos);
+                float2 resolution = float2(_ScreenParams.x,_ScreenParams.y);
+                float2 fragCoord = float2(resolution.x * i.uv.x, resolution.y * i.uv.y);
+                float3 viewDir = rayDirection(45.0, resolution, fragCoord);
                 
-                float3 rayOrigin = float3(0,0,0);
+                float3 eye = float3(3,10,8);
+                //float3 eye = float3(8,3,7);
                 
-                float rayDist = shortestDistanceToSurface(rayOrigin,rayDir,MIN_DIS,MAX_DIS);
+                float4x4 viewToWorld = viewMatrix(eye,float3(0,0,0),float3(0,1,0));
+                //viewToWorld = inverse(viewToWorld);
+                float3 worldDir = mul(viewToWorld,float4(viewDir,0)).xyz;
+                float dist = shortestDistanceToSurface(eye,worldDir,MIN_DIS,MAX_DIS);
                 
-                if(rayDist > MAX_DIS - EPSILON)
+                if(dist > MAX_DIS - EPSILON)
                 {
                     // hit nothing 
                     return float4(0.0,0.0,0.0,0.0);
                 }
 
                 // hit the ball
-                float3 p = rayOrigin + rayDist * rayDir;
+                float3 p = eye + dist * worldDir;
                 
                 float3 k_a = float3(0.2,0.2,0.2);
                 float3 k_d = float3(0.7,0.2,0.2);
                 float3 k_s = float3(1.0,1.0,1.0);
                 float shininess = 10.0;
-                float3 col = phongIllumination(k_a,k_d,k_s,shininess,p,rayOrigin);
+                float3 col = phongIllumination(k_a,k_d,k_s,shininess,p,eye);
                 
                 return float4(col,1.0);
             }
