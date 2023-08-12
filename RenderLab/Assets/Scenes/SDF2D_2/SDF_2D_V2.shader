@@ -56,8 +56,7 @@ Shader "ayy/SDF_2D_V2"
                 return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
             }
 
-
-            float4 sdfEdgeTest(float sdf)
+            float4 sdfEdge(float sdf)
             {
                 float f1 = step(sdf,0.0);
                 float f2 = step(_EdgeWidth,sdf);
@@ -74,18 +73,11 @@ Shader "ayy/SDF_2D_V2"
                 float2 screenSize = _ScreenParams.xy;
                 float2 uv = ((i.uv * 2.0 - 1.0) * screenSize.xy) / min(screenSize.x,screenSize.y);
 
-
                 float sdf1 = sdCircle(uv,0.5);
                 float sdf2 = sdBox(uv,float2(0.3,0.5));
 
-                
                 float sdf = lerp(sdf1,sdf2,_Value);
-                
-                //float v = step(sdf,0.01);
-                //return float4(v,0.0,0.0,1.0);
-                
-                return sdfEdgeTest(sdf);
-                
+                return sdfEdge(sdf);
             }
             ENDCG
         }
