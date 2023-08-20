@@ -8,8 +8,8 @@ namespace rpg
     {
         private Transform _avatar = null;
 
-        private static float kTurnSpeed = 3.14f;
-        private static float kMoveSpeed = 0.5f;
+        private static float kTurnSpeed = 180.0f;    // degree
+        private static float kMoveSpeed = 7.0f;
 
         public MovementController(Transform avatar)
         {
@@ -32,7 +32,8 @@ namespace rpg
             {
                 MoveBackward(deltaTime);
             }
-            else if (Input.GetKey(KeyCode.LeftArrow))
+            
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
                 TurnLeft(deltaTime);
             }
@@ -44,22 +45,28 @@ namespace rpg
 
         private void TurnLeft(float deltaTime)
         {
-            Debug.Log("Turn Left");   
+            Quaternion rot = Quaternion.Euler(0,-kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
+            _avatar.transform.rotation = rot;
         }
 
         private void TurnRight(float deltaTime)
         {
-            Debug.Log("Turn Right");   
+            Quaternion rot = Quaternion.Euler(0,kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
+            _avatar.transform.rotation = rot;
         }
 
         private void MoveForward(float deltaTime)
         {
-            Debug.Log("Move Forward");   
+            Vector3 dir = _avatar.transform.forward;
+            Vector3 offset = dir * kMoveSpeed * deltaTime;
+            _avatar.transform.position += offset;
         }
 
         private void MoveBackward(float deltaTime)
         {
-            Debug.Log("Move Backward");
+            Vector3 dir = -_avatar.transform.forward;
+            Vector3 offset = dir * kMoveSpeed * deltaTime;
+            _avatar.transform.position += offset;            
         }
     }
     

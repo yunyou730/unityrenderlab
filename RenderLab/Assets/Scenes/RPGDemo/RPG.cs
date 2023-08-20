@@ -33,7 +33,6 @@ namespace rpg
             Vector2Int createCoord = new Vector2Int(4,5);
             _moveCtrl = new MovementController(_playerGameObject.transform);
             _moveCtrl.SetPosByLayerAndTileCoord(_tilemap.GetLayer(0),createCoord);
-            
         }
         
         void Update()
