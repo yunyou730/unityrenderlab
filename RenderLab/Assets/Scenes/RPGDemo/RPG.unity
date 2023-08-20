@@ -359,3 +359,5 @@ MonoBehaviour:
     type: 3}
   _playerPrefab: {fileID: 3018770559101429714, guid: f3bcbb272a2374e3cb441485ce2bcaef,
     type: 3}
+  _cameraGameObject: {fileID: 330684180}
+  _cameraLookTargetOffset: {x: 4, y: 15, z: 4}

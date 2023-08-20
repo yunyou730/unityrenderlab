@@ -14,13 +14,25 @@ namespace rpg
 
         [SerializeField]
         GameObject _playerPrefab = null;
+        
+        [SerializeField]
+        GameObject _cameraGameObject = null;
 
+        [SerializeField]
+        Vector3 _cameraLookTargetOffset = new Vector3(5, 5, 5);
+        
 
+        // Tilemap
         private GameObject _tilemapRoot = null;
         private Tilemap _tilemap = null;
-
+        
+        // Player
         private GameObject _playerGameObject = null;
         private MovementController _moveCtrl = null;
+        
+        // Camera
+        private CameraController _cameraCtrl = null;
+
         
         void Start()
         {
@@ -32,7 +44,13 @@ namespace rpg
             _playerGameObject = CreatePlayerGameObject();
             Vector2Int createCoord = new Vector2Int(4,5);
             _moveCtrl = new MovementController(_playerGameObject.transform);
-            _moveCtrl.SetPosByLayerAndTileCoord(_tilemap.GetLayer(0),createCoord);
+            _moveCtrl.SetTilemapAndLayer(_tilemap,_tilemap.GetLayer(0));
+            _moveCtrl.SetPosTileCoord(createCoord);
+            
+            // Camera controller
+            _cameraCtrl = new CameraController();
+            _cameraCtrl.SetCamera(_cameraGameObject);
+            _cameraCtrl.SetLookTarget(_playerGameObject.transform);
         }
         
         void Update()
@@ -41,8 +59,13 @@ namespace rpg
             {
                 _moveCtrl.OnUpdate(Time.deltaTime);
             }
-        }
 
+            if (_cameraCtrl != null)
+            {
+                _cameraCtrl.targetOffset = _cameraLookTargetOffset; 
+                _cameraCtrl.OnUpdate(Time.deltaTime);
+            }
+        }
 
         GameObject CreatePlayerGameObject()
         {

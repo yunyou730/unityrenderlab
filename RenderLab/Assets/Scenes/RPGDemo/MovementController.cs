@@ -11,14 +11,34 @@ namespace rpg
         private static float kTurnSpeed = 180.0f;    // degree
         private static float kMoveSpeed = 7.0f;
 
+        private float _radius = 0.5f;
+
+
+        private Tilemap _tilemap = null;
+        private Layer _layer = null;
+
+
+        public enum ETryMoveResultType
+        {
+            OK,
+            Block,
+        }
+
         public MovementController(Transform avatar)
         {
             _avatar = avatar;
         }
 
-        public void SetPosByLayerAndTileCoord(Layer layer,Vector2Int tileCoord)
+        public void SetTilemapAndLayer(Tilemap tilemap,Layer layer)
         {
-            Vector3 worldPos = Metrics.GetTileWorldPos(layer,tileCoord.x, tileCoord.y);
+            _tilemap = tilemap;
+            _layer = layer;
+        }
+
+        public void SetPosTileCoord(Vector2Int tileCoord)
+        {
+            Debug.Assert(_layer != null);
+            Vector3 worldPos = Metrics.GetTileWorldPos(_layer,tileCoord.x, tileCoord.y);
             _avatar.transform.position = worldPos;
         }
 
@@ -58,15 +78,73 @@ namespace rpg
         private void MoveForward(float deltaTime)
         {
             Vector3 dir = _avatar.transform.forward;
-            Vector3 offset = dir * kMoveSpeed * deltaTime;
-            _avatar.transform.position += offset;
+            MoveByDirInOneFrame(dir, deltaTime);
         }
 
         private void MoveBackward(float deltaTime)
         {
             Vector3 dir = -_avatar.transform.forward;
+            MoveByDirInOneFrame(dir, deltaTime);
+        }
+
+        private void MoveByDirInOneFrame(Vector3 dir,float deltaTime)
+        {
             Vector3 offset = dir * kMoveSpeed * deltaTime;
-            _avatar.transform.position += offset;            
+            Vector3 dest = _avatar.transform.position + dir * _radius + offset;
+            
+            ETryMoveResultType result = TryMove(dest);
+            if (result == ETryMoveResultType.OK)
+            {
+                _avatar.transform.position += offset;                
+            }
+            else if (result == ETryMoveResultType.Block)
+            {
+                Vector3? correctDir = null; 
+                
+                // Try other directions ,increase 30 degrees each time
+                for (float deg = 3.0f;deg < 80.0f;deg += 3.0f)
+                {
+                    // add degrees
+                    Vector3 nextDir = Quaternion.Euler(0, deg, 0) * dir;
+                    Vector3 nextOffset = nextDir * kMoveSpeed * deltaTime;
+                    Vector3 nextDest = _avatar.transform.position + nextDir * _radius + nextOffset;
+                    if (TryMove(nextDest) == ETryMoveResultType.OK)
+                    {
+                        _avatar.transform.position += nextOffset;
+                        correctDir = nextDir;
+                        break;
+                    }
+                    
+                    // dec degress
+                    nextDir = Quaternion.Euler(0, -deg, 0) * dir;
+                    nextOffset = nextDir * kMoveSpeed * deltaTime;
+                    nextDest = _avatar.transform.position + nextDir * _radius + nextOffset;
+                    if (TryMove(nextDest) == ETryMoveResultType.OK)
+                    {
+                        _avatar.transform.position += nextOffset;
+                        correctDir = nextDir;
+                        break;
+                    }
+                }
+
+                if (correctDir != null)
+                {
+                    _avatar.transform.forward = correctDir.Value;
+                }
+            }
+        }
+
+        ETryMoveResultType TryMove(Vector3 destPos)
+        {
+            ETryMoveResultType result = ETryMoveResultType.Block;
+            Vector2Int tileCoord = Metrics.WorldPosToTileCoord(_layer, destPos);
+            
+            Tile destAtTile = _layer.GetTileAt(tileCoord.x, tileCoord.y);
+            if (destAtTile != null && destAtTile.tileType == ETileType.Walkable)
+            {
+                result = ETryMoveResultType.OK;
+            }
+            return result;
         }
     }
     

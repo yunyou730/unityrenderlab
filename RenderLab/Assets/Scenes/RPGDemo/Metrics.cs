@@ -10,20 +10,29 @@ namespace rpg
         
         public static Vector3 GetTileWorldPos(Layer layer,int x,int y)
         {
-            Vector3 worldPos = Vector3.zero;
-
             float offsetX = x * kTileSize;
             float offsetZ = y * kTileSize;
+            
 
             Tile tile = layer.GetTileAt(x, y);
-            return worldPos + new Vector3(layer.basePos.x + offsetX,tile.posY,layer.basePos.z + offsetZ);
+            float worldY = tile.posY;
+            float worldX = layer.basePos.x + offsetX;
+            float worldZ = layer.basePos.z + offsetZ;
+            return new Vector3(worldX,worldY,worldZ);
         }
-
-
-        public static Vector2Int WorldPosToTileCoord(float x,float z)
+        
+        public static Vector2Int WorldPosToTileCoord(Layer layer,Vector3 worldPos)
         {
+            float x = worldPos.x;
+            float z = worldPos.z;
+
+            float offsetX = x - (layer.basePos.x - Metrics.kTileSize * 0.5f);
+            float offsetY = z - (layer.basePos.z - Metrics.kTileSize * 0.5f);
+            
             Vector2Int tileCoord = Vector2Int.zero;
             
+            tileCoord.x = (int)Mathf.Floor(offsetX / Metrics.kTileSize);
+            tileCoord.y = (int)Mathf.Floor(offsetY / Metrics.kTileSize);
             
             return tileCoord;
         }

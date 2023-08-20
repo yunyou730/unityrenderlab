@@ -10,7 +10,7 @@ namespace rpg
         public static Tilemap Mock()
         {
             Tilemap tilemap = new Tilemap();
-            Layer layer = new Layer(10,10);
+            Layer layer = new Layer(10,10,Vector3.zero);
             tilemap.AddLayer(layer);
 
             Vector2Int[] obs = new[]
@@ -20,6 +20,7 @@ namespace rpg
                 new Vector2Int(5,5),
                 new Vector2Int(5,6),
                 new Vector2Int(5,7), 
+                
                 
                 new Vector2Int(0,0), 
                 new Vector2Int(1,0), 
@@ -31,6 +32,19 @@ namespace rpg
                 new Vector2Int(7,0), 
                 new Vector2Int(8,0), 
                 new Vector2Int(9,0), 
+                
+                
+                new Vector2Int(0,9), 
+                new Vector2Int(1,9), 
+                new Vector2Int(2,9), 
+                new Vector2Int(3,9), 
+                new Vector2Int(4,9), 
+                new Vector2Int(5,9), 
+                new Vector2Int(6,9), 
+                new Vector2Int(7,9), 
+                new Vector2Int(8,9), 
+                new Vector2Int(9,9), 
+                
                 
             };
 
@@ -60,7 +74,7 @@ namespace rpg
         
         public void AddLayer(Layer layer)
         {
-            _layers.Add(layer);  
+            _layers.Add(layer);
         }
 
         public Layer GetLayer(int idx)
@@ -81,7 +95,7 @@ namespace rpg
         public Tile[] tiles = null;
         public Vector3 basePos = Vector3.zero; 
 
-        public Layer(int width,int height)
+        public Layer(int width,int height,Vector3 basePos)
         {
             this.width = width;
             this.height = height;
@@ -99,18 +113,15 @@ namespace rpg
 
         public Tile GetTileAt(int x,int y)
         {
+            if (x < 0 || x >= width || y < 0 || y >= height)
+                return null;
             int idx = GetTileIndex(x, y);
-            return idx >= 0 && idx < width * height ? tiles[idx] : null;
+            return tiles[idx];
         }
 
         public int GetTileIndex(int x,int y)
         {
             return y * width + x;
-        }
-
-        public void SetBasePos(Vector3 pos)
-        {
-            basePos = pos;
         }
     }
     
