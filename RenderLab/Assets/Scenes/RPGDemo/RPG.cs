@@ -17,9 +17,7 @@ namespace rpg
         
         [SerializeField]
         GameObject _cameraGameObject = null;
-
-        [SerializeField]
-        Vector3 _cameraLookTargetOffset = new Vector3(5, 5, 5);
+        
         
 
         // Tilemap
@@ -46,6 +44,7 @@ namespace rpg
             _moveCtrl = new MovementController(_playerGameObject.transform);
             _moveCtrl.SetTilemapAndLayer(_tilemap,_tilemap.GetLayer(0));
             _moveCtrl.SetPosTileCoord(createCoord);
+            _moveCtrl.SetCamera(_cameraGameObject.transform);
             
             // Camera controller
             _cameraCtrl = new CameraController();
@@ -62,7 +61,7 @@ namespace rpg
 
             if (_cameraCtrl != null)
             {
-                _cameraCtrl.targetOffset = _cameraLookTargetOffset; 
+                //_cameraCtrl.targetOffset = _cameraLookTargetOffset; 
                 _cameraCtrl.OnUpdate(Time.deltaTime);
             }
         }

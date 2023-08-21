@@ -7,6 +7,7 @@ namespace rpg
     public class MovementController
     {
         private Transform _avatar = null;
+        private Transform _cameraTransform = null;
 
         private static float kTurnSpeed = 180.0f;    // degree
         private static float kMoveSpeed = 7.0f;
@@ -42,6 +43,11 @@ namespace rpg
             _avatar.transform.position = worldPos;
         }
 
+        public void SetCamera(Transform cameraTransform)
+        {
+            _cameraTransform = cameraTransform;
+        }
+
         public void OnUpdate(float deltaTime)
         {
             if (Input.GetKey(KeyCode.UpArrow))
@@ -55,11 +61,11 @@ namespace rpg
             
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                TurnLeft(deltaTime);
+                MoveLeft(deltaTime);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                TurnRight(deltaTime);
+                MoveRight(deltaTime);
             }
         }
 
@@ -74,28 +80,56 @@ namespace rpg
             Quaternion rot = Quaternion.Euler(0,kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
             _avatar.transform.rotation = rot;
         }
-
+        
         private void MoveForward(float deltaTime)
         {
-            Vector3 dir = _avatar.transform.forward;
-            MoveByDirInOneFrame(dir, deltaTime);
+            Vector3 forward = _avatar.transform.position - _cameraTransform.position;
+            forward.y = 0;
+            MoveByDirInOneFrame(forward, deltaTime);
         }
+        
 
         private void MoveBackward(float deltaTime)
         {
-            Vector3 dir = -_avatar.transform.forward;
-            MoveByDirInOneFrame(dir, deltaTime);
+            Vector3 backward = -(_avatar.transform.position - _cameraTransform.position);
+            backward.y = 0;
+            MoveByDirInOneFrame(backward, deltaTime);
+        }
+        
+        
+        private void MoveLeft(float deltaTime)
+        {
+            Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
+            
+            Vector3 forward = _avatar.transform.position - _cameraTransform.position;
+            forward.y = 0;
+            
+            Vector3 dir = Vector3.Cross(forward, playerToCamera);
+            MoveByDirInOneFrame(dir,deltaTime);
+        }
+
+        private void MoveRight(float deltaTime)
+        {
+            Vector3 forward = _avatar.transform.position - _cameraTransform.position;
+            forward.y = 0;
+            
+            Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
+            Vector3 dir = -Vector3.Cross(forward, playerToCamera);
+            MoveByDirInOneFrame(dir,deltaTime);
         }
 
         private void MoveByDirInOneFrame(Vector3 dir,float deltaTime)
         {
+            dir = Vector3.Normalize(dir);
+                
             Vector3 offset = dir * kMoveSpeed * deltaTime;
             Vector3 dest = _avatar.transform.position + dir * _radius + offset;
             
             ETryMoveResultType result = TryMove(dest);
             if (result == ETryMoveResultType.OK)
             {
-                _avatar.transform.position += offset;                
+                _avatar.transform.position += offset;
+                _avatar.transform.forward = dir;
             }
             else if (result == ETryMoveResultType.Block)
             {
