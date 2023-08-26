@@ -364,3 +364,5 @@ MonoBehaviour:
     type: 3}
   _visionObsCylinderPrefab: {fileID: 3485955982851261575, guid: 33ba9fa224eee47589114ad07a09b99d,
     type: 3}
+  _visionRangePrefab: {fileID: 3302215962273688381, guid: 41cbb44dc08834eb5af590a14cae1d1b,
+    type: 3}

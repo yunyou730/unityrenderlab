@@ -20,8 +20,11 @@ namespace rpg
 
         [SerializeField] private GameObject _visionObsBoxPrefab = null;
         [SerializeField] private GameObject _visionObsCylinderPrefab = null;
+
+        [SerializeField] private GameObject _visionRangePrefab = null;
         
         private TilemapManager _tilemapManager = null;
+        private ObstacleManager _obstacleManager = null;
         private VisionManager _visionManager = null;
 
         // Player
@@ -36,13 +39,16 @@ namespace rpg
         {
             var playerSpawnCoord = new Vector2Int(4,5);
             
-            // Create tilemap
+            // Managers
             _tilemapManager = new TilemapManager();
+            _obstacleManager = new ObstacleManager(_visionObsBoxPrefab,_visionObsCylinderPrefab);
+            _visionManager = new VisionManager(_visionRangePrefab);
+            
+            // Create tilemap
             _tilemapManager.InitTilemapAndCreateTileObjects(ref playerSpawnCoord,_obstacleTilePrefab,_walkableTilePrefab);
             
-            // Create Vision & Vision Obstacles
-            _visionManager = new VisionManager(_visionObsBoxPrefab,_visionObsCylinderPrefab);
-            _visionManager.CreateObstacleGameObjects(_tilemapManager.GetAABBMin(),_tilemapManager.GetAABBMax());
+            // Create Obstacles
+            _obstacleManager.CreateObstacleGameObjects(_tilemapManager.GetAABBMin(),_tilemapManager.GetAABBMax());
 
             // Create player
             _playerGameObject = CreatePlayerGameObject();
@@ -56,7 +62,8 @@ namespace rpg
             _cameraCtrl.SetCamera(_cameraGameObject);
             _cameraCtrl.SetLookTarget(_playerGameObject.transform);
             
-            
+            // Create visions
+            _visionManager.RegisterVision(_playerGameObject,10.0f);
         }
         
         void Update()

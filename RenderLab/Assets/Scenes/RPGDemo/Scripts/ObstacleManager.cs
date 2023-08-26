@@ -6,7 +6,7 @@ using Random = System.Random;
 
 namespace rpg
 {
-    public class VisionManager
+    public class ObstacleManager
     {
         private Vector3 _boundingBoxMin;
         private Vector3 _boundingBoxMax;
@@ -23,7 +23,7 @@ namespace rpg
         private GameObject _boxPrefab = null;
         private GameObject _cylinderPrefab = null;
 
-        public VisionManager(GameObject boxPrefab,GameObject cylinderPrefab)
+        public ObstacleManager(GameObject boxPrefab,GameObject cylinderPrefab)
         {
             _boxPrefab = boxPrefab;
             _cylinderPrefab = cylinderPrefab;
@@ -73,10 +73,6 @@ namespace rpg
         {
             
         }
-
-        
-
-        
     }
     
 }
