@@ -78,6 +78,11 @@ namespace rpg
                 //_cameraCtrl.targetOffset = _cameraLookTargetOffset; 
                 _cameraCtrl.OnUpdate(Time.deltaTime);
             }
+
+            if (_visionManager != null)
+            {
+                _visionManager.Update();
+            }
         }
 
         GameObject CreatePlayerGameObject()

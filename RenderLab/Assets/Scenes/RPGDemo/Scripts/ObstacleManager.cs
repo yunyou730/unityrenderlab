@@ -47,6 +47,8 @@ namespace rpg
             float z = UnityEngine.Random.Range(_boundingBoxMin.z, _boundingBoxMax.z);
 
             EVisionObsType theType = (EVisionObsType)UnityEngine.Random.Range(0, (int)EVisionObsType.Max);
+
+            theType = EVisionObsType.Cylinder;  // @miao @temp
             GameObject go = null;
 
             Vector3 randScale = Vector3.one;
