@@ -6,13 +6,12 @@ namespace rpg
 {
     public class Metrics
     {
-        public static float kTileSize = 2;
+        public static float kTileSize = 1.5f;
         
         public static Vector3 GetTileWorldPos(Layer layer,int x,int y)
         {
             float offsetX = x * kTileSize;
             float offsetZ = y * kTileSize;
-            
 
             Tile tile = layer.GetTileAt(x, y);
             float worldY = tile.posY;

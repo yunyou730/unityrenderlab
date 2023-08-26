@@ -17,13 +17,13 @@ namespace rpg
         
         [SerializeField]
         GameObject _cameraGameObject = null;
-        
-        
 
-        // Tilemap
-        private GameObject _tilemapRoot = null;
-        private Tilemap _tilemap = null;
+        [SerializeField] private GameObject _visionObsBoxPrefab = null;
+        [SerializeField] private GameObject _visionObsCylinderPrefab = null;
         
+        private TilemapManager _tilemapManager = null;
+        private VisionManager _visionManager = null;
+
         // Player
         private GameObject _playerGameObject = null;
         private MovementController _moveCtrl = null;
@@ -34,22 +34,29 @@ namespace rpg
         
         void Start()
         {
-            // Create tilemap
-            _tilemap = TilemapMock.Mock();
-            CreateTilemapGameObjects();
+            var playerSpawnCoord = new Vector2Int(4,5);
             
+            // Create tilemap
+            _tilemapManager = new TilemapManager();
+            _tilemapManager.InitTilemapAndCreateTileObjects(ref playerSpawnCoord,_obstacleTilePrefab,_walkableTilePrefab);
+            
+            // Create Vision & Vision Obstacles
+            _visionManager = new VisionManager(_visionObsBoxPrefab,_visionObsCylinderPrefab);
+            _visionManager.CreateObstacleGameObjects(_tilemapManager.GetAABBMin(),_tilemapManager.GetAABBMax());
+
             // Create player
             _playerGameObject = CreatePlayerGameObject();
-            Vector2Int createCoord = new Vector2Int(4,5);
             _moveCtrl = new MovementController(_playerGameObject.transform);
-            _moveCtrl.SetTilemapAndLayer(_tilemap,_tilemap.GetLayer(0));
-            _moveCtrl.SetPosTileCoord(createCoord);
+            _moveCtrl.SetTilemapAndLayer(_tilemapManager.GetTileMap(),_tilemapManager.GetTileMap().GetLayer(0));
+            _moveCtrl.SetPosTileCoord(playerSpawnCoord);
             _moveCtrl.SetCamera(_cameraGameObject.transform);
             
             // Camera controller
             _cameraCtrl = new CameraController();
             _cameraCtrl.SetCamera(_cameraGameObject);
             _cameraCtrl.SetLookTarget(_playerGameObject.transform);
+            
+            
         }
         
         void Update()
@@ -72,54 +79,9 @@ namespace rpg
             return result;
         }
 
-        void CreateTilemapGameObjects()
+        private void CreateVisionObstacles()
         {
-            _tilemapRoot = new GameObject("[root]");
-            for (int layerIdx = 0;layerIdx < _tilemap.LayerCount();layerIdx++)
-            {
-                Layer layer = _tilemap.GetLayer(layerIdx);
-                GameObject layerGameObject = new GameObject("[layer][" + layerIdx + "]");
-                layerGameObject.transform.SetParent(_tilemapRoot.transform);
-
-                CreateTileGameObjectsInLayer(layer,layerGameObject.transform);
-            }
-        }
-        
-        void CreateTileGameObjectsInLayer(Layer layer,Transform parent)
-        {
-            for (int x = 0;x < layer.width;x++)
-            {
-                for (int y = 0;y < layer.height;y++)
-                {
-                    CreateTileGameObject(layer, x, y,parent);
-                }
-            }
-        }
-
-        void CreateTileGameObject(Layer layer,int x,int y,Transform parent)
-        {
-            Tile tile = layer.GetTileAt(x, y);
-
-            GameObject prefab = null;
-            switch (tile.tileType)
-            {
-                case ETileType.Obstacle:
-                    prefab = _obstacleTilePrefab;
-                    break;
-                case ETileType.Walkable:
-                    prefab = _walkableTilePrefab;
-                    break;
-            }
-
-            if (prefab != null)
-            {
-                Vector3 pos = Metrics.GetTileWorldPos(layer,x, y);
-                var tileGameObject = GameObject.Instantiate(prefab);
-                tileGameObject.name = "[tile][" + x + "," + y + "]";
-                tileGameObject.transform.SetParent(parent);
-                tileGameObject.transform.localScale = new Vector3(Metrics.kTileSize,Metrics.kTileSize,Metrics.kTileSize);
-                tileGameObject.transform.position = pos;
-            }
+            
         }
 
 

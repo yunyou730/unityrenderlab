@@ -7,48 +7,32 @@ namespace rpg
 {
     public class TilemapMock
     {
-        public static Tilemap Mock()
+        public static Tilemap Mock(ref Vector2Int notObsTile)
         {
             Tilemap tilemap = new Tilemap();
-            Layer layer = new Layer(10,10,Vector3.zero);
+
+            const int kWidth = 30;
+            const int kHeight = 30;
+            Layer layer = new Layer(kWidth,kHeight,Vector3.zero);
             tilemap.AddLayer(layer);
 
-            Vector2Int[] obs = new[]
+            List<Vector2Int> obs = new List<Vector2Int>();
+            float obstacleRate = 0.2f;
+            for (int x = 0;x < kWidth;x++)
             {
-                new Vector2Int(5,2), 
-                new Vector2Int(5,3), 
-                new Vector2Int(5,5),
-                new Vector2Int(5,6),
-                new Vector2Int(5,7), 
-                
-                
-                new Vector2Int(0,0), 
-                new Vector2Int(1,0), 
-                new Vector2Int(2,0), 
-                new Vector2Int(3,0), 
-                new Vector2Int(4,0), 
-                new Vector2Int(5,0), 
-                new Vector2Int(6,0), 
-                new Vector2Int(7,0), 
-                new Vector2Int(8,0), 
-                new Vector2Int(9,0), 
-                
-                
-                new Vector2Int(0,9), 
-                new Vector2Int(1,9), 
-                new Vector2Int(2,9), 
-                new Vector2Int(3,9), 
-                new Vector2Int(4,9), 
-                new Vector2Int(5,9), 
-                new Vector2Int(6,9), 
-                new Vector2Int(7,9), 
-                new Vector2Int(8,9), 
-                new Vector2Int(9,9), 
-                
-                
-            };
-
-            MarkTilesAsObstacle(layer,obs);
+                for (int y = 0;y < kHeight;y++)
+                {
+                    if (!(notObsTile.x == x && notObsTile.y == y))
+                    {
+                        int r = Random.Range(0, 100);
+                        if (r <= (int)(obstacleRate * 100.0f))
+                        {
+                            obs.Add(new Vector2Int(x,y));
+                        }    
+                    }
+                }
+            }
+            MarkTilesAsObstacle(layer,obs.ToArray());
 
             return tilemap;
         }
@@ -85,6 +69,26 @@ namespace rpg
         public int LayerCount()
         {
             return _layers.Count;
+        }
+        
+        public Vector3 GetAABBMin()
+        {
+            if (_layers.Count > 0)
+            {
+                var layer = _layers[0];
+                return layer.basePos;
+            }
+            return Vector3.zero;
+        }
+
+        public Vector3 GetAABBMax()
+        {
+            if (_layers.Count > 0)
+            {
+                var layer = _layers[0];
+                return layer.basePos + new Vector3(layer.width * Metrics.kTileSize,0,layer.height * Metrics.kTileSize);
+            }
+            return Vector3.zero;   
         }
     }
 

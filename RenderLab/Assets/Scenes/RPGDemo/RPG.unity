@@ -360,4 +360,7 @@ MonoBehaviour:
   _playerPrefab: {fileID: 3018770559101429714, guid: f3bcbb272a2374e3cb441485ce2bcaef,
     type: 3}
   _cameraGameObject: {fileID: 330684180}
-  _cameraLookTargetOffset: {x: 4, y: 15, z: 4}
+  _visionObsBoxPrefab: {fileID: 4351378923819881793, guid: cf7b8defc858f41dcad843e46af97ffb,
+    type: 3}
+  _visionObsCylinderPrefab: {fileID: 3485955982851261575, guid: 33ba9fa224eee47589114ad07a09b99d,
+    type: 3}
