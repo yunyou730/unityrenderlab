@@ -34,16 +34,13 @@ namespace rpg
         void Start()
         {
             var playerSpawnCoord = new Vector2Int(4,5);
-            
-            // Managers
-            _tilemapManager = new TilemapManager();
-            _obstacleManager = new ObstacleManager(_visionObsBoxPrefab,_visionObsCylinderPrefab);
-            _visionManager = new VisionManager(_visionRangePrefab);
-            
+
             // Create tilemap
+            _tilemapManager = new TilemapManager();
             _tilemapManager.InitTilemapAndCreateTileObjects(ref playerSpawnCoord,_obstacleTilePrefab,_walkableTilePrefab);
             
             // Create Obstacles
+            _obstacleManager = new ObstacleManager(_visionObsBoxPrefab,_visionObsCylinderPrefab);
             _obstacleManager.CreateObstacleGameObjects(_tilemapManager.GetAABBMin(),_tilemapManager.GetAABBMax());
 
             // Create player
@@ -53,6 +50,7 @@ namespace rpg
             _inputManager = new InputManager(_playerGameObject, _cameraGameObject,_tilemapManager.GetTileMap(),playerSpawnCoord);
             
             // Create visions
+            _visionManager = new VisionManager(_visionRangePrefab);            
             _visionManager.RegisterVision(_playerGameObject,10.0f);
         }
         

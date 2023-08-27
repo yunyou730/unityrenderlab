@@ -48,7 +48,7 @@ namespace rpg
 
             EVisionObsType theType = (EVisionObsType)UnityEngine.Random.Range(0, (int)EVisionObsType.Max);
 
-            theType = EVisionObsType.Cylinder;  // @miao @temp
+            // theType = EVisionObsType.Box;  // @miao @temp
             GameObject go = null;
 
             Vector3 randScale = Vector3.one;
@@ -56,7 +56,7 @@ namespace rpg
             {
                 case EVisionObsType.Box:
                     go = GameObject.Instantiate(_boxPrefab);
-                    randScale = new Vector3(UnityEngine.Random.Range(1,4f),1,UnityEngine.Random.Range(1,4));
+                    randScale = new Vector3(UnityEngine.Random.Range(1,3f),1,UnityEngine.Random.Range(1,3));
                     break;
                 case EVisionObsType.Cylinder:
                     go = GameObject.Instantiate(_cylinderPrefab);
@@ -66,7 +66,7 @@ namespace rpg
             }
                 
             go.transform.SetParent(_root.transform);
-            go.transform.localPosition = new Vector3(x, 1, z);
+            go.transform.localPosition = new Vector3(x, 0, z);
             go.transform.localRotation = Quaternion.Euler(0f,UnityEngine.Random.Range(0,360f),0f);
             go.transform.localScale = randScale;
         }
