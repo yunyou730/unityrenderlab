@@ -54,51 +54,10 @@ namespace rpg
             _cameraTransform = cameraTransform;
         }
 
-        public void OnUpdate(float deltaTime)
-        {
-            UpdateForMovement(deltaTime);
-        }
-
-        protected void UpdateForMovement(float deltaTime)
-        {
-            Vector3 moveDir = Vector3.zero;
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                moveDir += GetMovementDirByCtrlDir(ECtrlDir.Up);
-            }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                moveDir += GetMovementDirByCtrlDir(ECtrlDir.Down);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveDir += GetMovementDirByCtrlDir(ECtrlDir.Left);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                moveDir += GetMovementDirByCtrlDir(ECtrlDir.Right);
-            }
-
-            if (moveDir.magnitude > Mathf.Epsilon)
-            {
-                MoveByDirInOneFrame(moveDir,deltaTime);                
-            }
-        }
-
-        private void TurnLeft(float deltaTime)
-        {
-            Quaternion rot = Quaternion.Euler(0,-kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
-            _avatar.transform.rotation = rot;
-        }
-
-        private void TurnRight(float deltaTime)
-        {
-            Quaternion rot = Quaternion.Euler(0,kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
-            _avatar.transform.rotation = rot;
-        }
+        
 
 
-        Vector3 GetMovementDirByCtrlDir(ECtrlDir ctrlDir)
+        public Vector3 GetMovementDirByCtrlDir(ECtrlDir ctrlDir)
         {
             Vector3 result = Vector3.zero;
             switch (ctrlDir)
@@ -130,51 +89,63 @@ namespace rpg
             return Vector3.Normalize(result);
         }
 
-        // private void MoveForward(float deltaTime)
-        // {
-        //     Vector3 forward = _avatar.transform.position - _cameraTransform.position;
-        //     forward.y = 0;
-        //     MoveByDirInOneFrame(forward, deltaTime);
-        // }
-        //
-        //
-        // private void MoveBackward(float deltaTime)
-        // {
-        //     Vector3 backward = -(_avatar.transform.position - _cameraTransform.position);
-        //     backward.y = 0;
-        //     MoveByDirInOneFrame(backward, deltaTime);
-        // }
-        //
-        //
-        // private void MoveLeft(float deltaTime)
-        // {
-        //     Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
-        //     
-        //     Vector3 forward = _avatar.transform.position - _cameraTransform.position;
-        //     forward.y = 0;
-        //     
-        //     Vector3 dir = Vector3.Cross(forward, playerToCamera);
-        //     MoveByDirInOneFrame(dir,deltaTime);
-        // }
-        //
-        // private void MoveRight(float deltaTime)
-        // {
-        //     Vector3 forward = _avatar.transform.position - _cameraTransform.position;
-        //     forward.y = 0;
-        //     
-        //     Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
-        //     Vector3 dir = -Vector3.Cross(forward, playerToCamera);
-        //     MoveByDirInOneFrame(dir,deltaTime);
-        // }
+        public void TurnLeft(float deltaTime)
+        {
+            Quaternion rot = Quaternion.Euler(0,-kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
+            _avatar.transform.rotation = rot;
+        }
 
-        private void MoveByDirInOneFrame(Vector3 dir,float deltaTime)
+        public void TurnRight(float deltaTime)
+        {
+            Quaternion rot = Quaternion.Euler(0,kTurnSpeed * deltaTime,0) * _avatar.transform.rotation;
+            _avatar.transform.rotation = rot;
+        }
+        
+        public void MoveForward(float deltaTime)
+        {
+            Vector3 forward = _avatar.transform.forward;
+            forward.y = 0;
+            forward = Vector3.Normalize(forward);
+            MoveByDirInOneFrame(forward, deltaTime);
+        }
+        
+        
+        public void MoveBackward(float deltaTime)
+        {
+            Vector3 backward = -_avatar.transform.forward;
+            backward.y = 0;
+            backward = Vector3.Normalize(backward);
+            
+            MoveByDirInOneFrame(backward, deltaTime,false);
+        }
+        
+        
+        public void MoveLeft(float deltaTime)
+        {
+            Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
+            
+            Vector3 forward = _avatar.transform.position - _cameraTransform.position;
+            forward.y = 0;
+            
+            Vector3 dir = Vector3.Cross(forward, playerToCamera);
+            MoveByDirInOneFrame(dir,deltaTime);
+        }
+        
+        public void MoveRight(float deltaTime)
+        {
+            Vector3 forward = _avatar.transform.position - _cameraTransform.position;
+            forward.y = 0;
+            
+            Vector3 playerToCamera = _cameraTransform.position - _avatar.position;
+            Vector3 dir = -Vector3.Cross(forward, playerToCamera);
+            MoveByDirInOneFrame(dir,deltaTime);
+        }
+
+        public void MoveByDirInOneFrame(Vector3 dir,float deltaTime,bool changeDirWhenOK = true)
         {
             dir = Vector3.Normalize(dir);
                 
             Vector3 offset = dir * kMoveSpeed * deltaTime;
-            Vector3 dest = _avatar.transform.position + dir * _radius + offset;
-            
-            // ETryMoveResultType result = TryMove(dest);
             
             ETryMoveResultType result = TryMoveMultipleCheck(_avatar.transform.position,dir,_radius,offset);
             
@@ -182,7 +153,10 @@ namespace rpg
             if (result == ETryMoveResultType.OK)
             {
                 _avatar.transform.position += offset;
-                _avatar.transform.forward = dir;
+                if (changeDirWhenOK)
+                {
+                    _avatar.transform.forward = dir;                    
+                }
             }
             else if (result == ETryMoveResultType.Block)
             {

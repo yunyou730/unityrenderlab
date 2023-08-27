@@ -35,24 +35,14 @@ Shader "ayy/rpg/VisionRange"
                 float4 vertex : SV_POSITION;
                 float4 worldPos : SV_Target0;
             };
-
-            //sampler2D _MainTex;
-            //float4 _MainTex_ST;
             
             float _Angle;
             float4 _FrontDir;
 
             sampler2D _DepthTex;
-
             
             float4x4 _depthCameraViewMatrix;
-            float4x4 _depthCameraInvViewMatrix;
             float4x4 _depthCameraProjMatrix;
-            float4x4 _depthCameraInvProjMatrix;
-            float4 _depthCameraPos;
-            float _depthCameraNear;
-            float _depthCameraFar;
-            float _depthCameraFovY;
 
             v2f vert (appdata v)
             {
@@ -62,19 +52,18 @@ Shader "ayy/rpg/VisionRange"
                 o.worldPos = mul(unity_ObjectToWorld,v.vertex);
                 return o;
             }
-
             
-            float2 getDepthTexUVByWorldPos(float4 worldPos)
+            float4 getDepthTexUVByWorldPos(float4 worldPos)
             {
-                float4 p1 = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
-                p1 = p1 / p1.w;
-                p1 = p1 * 0.5 + 0.5;        // uv
-                return p1;
+                float4 ndcPos = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
+                float4 clipPos = ndcPos / ndcPos.w;
+                float4 uvPos = clipPos * 0.5 + 0.5;
+                return uvPos;
             }
 
             float getDepthValueByDepthTex(float4 worldPos)
             {
-                float2 depthUV = getDepthTexUVByWorldPos(worldPos);   
+                float2 depthUV = getDepthTexUVByWorldPos(worldPos).xy;   
                 float depth = SAMPLE_DEPTH_TEXTURE(_DepthTex,depthUV);
                 depth = Linear01Depth(depth);
                 return depth;
@@ -82,62 +71,23 @@ Shader "ayy/rpg/VisionRange"
             
             float getDepthValueByDepthTex2(float4 worldPos)
             {
-                float2 depthUV = getDepthTexUVByWorldPos(worldPos);   
+                const float2 depthUV = getDepthTexUVByWorldPos(worldPos).xy;   
                 float depth = SAMPLE_DEPTH_TEXTURE(_DepthTex,depthUV);
-                //depth = Linear01Depth(depth);
                 return depth;
             }
             
             
             float getDepthValueByWorldPos(float4 worldPos)
             {
-                float4 p1 = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
-                p1 = p1 / p1.w;
-                p1 = p1 * 0.5 + 0.5;
-
-                float depth = p1.z;
-                // depth = Linear01Depth(depth);
+                float depth = getDepthTexUVByWorldPos(worldPos).z;
+                depth = Linear01Depth(depth);
                 return depth;
             }
 
             float getDepthValueByWorldPos2(float4 worldPos)
             {
-                float4 p1 = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
-                p1 = p1 / p1.w;
-                p1 = p1 * 0.5 + 0.5;
-
-                float depth = p1.z;
-                //depth = Linear01Depth(depth);
-                //depth = LinearEyeDepth(depth);
+                float depth = getDepthTexUVByWorldPos(worldPos).z;
                 return depth;
-            }
-            
-            
-            /*
-             *
-            float3 DepthToWorldPosition(float4 screenPos)
-            {
-                float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture,screenPos)));
-                float4 ndcPos = (screenPos/screenPos.w) * 2 - 1;    // map [0,1] => [-1,+1]
-                float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _ProjectionParams.z; // z = far plane = mvp result w
-
-                float3 viewPos = mul(unity_CameraInvProjection,clipPos.xyzz).xyz * depth;
-                float3 worldPos = mul(UNITY_MATRIX_I_V,float4(viewPos,1)).xyz;
-                return worldPos;
-            }
-             * 
-             */
-
-            float3 getWorldPosByDepthTexture(float linearDepth,float3 worldPos)
-            {
-                float4 ndcPos = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
-                ndcPos = ndcPos / ndcPos.w;
-                float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _depthCameraFar; // z = far plane = mvp result w
-                
-                float3 viewPos = mul(_depthCameraInvProjMatrix,clipPos.xyzz).xyz * linearDepth;
-                float3 newWorldPos = mul(_depthCameraInvViewMatrix,float4(viewPos,1)).xyz;
-                
-                return newWorldPos;
             }
             
             fixed4 frag (v2f i) : SV_Target
@@ -149,7 +99,6 @@ Shader "ayy/rpg/VisionRange"
                 //float2 originUV = i.uv;
                 // float4 colorFromRT = tex2D(_DepthTex,originUV);
                 // return float4(colorFromRT.rgb,1.0);
-                
                 
                 float2 uv = i.uv * 2.0 - 1.0;
                 
@@ -163,55 +112,18 @@ Shader "ayy/rpg/VisionRange"
                     discard;
                 }
 
-                float4 worldPos = i.worldPos / i.worldPos.w;
+                const float4 worldPos = i.worldPos / i.worldPos.w;
 
-                // Linear depth value,hold in v1 
-                float depthValueFromDepthTex = getDepthValueByDepthTex(worldPos);
-                float v1 = depthValueFromDepthTex;
+                // depth value from depth texture 
+                float v1 = 1 - getDepthValueByDepthTex2(worldPos);
+                // depth value from world pos
+                float v2 = getDepthValueByWorldPos2(worldPos);
 
-
-                v1 = getDepthValueByDepthTex2(i.worldPos);
-                // depth value to compare
-                float v2 = getDepthValueByWorldPos(worldPos);
-                v2 = getDepthValueByWorldPos2(worldPos);
-
-                if(v2 > 1 - v1)
+                
+                if(v2 > v1)
                   discard;
 
-                return float4(1 - v1,0,0,1);
-                return float4(v2,0,0,1);
-                //return float4(v2,0,0,1);
-                
-
-                // depth value compare
-                // float2 depthUV = getDepthTexUVByWorldPos(i.worldPos);
-                // depthUV = (depthUV * 2.0 - 1.0);
-                //
-                // float dirY = tan(_depthCameraFovY) * _depthCameraNear * depthUV.y;
-                //
-                // float fovx = _ScreenParams.y / _ScreenParams.y * _depthCameraFovY;
-                // float dirX = tan(fovx) * _depthCameraNear * depthUV.x;
-                // float dirZ = 1;
-                //
-                // float faceDir = normalize(float3(dirX,dirY,dirZ));
-                // float3 worldPosByDepth = faceDir * v1 + _depthCameraPos.xyz;
-                //
-                // float dis1 = distance(worldPosByDepth,_depthCameraPos.xyz);
-                // float dis2 = distance(i.worldPos.xyz,_depthCameraPos.xyz);
-                // if(dis2 > dis1)
-                // {
-                //     discard;
-                // }
-                
-                //return float4(0.0,v1,0.0,1.0);
-                // return float4(v2 * 100,0.0,0.0,1.0);
-                //
-                // if(v2 > v1)
-                //     discard;
-
-                //float3 worldPosByDepthTex = getWorldPosByDepthTexture(v1,i.worldPos.xyz);
-                //return float4(normalize(worldPosByDepthTex),1.0);
-                //return float4(0,0,1,1);
+                return float4(0,1,0,0.5);
             }
             ENDCG
         }

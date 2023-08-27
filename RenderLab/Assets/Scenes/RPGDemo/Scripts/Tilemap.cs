@@ -17,7 +17,7 @@ namespace rpg
             tilemap.AddLayer(layer);
 
             List<Vector2Int> obs = new List<Vector2Int>();
-            float obstacleRate = 0.2f;
+            float obstacleRate = 0.0f;  // @miao @temp
             for (int x = 0;x < kWidth;x++)
             {
                 for (int y = 0;y < kHeight;y++)
@@ -25,7 +25,7 @@ namespace rpg
                     if (!(notObsTile.x == x && notObsTile.y == y))
                     {
                         int r = Random.Range(0, 100);
-                        if (r <= (int)(obstacleRate * 100.0f))
+                        if (r < (int)(obstacleRate * 100.0f))
                         {
                             obs.Add(new Vector2Int(x,y));
                         }    

@@ -48,10 +48,10 @@ namespace rpg
             var camera = gameObject.AddComponent<Camera>();
             camera.depthTextureMode = DepthTextureMode.Depth;
             camera.clearFlags = CameraClearFlags.Depth;
-            camera.nearClipPlane = 0.3f;
-            //camera.farClipPlane = 10.0f;    // @miao @Temp
-            camera.farClipPlane = 100.0f;
-            //camera.farClipPlane = 1000.0f;    // @miao @Temp
+            // camera.nearClipPlane = 0.3f;
+            // //camera.farClipPlane = 10.0f;    // @Temp
+            // camera.farClipPlane = 1000.0f;
+            // //camera.farClipPlane = 100.0f;    // @Temp
 
             RenderTexture rt = new RenderTexture(
                 Screen.width,
@@ -78,39 +78,10 @@ namespace rpg
                     Shader.PropertyToID("_depthCameraViewMatrix"),
                     camera.worldToCameraMatrix);
                 
-                item.material.SetMatrix(
-                    Shader.PropertyToID("_depthCameraInvViewMatrix"),
-                    Matrix4x4.Inverse(camera.worldToCameraMatrix));
-
                 // camera projection matrix
                 item.material.SetMatrix(
                     Shader.PropertyToID("_depthCameraProjMatrix"),
                     camera.projectionMatrix);
-                
-                item.material.SetMatrix(
-                    Shader.PropertyToID("_depthCameraInvProjMatrix"),
-                    Matrix4x4.Inverse(camera.projectionMatrix));
-                
-                // camera pos
-                float x = camera.transform.position.x;
-                float y = camera.transform.position.y;
-                float z = camera.transform.position.z;
-                Vector4 homoPos = new Vector4(x,y,z,1.0f);
-                item.material.SetVector(Shader.PropertyToID("_depthCameraPos"),homoPos);
-                
-                // camera near/far plane value
-                item.material.SetFloat(Shader.PropertyToID("_depthCameraNear"),camera.nearClipPlane);
-                item.material.SetFloat(Shader.PropertyToID("_depthCameraFar"),camera.farClipPlane);
-                
-                // Fov
-                item.material.SetFloat(Shader.PropertyToID("_depthCameraFovY"),camera.fieldOfView);
-
-                // camera dir
-                // x = camera.transform.forward.x;
-                // y = camera.transform.forward.y;
-                // z = camera.transform.forward.z;
-                // Vector4 camDir = new Vector4(x, y, z, 0.0f);
-                // item.material.SetVector(Shader.PropertyToID("_depthCameraDir"),camDir);
             }
         }
     }
