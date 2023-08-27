@@ -110,6 +110,7 @@ Shader "ayy/rpg/VisionRange"
                 if(length(uv) > 1.0 || angle > _Angle * 0.5)
                 {
                     discard;
+                    //return float4(1,1,1,1);
                 }
 
                 const float4 worldPos = i.worldPos / i.worldPos.w;
@@ -118,10 +119,13 @@ Shader "ayy/rpg/VisionRange"
                 float v1 = 1 - getDepthValueByDepthTex2(worldPos);
                 // depth value from world pos
                 float v2 = getDepthValueByWorldPos2(worldPos);
-
                 
                 if(v2 > v1)
-                  discard;
+                {
+                    discard;
+                    //return float4(1,0,0,1);
+                }
+                  
 
                 return float4(0,1,0,0.5);
             }

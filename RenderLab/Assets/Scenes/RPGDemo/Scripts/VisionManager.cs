@@ -48,10 +48,15 @@ namespace rpg
             var camera = gameObject.AddComponent<Camera>();
             camera.depthTextureMode = DepthTextureMode.Depth;
             camera.clearFlags = CameraClearFlags.Depth;
-            // camera.nearClipPlane = 0.3f;
-            // //camera.farClipPlane = 10.0f;    // @Temp
+            
+            /*
+             * Near Plane & Far Plane influence Depth Texture value range,
+             * it also influence limit max Radius 
+             */
+            //camera.nearClipPlane = 0.3f;
+            //camera.farClipPlane = 100.0f;    // 
             // camera.farClipPlane = 1000.0f;
-            // //camera.farClipPlane = 100.0f;    // @Temp
+            
 
             RenderTexture rt = new RenderTexture(
                 Screen.width,
@@ -63,7 +68,6 @@ namespace rpg
             
             return camera;
         }
-
 
         public void Update()
         {

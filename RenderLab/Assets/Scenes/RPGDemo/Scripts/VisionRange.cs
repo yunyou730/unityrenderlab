@@ -6,9 +6,13 @@ namespace rpg
 {
     public class VisionRange : MonoBehaviour
     {
-        public Transform _parent = null;
-        public float _radius;
+        [SerializeField][Range(1,20)] 
+        float _radius;
+        
+        [SerializeField][Range(30,120)] 
         public float _angle;
+        
+        public Transform _parent = null;
         private Vector3 _faceDir = Vector3.one;
          
         void Start()
