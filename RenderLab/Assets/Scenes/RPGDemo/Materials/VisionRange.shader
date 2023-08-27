@@ -55,9 +55,9 @@ Shader "ayy/rpg/VisionRange"
             
             float4 getDepthTexUVByWorldPos(float4 worldPos)
             {
-                float4 ndcPos = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
-                float4 clipPos = ndcPos / ndcPos.w;
-                float4 uvPos = clipPos * 0.5 + 0.5;
+                float4 clipPos = mul(_depthCameraProjMatrix,mul(_depthCameraViewMatrix,worldPos));
+                float4 ndcPos = clipPos / clipPos.w;
+                float4 uvPos = ndcPos * 0.5 + 0.5;
                 return uvPos;
             }
 
@@ -89,17 +89,27 @@ Shader "ayy/rpg/VisionRange"
                 float depth = getDepthTexUVByWorldPos(worldPos).z;
                 return depth;
             }
-            
-            fixed4 frag (v2f i) : SV_Target
+
+            // Display whole rect 
+            fixed4 fragV1(v2f i)
             {
-                // test matrix
-                // return float4(_depthCameraProjMatrix[0]);
-                
-                // test depth texture
-                //float2 originUV = i.uv;
-                // float4 colorFromRT = tex2D(_DepthTex,originUV);
-                // return float4(colorFromRT.rgb,1.0);
-                
+                return fixed4(1,0,0,1);   
+            }
+
+            // Display circle
+            fixed4 fragV2(v2f i)
+            {
+                float2 uv = i.uv * 2.0 - 1.0;
+                if(length(uv) > 1.0)
+                {
+                    discard;
+                }
+                return fixed4(1,0,0,1);
+            }
+
+            // Display Fan
+            fixed4 fragV3(v2f i)
+            {
                 float2 uv = i.uv * 2.0 - 1.0;
                 
                 float2 frontDirIn2D = normalize(float2(_FrontDir.x,_FrontDir.z));
@@ -110,22 +120,55 @@ Shader "ayy/rpg/VisionRange"
                 if(length(uv) > 1.0 || angle > _Angle * 0.5)
                 {
                     discard;
-                    //return float4(1,1,1,1);
+                }
+                return float4(1,0,0,1);
+            }
+
+            // Test for depth texture
+            fixed4 fragDebug(v2f i)
+            {
+                // test matrix
+                // return float4(_depthCameraProjMatrix[0]);
+                
+                // test depth texture
+                float2 originUV = i.uv;
+                float4 colorFromRT = tex2D(_DepthTex,originUV);
+                return float4(colorFromRT.rgb,1.0);
+            }
+            
+            
+            fixed4 frag (v2f i) : SV_Target
+            {
+                //return fragV1(i);
+                //return fragV2(i);
+                //return fragV3(i);
+                //return fragDebug(i);
+
+                // Discard not in Fan part 
+                float2 uv = i.uv * 2.0 - 1.0;
+                float2 frontDirIn2D = normalize(float2(_FrontDir.x,_FrontDir.z));
+                float2 uvDir = normalize(uv);
+                float dotValue = dot(uvDir,frontDirIn2D);
+                float angle = acos(dotValue);
+
+                if(length(uv) > 1.0 || angle > _Angle * 0.5)
+                {
+                    discard;
                 }
 
+                // Depth comparision
                 const float4 worldPos = i.worldPos / i.worldPos.w;
 
                 // depth value from depth texture 
-                float v1 = 1 - getDepthValueByDepthTex2(worldPos);
+                float v1 = 1 - getDepthValueByDepthTex2(worldPos);  
+
                 // depth value from world pos
                 float v2 = getDepthValueByWorldPos2(worldPos);
                 
                 if(v2 > v1)
                 {
                     discard;
-                    //return float4(1,0,0,1);
                 }
-                  
 
                 return float4(0,1,0,0.5);
             }
