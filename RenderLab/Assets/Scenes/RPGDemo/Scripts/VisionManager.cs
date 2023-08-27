@@ -25,7 +25,7 @@ namespace rpg
 
             VisionRange visionRange = GameObject.Instantiate(_visionPrefab).GetComponent<VisionRange>();
             visionRange.SetVisionParams(gameObject.transform,radius,angle,gameObject.transform.forward);
-            item._visionRangeComp = visionRange;
+            item.visionRangeComp = visionRange;
     
             
             Material mat = new Material(Shader.Find("ayy/rpg/VisionRange"));
@@ -36,7 +36,7 @@ namespace rpg
             item.material = mat;
             
             var camera = SetupDepthCameraSettings(gameObject);
-            item._visionCamera = camera;
+            item.visionCamera = camera;
         }
         
         protected Camera SetupDepthCameraSettings(GameObject parentGameObject)
@@ -69,9 +69,9 @@ namespace rpg
         {
             foreach (var item in _visionList)
             {
-                var camera = item._visionCamera;
+                var camera = item.visionCamera;
                 // camera depth texture
-                item.material.SetTexture(Shader.PropertyToID("_DepthTex"),item._visionCamera.targetTexture);
+                item.material.SetTexture(Shader.PropertyToID("_DepthTex"),item.visionCamera.targetTexture);
                 
                 // camera view matrix
                 item.material.SetMatrix(
@@ -82,6 +82,21 @@ namespace rpg
                 item.material.SetMatrix(
                     Shader.PropertyToID("_depthCameraProjMatrix"),
                     camera.projectionMatrix);
+                
+                
+                // Sync fov
+                float fovInDegree = item.visionRangeComp._angle;
+                float fovInRadian = Mathf.Deg2Rad * item.visionRangeComp._angle;
+                item.material.SetFloat(Shader.PropertyToID("_Angle"),fovInRadian);
+                float w = item.visionCamera.targetTexture.width;
+                float h = item.visionCamera.targetTexture.height;
+                float fovX = fovInDegree;
+                float fovy = w / h * fovX;
+                item.visionCamera.fieldOfView = fovy;   // camera default Fov Axis is Vertical
+                
+                
+                // Sync radius 
+                item.visionRangeComp.SyncRadius();
             }
         }
     }
@@ -91,8 +106,8 @@ namespace rpg
         public Transform transform = null;
         public float radius = 3.0f;
         public float angle = 60.0f; // degree, not radian
-        public VisionRange _visionRangeComp = null;
-        public Camera _visionCamera = null;
+        public VisionRange visionRangeComp = null;
+        public Camera visionCamera = null;
         public Material material = null;
     }
 }

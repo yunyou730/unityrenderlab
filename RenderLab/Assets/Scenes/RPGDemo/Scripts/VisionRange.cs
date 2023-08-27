@@ -6,9 +6,9 @@ namespace rpg
 {
     public class VisionRange : MonoBehaviour
     {
-        private Transform _parent = null;
-        private float _radius;
-        private float _angle;
+        public Transform _parent = null;
+        public float _radius;
+        public float _angle;
         private Vector3 _faceDir = Vector3.one;
          
         void Start()
@@ -25,10 +25,10 @@ namespace rpg
             _angle = angle;
             _faceDir = faceDir;
         }
-
-        protected void UpdateMaterial()
+        
+        public void SyncRadius()
         {
-            
+            transform.localScale = new Vector3(_radius * 2.0f, _radius * 2.0f, 1);
         }
     }    
 }
