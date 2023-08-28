@@ -92,10 +92,12 @@ namespace rpg
                 float fovInDegree = item.visionRangeComp._angle;
                 float fovInRadian = Mathf.Deg2Rad * item.visionRangeComp._angle;
                 item.material.SetFloat(Shader.PropertyToID("_Angle"),fovInRadian);
-                float w = item.visionCamera.targetTexture.width;
-                float h = item.visionCamera.targetTexture.height;
+                //float w = item.visionCamera.targetTexture.width;
+                //float h = item.visionCamera.targetTexture.height;
                 float fovX = fovInDegree;
-                float fovy = w / h * fovX;
+                
+                // here item.visionCamera.aspect = w/h
+                float fovy = Camera.HorizontalToVerticalFieldOfView(fovX, item.visionCamera.aspect);
                 item.visionCamera.fieldOfView = fovy;   // camera default Fov Axis is Vertical
                 
                 

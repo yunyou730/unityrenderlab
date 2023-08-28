@@ -9,7 +9,7 @@ namespace rpg
         [SerializeField][Range(1,20)] 
         float _radius;
         
-        [SerializeField][Range(30,120)] 
+        [SerializeField][Range(0,180)] 
         public float _angle;
         
         public Transform _parent = null;
