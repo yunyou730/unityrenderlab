@@ -13,6 +13,19 @@ void CSMain (uint3 groupId : SV_GroupID,
 {
     // TODO: insert actual code here!
     // Result[dispatchThreadId.xy] = float4(dispatchThreadId.x & dispatchThreadId.y, (dispatchThreadId.x & 15)/15.0, (dispatchThreadId.y & 15)/15.0, 0.0);
+    
+    uint x = dispatchThreadId.x;
+    uint y = dispatchThreadId.y;
+    
 
-    Result[dispatchThreadId.xy] = float4(0,1,0,1); 
+    float r = (int)((float)(groupId.x) / 32.0);
+    r = r / 8.0;
+    
+    float g = (int)((float)groupId.y / 32.0);
+    g = g / 8.0;
+    
+    Result[uint2(x,y)] = float4(r,g,0,1);
+
+
+    // Result[uint2(x,y)] = float4(0,1,0.5,1);
 }

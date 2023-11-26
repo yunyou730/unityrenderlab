@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace ayy.cs
 {
     public class CSImageProc : MonoBehaviour
     {
-        private int _textureWidth = 512;
-        private int _textureHeight = 512;
+        private int _textureWidth = 2048;
+        private int _textureHeight = 2048;
 
         private MeshRenderer _meshRenderer = null;
         private Material _material = null;
@@ -23,6 +25,8 @@ namespace ayy.cs
 
         [SerializeField] private ComputeShader _computeShader = null;
 
+        private Stopwatch _watch = null;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -31,6 +35,8 @@ namespace ayy.cs
                 Debug.Log("pre check failed");
                 return;
             }
+
+            _watch = new Stopwatch();
 
             CreatTexture(_texW,_texH);
             CreateRenderTexture(_texW,_texH);
@@ -45,13 +51,25 @@ namespace ayy.cs
             if (Input.GetKeyDown(KeyCode.C))
             {
                 Debug.Log("CPU");
+                _watch.Reset();
+                _watch.Start();
                 UpdateTextureCPU();
+                _watch.Stop();
+                Debug.Log("CPU cost:" + _watch.Elapsed);
+                
+                
                 BindTextureCPU();
+                
+                
             }
             else if (Input.GetKeyDown(KeyCode.G))
             {
                 Debug.Log("GPU");
+                _watch.Reset();
+                _watch.Start();
                 UpdateTextureGPU();
+                _watch.Stop();
+                Debug.Log("GPU cost:" + _watch.Elapsed);
                 BindTextureGPU();
             }
         }
@@ -131,7 +149,7 @@ namespace ayy.cs
             int kernel = _computeShader.FindKernel("CSMain");
             _computeShader.GetKernelThreadGroupSizes(kernel,out tx, out ty, out tz);
             
-            Debug.Log("tx:" + tx + "ty:" + ty + "tz:" + tz);
+            // Debug.Log("tx:" + tx + "ty:" + ty + "tz:" + tz);
             
             _computeShader.SetTexture(kernel,Shader.PropertyToID("Result"),_rt);
 
