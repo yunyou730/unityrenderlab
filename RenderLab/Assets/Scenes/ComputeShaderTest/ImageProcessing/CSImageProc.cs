@@ -37,12 +37,6 @@ namespace ayy.cs
 
             _meshRenderer = GetComponent<MeshRenderer>();
             _material = _meshRenderer.sharedMaterial;
-            
-            UpdateTextureCPU();
-            BindTextureCPU();
-            
-            // UpdateTextureGPU();
-            // BindTextureGPU();
         }
 
         // Update is called once per frame
@@ -51,10 +45,14 @@ namespace ayy.cs
             if (Input.GetKeyDown(KeyCode.C))
             {
                 Debug.Log("CPU");
+                UpdateTextureCPU();
+                BindTextureCPU();
             }
             else if (Input.GetKeyDown(KeyCode.G))
             {
                 Debug.Log("GPU");
+                UpdateTextureGPU();
+                UpdateTextureGPU();
             }
         }
 
@@ -113,7 +111,7 @@ namespace ayy.cs
                 for (int x = 0;x < _texW;x++)
                 {
                     int index = y * _texW + x;
-                    _pixels[index] = Color.green;
+                    _pixels[index] = Color.cyan;
                 }
             }
             _texture.SetPixels(_pixels);
