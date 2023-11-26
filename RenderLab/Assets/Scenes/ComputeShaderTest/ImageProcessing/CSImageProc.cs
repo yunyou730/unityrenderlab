@@ -9,8 +9,7 @@ namespace ayy.cs
     {
         private int _textureWidth = 512;
         private int _textureHeight = 512;
-        
-        
+
         private MeshRenderer _meshRenderer = null;
         private Material _material = null;
 
@@ -22,6 +21,7 @@ namespace ayy.cs
         
         private RenderTexture _rt = null;
 
+        [SerializeField] private ComputeShader _computeShader = null;
 
         // Start is called before the first frame update
         void Start()
@@ -52,7 +52,7 @@ namespace ayy.cs
             {
                 Debug.Log("GPU");
                 UpdateTextureGPU();
-                UpdateTextureGPU();
+                BindTextureGPU();
             }
         }
 
@@ -76,6 +76,8 @@ namespace ayy.cs
                 texH = 0;
                 return false;
             }
+            
+            Debug.Log("Compute Shader Version:" + SystemInfo.graphicsShaderLevel);
             Debug.Log("[max texture size]" + SystemInfo.maxTextureSize);
 
             texW = _textureWidth;
@@ -123,15 +125,28 @@ namespace ayy.cs
             _material.SetTexture(Shader.PropertyToID("_MainTex"),_texture);
         }
         
+        private void UpdateTextureGPU()
+        {
+            uint tx, ty, tz;
+            int kernel = _computeShader.FindKernel("CSMain");
+            _computeShader.GetKernelThreadGroupSizes(kernel,out tx, out ty, out tz);
+            
+            Debug.Log("tx:" + tx + "ty:" + ty + "tz:" + tz);
+            
+            _computeShader.SetTexture(kernel,Shader.PropertyToID("Result"),_rt);
+
+            int gx = _texW / (int)tx;
+            int gy = _texH / (int)ty;
+            int gz = 1;
+            _computeShader.Dispatch(kernel,gx,gy,gz);
+        }
+        
         private void BindTextureGPU()
         {
             _material.SetTexture(Shader.PropertyToID("_MainTex"),_rt);
         }
         
-        private void UpdateTextureGPU()
-        {
-            
-        }
+
     }
     
 }
