@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2f0e75e9ee3d745b2904eaf835639851
+timeCreated: 1519673284
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dofShader: {fileID: 4800000, guid: bd8440d6914d749a58271b1a79edc668, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
