@@ -21,3 +21,15 @@ MySRP/Logs
 MySRP/Library
 MySRP/UserSettings
 MySRP/obj
+TestShaderGraph/.idea
+TestShaderGraph/obj
+TestShaderGraph/Library
+TestShaderGraph/Logs
+TestShaderGraph/UserSettings
+MinimalCompute/.idea
+DepthOfField/Logs
+DepthOfField/Library
+DepthOfField/Temp
+DepthOfField/UserSettings
+DepthOfField/.idea
+DepthOfField/obj
