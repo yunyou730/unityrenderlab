@@ -20,7 +20,7 @@ namespace comet.combat
             _meshRenderer = GetComponent<MeshRenderer>();
         }
         
-        public void RefreshMap(MapRecord mapRecord,float gridSize)
+        public void RefreshWithMapRecord(MapRecord mapRecord,float gridSize)
         {
             // hold data
             SetMapRecord(mapRecord);
