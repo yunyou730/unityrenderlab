@@ -13,9 +13,11 @@ namespace comet.combat
         private Config _config = null;
         private CombatManager _combat = null;
         
-
         private Vector2 _cameraMoveDir = Vector2.zero;
         private Vector3 _cameraMoveOffset = Vector3.zero;
+
+        private const float kHorizonOffsetBuffer = 0.03f;
+        private const float kVerticalOffsetBuffer = 0.03f;
         
         public void Init(Camera camera)
         {
@@ -68,18 +70,22 @@ namespace comet.combat
 
         private void MoveByOffset(Vector3 offset)
         {
-            Vector3 nextPosition = _cameraTransform.position + _cameraMoveOffset;
+            Vector3 nextPosition = _cameraTransform.position + offset;
             
-            if (offset.z > 0 && nextPosition.z > MaxZ())
+            if ((offset.z > 0 && nextPosition.z > MaxZ())
+                ||(offset.z < 0 && nextPosition.z < MinZ()))
             {
-                return;
+                offset.z = 0;
+                nextPosition = _cameraTransform.position + offset;
             }
 
-            if (offset.z < 0 && nextPosition.z < MinZ())
+            if ((offset.x < 0 && nextPosition.x < MinX())
+                ||(offset.x > 0 && nextPosition.x > MaxX()))
             {
-                return;
+                offset.x = 0;
+                nextPosition = _cameraTransform.position + offset;
             }
-            
+
             _mainCamera.transform.position = nextPosition;
         }
 
@@ -91,7 +97,7 @@ namespace comet.combat
             Vector3 cameraForward = _mainCamera.transform.forward;
             float cameraHeight = _mainCamera.transform.position.y;  // here assume GricMap.y = 0, should subtract this value
             
-            Quaternion rot = Quaternion.AngleAxis(_mainCamera.fieldOfView * 0.5f, Vector3.left);
+            Quaternion rot = Quaternion.AngleAxis(_mainCamera.fieldOfView * (0.5f - kVerticalOffsetBuffer), Vector3.left);
             Vector3 upperDir = rot * cameraForward;
 
             float angleInRad = Mathf.Acos(Vector3.Dot(upperDir, Vector3.down));
@@ -108,7 +114,7 @@ namespace comet.combat
             Vector3 cameraForward = _mainCamera.transform.forward;
             float cameraHeight = _mainCamera.transform.position.y;  // here assume GricMap.y = 0, should subtract this value
             
-            Quaternion rot = Quaternion.AngleAxis(_mainCamera.fieldOfView * 0.5f, Vector3.right);
+            Quaternion rot = Quaternion.AngleAxis(_mainCamera.fieldOfView * (0.5f - kVerticalOffsetBuffer), Vector3.right);
             Vector3 lowerDir = rot * cameraForward;
             
             float angleInRad = Mathf.Acos(Vector3.Dot(lowerDir, Vector3.down));
@@ -117,6 +123,37 @@ namespace comet.combat
             return gridMinZ + toLowerOffset;
         }
 
+        private float MinX()
+        {
+            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            float gridMinX = gridMapBounds.x;
+            
+            float fovX = Camera.VerticalToHorizontalFieldOfView(_mainCamera.fieldOfView,_mainCamera.aspect) * Mathf.Deg2Rad;
+
+            float cameraHeight = _mainCamera.transform.position.y;  // assume y = 0;
+            
+            Vector3 cameraDir = _mainCamera.transform.forward;
+            float cameraDirToGridMapDistance = cameraHeight * Vector3.Dot(cameraDir, Vector3.down);
+            float horizonOffset = Mathf.Tan(fovX * (0.5f - kHorizonOffsetBuffer)) * cameraDirToGridMapDistance;
+            
+            return gridMinX + horizonOffset;
+        }
+
+        private float MaxX()
+        {
+            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            float gridMaxX = gridMapBounds.x + gridMapBounds.width;
+            
+            float fovX = Camera.VerticalToHorizontalFieldOfView(_mainCamera.fieldOfView,_mainCamera.aspect) * Mathf.Deg2Rad;
+
+            float cameraHeight = _mainCamera.transform.position.y;  // assume y = 0;
+            
+            Vector3 cameraDir = _mainCamera.transform.forward;
+            float cameraDirToGridMapDistance = cameraHeight * Vector3.Dot(cameraDir, Vector3.down);
+            float horizonOffset = Mathf.Tan(fovX * (0.5f - kHorizonOffsetBuffer)) * cameraDirToGridMapDistance;
+            
+            return gridMaxX - horizonOffset;
+        }
 
     }
 }
