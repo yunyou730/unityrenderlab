@@ -11,6 +11,7 @@ namespace comet
             Plane,
             Grass,
             Water,
+            Max,
         }
         
         public EGridType GridType => _gridType;
@@ -24,6 +25,11 @@ namespace comet
         {
             
         }
-        
+
+        public void SetGridType(EGridType gridType)
+        {
+            _gridType = gridType;
+        }
+
     }   
 }

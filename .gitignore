@@ -42,3 +42,10 @@ LearnSRP/UserSettings
 LearnSRP/.idea
 LearnSRP/obj
 LearnSRP/LearnSRP.sln.DotSettings.user
+*.DS_Store
+Comet/Temp
+Comet/.idea
+Comet/Library
+Comet/Logs
+Comet/UserSettings
+Comet/obj

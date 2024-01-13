@@ -49,6 +49,7 @@
      <Compile Include="Assets/Scripts/Comet.cs" />
      <Compile Include="Assets/Scripts/Combat/Map/Data/MapRecord.cs" />
      <Compile Include="Assets/Scripts/Combat/Map/Gfx/GridMap.cs" />
+     <Compile Include="Assets/Scripts/Input/CombatCameraController.cs" />
      <Compile Include="Assets/Scripts/Combat/Map/Data/GridRecord.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets/Resources" />
@@ -62,6 +63,7 @@
      <Folder Include="Assets/Scripts" />
      <Folder Include="Assets/Scripts/Combat/Map" />
      <None Include="Assets/Resources/Materials/GridMap.shader" />
+     <Folder Include="Assets/Scripts/Input" />
      <Folder Include="Assets/Scripts/Combat/Map/Gfx" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

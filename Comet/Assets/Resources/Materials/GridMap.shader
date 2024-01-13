@@ -23,12 +23,14 @@ Shader "Comet/GridMap"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 vertColor : COLOR;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                float4 vertColor : COLOR;
             };
 
             sampler2D _MainTex;
@@ -39,14 +41,18 @@ Shader "Comet/GridMap"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.vertColor = v.vertColor;
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                col = float4(i.uv.x,i.uv.y,0,0);
+                //fixed4 col = tex2D(_MainTex, i.uv);
+                
+                //col = float4(i.uv.x,i.uv.y,0,0) * i.vertColor;
+                fixed4 col = i.vertColor;
+                
                 return col;
             }
             ENDCG

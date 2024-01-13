@@ -20,9 +20,10 @@ namespace comet.core
             return (T)_services[typeof(T)];
         }
 
-        public void Register<T>(T service)
+        public T Register<T>(T service)
         {
             _services.Add(typeof(T),service);
+            return service;
         }
     }
     
