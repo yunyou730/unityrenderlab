@@ -23,6 +23,7 @@ namespace comet
             get { return _serviceLocator; }
         }
 
+        private Config _config = null;
         private ResManager _resManager = null;
         private InputManager _inputManager = null;
         private CombatManager _combatManager = null;
@@ -39,32 +40,31 @@ namespace comet
         void Start()
         {
             _serviceLocator = new ServiceLocator();
-            
-            _resManager = _serviceLocator.Register<ResManager>(new ResManager());
-            _inputManager = _serviceLocator.Register<InputManager>(new InputManager());
-            _combatManager = _serviceLocator.Register<CombatManager>(new CombatManager());
+            _serviceLocator.Register<Config>(_config = new Config());
+            _serviceLocator.Register<ResManager>(_resManager = new ResManager());
+            _serviceLocator.Register<InputManager>(_inputManager = new InputManager()).Init();
+            _serviceLocator.Register<CombatManager>(_combatManager = new CombatManager()).Init(_mainCamera);
 
             EnterCombat();
+        }
+        
+        private void EnterCombat()
+        {
+            _combatManager.CreateMapRecord();
+            _combatManager.CreateGridMapGfx();
         }
         
         // Update is called once per frame
         void Update()
         {
-            // if (_combatCameraCtrl != null)
-            // {
-            //     
-            // }
+            _combatManager.OnUpdate(Time.deltaTime);
         }
 
         private void OnDestroy()
         {
-            
-        }
-
-        private void EnterCombat()
-        {
-            _combatManager.CreateMapRecord();
-            _combatManager.CreateGridMapGfx();
+            _inputManager.Dispose();
+            _combatManager.Dispose();
+            _resManager.Dispose();
         }
     }
     

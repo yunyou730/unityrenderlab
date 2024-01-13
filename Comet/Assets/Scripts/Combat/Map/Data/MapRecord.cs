@@ -53,6 +53,16 @@ namespace comet
             return _grids[row * _cols + col];
         }
 
+        public void RandomizeAllGridsType()
+        {
+            var rand = new System.Random();
+            for (int i = 0; i < _grids.Length; i++)
+            {
+                int gridType = rand.Next((int)GridRecord.EGridType.Max);
+                _grids[i].SetGridType((GridRecord.EGridType)gridType);
+            }
+        }
+
         public void Dispose()
         {
             _grids = null;

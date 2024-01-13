@@ -13,6 +13,7 @@ namespace comet.combat
         private MeshRenderer _meshRenderer = null;
 
         private float _gridSize = 1.0f;
+        // private float _basePositionY = 0.0f;
 
         private void Awake()
         {
@@ -139,6 +140,16 @@ namespace comet.combat
             if (g2 != null && g2.Height > h) h = g2.Height;
             if (g3 != null && g3.Height > h) h = g3.Height;
             return h;
+        }
+
+        public Rect GetBounds()
+        {
+            Rect rect = Rect.zero;
+            rect.x = 0;
+            rect.y = 0;
+            rect.width = _mapRecord.Cols * _gridSize;
+            rect.height = _mapRecord.Rows * _gridSize;
+            return rect;
         }
     }    
 }
