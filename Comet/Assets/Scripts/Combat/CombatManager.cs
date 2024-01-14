@@ -15,20 +15,30 @@ namespace comet.combat
         
         public GridMap GridMap => _gridMap;
         public MapRecord MapRecord => _mapRecord;
+        
 
-        private Config _config = null;
+        private World _world = null;
 
         public void Init(Camera mainCamera)
         {
             _cameraCtrl = new CameraCtrl();
             _cameraCtrl.Init(mainCamera);
+            
+            CreateMapRecord();
+            
+            _world = new GfxWorld(_mapRecord);
+            _world.Init();
+        }
 
-            _config = Comet.Instance.ServiceLocator.Get<Config>();
+        public void Start()
+        {
+            _world.Start();
         }
 
         public void OnUpdate(float deltaTime)
         {
             _cameraCtrl.OnUpdate(deltaTime);
+            _world?.OnUpdate(deltaTime);
         }
 
         public void CreateMapRecord()
@@ -37,19 +47,12 @@ namespace comet.combat
             _mapRecord.GenerateGrids(0,0);
             _mapRecord.RandomizeAllGridsType();
         }
-
-        public void CreateGridMapGfx()
-        {
-            var resManager = Comet.Instance.ServiceLocator.Get<ResManager>();
-            var prefab = resManager.Load<GameObject>("Prefabs/GridMap");
-            _gridMap = GameObject.Instantiate(prefab).GetComponent<GridMap>();
-            _gridMap.RefreshWithMapRecord(_mapRecord,_config.GridSize);
-        }
         
         public void Dispose()
         {
             _cameraCtrl = null;
             _mapRecord?.Dispose();
+            _world.Dispose();
         }
     }
 }

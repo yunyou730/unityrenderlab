@@ -34,6 +34,12 @@ namespace comet.combat
         public void OnUpdate(float deltaTime)
         {
             _cameraMoveDir = Vector2.zero;
+            KeyboardControl();
+            CheckAndMove(deltaTime);
+        }
+
+        private void KeyboardControl()
+        {
             if (_inputManager.IsKeyDown(InputManager.EKey.Up))
             {
                 _cameraMoveDir += Vector2.up;
@@ -50,7 +56,10 @@ namespace comet.combat
             {
                 _cameraMoveDir += Vector2.right;
             }
+        }
 
+        private void CheckAndMove(float deltaTime)
+        {
             if (_cameraMoveDir.magnitude > 0)
             {
                 Vector2 offset2D = _cameraMoveDir.normalized * deltaTime * _config.CameraMoveSpeed;

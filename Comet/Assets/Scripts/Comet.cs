@@ -45,14 +45,9 @@ namespace comet
             _serviceLocator.Register<InputManager>(_inputManager = new InputManager()).Init();
             _serviceLocator.Register<CombatManager>(_combatManager = new CombatManager()).Init(_mainCamera);
 
-            EnterCombat();
+            _combatManager.Start();
         }
         
-        private void EnterCombat()
-        {
-            _combatManager.CreateMapRecord();
-            _combatManager.CreateGridMapGfx();
-        }
         
         // Update is called once per frame
         void Update()

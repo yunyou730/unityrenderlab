@@ -45,34 +45,50 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/BaseWorldComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GfxCreationSys.cs" />
      <Compile Include="Assets/Scripts/Core/ServiceLocator.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/System/BaseSys.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Data/GridRecord.cs" />
      <Compile Include="Assets/Scripts/Comet.cs" />
      <Compile Include="Assets/Scripts/Config/Config.cs" />
-     <Compile Include="Assets/Scripts/Combat/Map/Data/MapRecord.cs" />
-     <Compile Include="Assets/Scripts/Combat/Map/Gfx/GridMap.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Comp/BaseComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Entity.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GridMap.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/System/CreationSys.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GfxCreationWorldComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GfxWorld.cs" />
      <Compile Include="Assets/Scripts/Input/InputManager.cs" />
-     <Compile Include="Assets/Scripts/Combat/Map/Data/GridRecord.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/World.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/System/MovementSys.cs" />
      <Compile Include="Assets/Scripts/Res/ResManager.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/CameraCtrl.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Comp/GridPositionComp.cs" />
      <Compile Include="Assets/Scripts/Combat/CombatManager.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CreationComp.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets/Resources" />
+     <Folder Include="Assets/Scripts/Combat/ECS/WorldComp" />
      <Folder Include="Assets/Scripts/Core" />
      <Folder Include="Assets/Scripts/Res" />
+     <Folder Include="Assets/Scripts/Combat/ECS" />
      <Folder Include="Assets/Scripts/Test" />
-     <Folder Include="Assets/Scripts/Combat/Map/Data" />
+     <Folder Include="Assets/Scripts/Combat/ECS/Data" />
      <Folder Include="Assets/Resources/Prefabs" />
      <Folder Include="Assets/Resources/Materials" />
      <Folder Include="Assets/Scenes" />
+     <Folder Include="Assets/Scripts/Combat/ECS/Utils" />
+     <Folder Include="Assets/Scripts/Combat/ECS/System" />
      <Folder Include="Assets/Scripts/Combat/Ctrl" />
      <Folder Include="Assets/Scripts/Utils" />
      <Folder Include="Assets/Scripts/Combat" />
      <Folder Include="Assets/Scripts" />
-     <Folder Include="Assets/Scripts/Combat/Map" />
+     <Folder Include="Assets/Scripts/Combat/Gfx" />
+     <Folder Include="Assets/Scripts/Combat/ECS/Comp" />
      <None Include="Assets/Resources/Materials/GridMap.shader" />
      <Folder Include="Assets/Scripts/Config" />
      <Folder Include="Assets/Scripts/Input" />
-     <Folder Include="Assets/Scripts/Combat/Map/Gfx" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
