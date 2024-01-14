@@ -59,6 +59,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxCreationWorldComp.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxWorld.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/MapStateWorldComp.cs" />
      <Compile Include="Assets/Scripts/Input/InputManager.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/World.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/MovementSys.cs" />

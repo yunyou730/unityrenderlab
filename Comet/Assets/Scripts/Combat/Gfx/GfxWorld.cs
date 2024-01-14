@@ -3,10 +3,11 @@ namespace comet.combat
 {
     public class GfxWorld : World
     {
-        private MapRecord _mapRecord = null;
-        public GfxWorld(MapRecord mapRecord)
+        private GridMap _gridMap = null;
+        
+        public GfxWorld(MapRecord mapRecord) : base(mapRecord)
         {
-            _mapRecord = mapRecord;
+            
         }
 
         protected override void RegisterWorldComps()
@@ -25,5 +26,12 @@ namespace comet.combat
             
             Debug.Log("GfxWorld::RegisterSystems()");
         }
+        
+        public GridMap GridMap
+        {
+            get => _gridMap;
+            set => _gridMap = value;
+        }
+        
     }
 }

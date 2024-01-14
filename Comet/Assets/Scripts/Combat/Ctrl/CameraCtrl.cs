@@ -100,7 +100,7 @@ namespace comet.combat
 
         private float MaxZ()
         {
-            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            Rect gridMapBounds = _combat.GetGridMap().GetBounds();
             float gridMaxZ = gridMapBounds.y + gridMapBounds.height;
             
             Vector3 cameraForward = _mainCamera.transform.forward;
@@ -117,7 +117,7 @@ namespace comet.combat
 
         private float MinZ()
         {
-            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            Rect gridMapBounds = _combat.GetGridMap().GetBounds();
             float gridMinZ = gridMapBounds.y;
             
             Vector3 cameraForward = _mainCamera.transform.forward;
@@ -134,7 +134,7 @@ namespace comet.combat
 
         private float MinX()
         {
-            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            Rect gridMapBounds = _combat.GetGridMap().GetBounds();
             float gridMinX = gridMapBounds.x;
             
             float fovX = Camera.VerticalToHorizontalFieldOfView(_mainCamera.fieldOfView,_mainCamera.aspect) * Mathf.Deg2Rad;
@@ -150,7 +150,7 @@ namespace comet.combat
 
         private float MaxX()
         {
-            Rect gridMapBounds = _combat.GridMap.GetBounds();
+            Rect gridMapBounds = _combat.GetGridMap().GetBounds();
             float gridMaxX = gridMapBounds.x + gridMapBounds.width;
             
             float fovX = Camera.VerticalToHorizontalFieldOfView(_mainCamera.fieldOfView,_mainCamera.aspect) * Mathf.Deg2Rad;

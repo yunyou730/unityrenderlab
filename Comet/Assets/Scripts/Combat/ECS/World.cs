@@ -10,7 +10,14 @@ namespace comet.combat
         protected Dictionary<int, Entity> _entityMap = null;
         protected List<BaseSys> _allSystems = null;
         protected Dictionary<Type, BaseWorldComp> _worldComps = null;
-        
+
+        protected MapRecord _mapRecord = null;
+
+        public World(MapRecord mapRecord)
+        {
+            _mapRecord = mapRecord;
+        }
+
         public void Init()
         {
             _worldComps = new Dictionary<Type, BaseWorldComp>();
@@ -23,8 +30,7 @@ namespace comet.combat
 
         public void Start()
         {
-            //var entity = CreateEntity();
-            //entity.AttachComp(new GridPositionComp());
+            
         }
 
         public void OnUpdate(float deltaTime)

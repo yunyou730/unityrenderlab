@@ -5,7 +5,12 @@ namespace comet.combat
 {
     public class GfxCreationSys : BaseSys
     {
+        private GfxWorld _gfxWorld = null;
         private GridMap _gridMap = null;
+        public GridMap GridMap
+        {
+            get { return _gridMap; }
+        }
         
         private ResManager _resManager = null;
         private Config _config = null;
@@ -14,6 +19,8 @@ namespace comet.combat
         
         public GfxCreationSys(World world) : base(world)
         {
+            _gfxWorld = (GfxWorld)world;
+            
             _resManager = Comet.Instance.ServiceLocator.Get<ResManager>();
             _config = Comet.Instance.ServiceLocator.Get<Config>();
 
@@ -26,6 +33,7 @@ namespace comet.combat
             {
                 _creation.bNeedCreateMap = false;
                 CreateGridMapGfx(_creation.MapRecord);
+                _gfxWorld.GridMap = _gridMap;
             }
         }
         

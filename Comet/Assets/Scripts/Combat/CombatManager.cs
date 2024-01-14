@@ -9,23 +9,18 @@ namespace comet.combat
         public const int kMapRows = 100;
         public const int kMapCols = 100;
         
-        private MapRecord _mapRecord = null;
-        private GridMap _gridMap = null;
         private CameraCtrl _cameraCtrl = null;
-        
-        public GridMap GridMap => _gridMap;
-        public MapRecord MapRecord => _mapRecord;
-        
 
-        private World _world = null;
-
+        private MapRecord _mapRecord = null;
+        private GfxWorld _world = null;
+        
         public void Init(Camera mainCamera)
         {
             _cameraCtrl = new CameraCtrl();
             _cameraCtrl.Init(mainCamera);
             
-            CreateMapRecord();
-            
+            // Create Map
+            _mapRecord = CreateMapRecord();
             _world = new GfxWorld(_mapRecord);
             _world.Init();
         }
@@ -41,11 +36,12 @@ namespace comet.combat
             _world?.OnUpdate(deltaTime);
         }
 
-        public void CreateMapRecord()
+        public MapRecord CreateMapRecord()
         {
-            _mapRecord = new MapRecord(kMapRows,kMapCols);
-            _mapRecord.GenerateGrids(0,0);
-            _mapRecord.RandomizeAllGridsType();
+            var mapRecord = new MapRecord(kMapRows,kMapCols);
+            mapRecord.GenerateGrids(0,0);
+            mapRecord.RandomizeAllGridsType();
+            return mapRecord;
         }
         
         public void Dispose()
@@ -53,6 +49,11 @@ namespace comet.combat
             _cameraCtrl = null;
             _mapRecord?.Dispose();
             _world.Dispose();
+        }
+
+        public GridMap GetGridMap()
+        {
+            return _world.GridMap;
         }
     }
 }
