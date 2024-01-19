@@ -9,22 +9,26 @@ namespace comet.combat
         private Camera _mainCamera = null;
         private Transform _cameraTransform = null;
         
-        private InputManager _inputManager = null;
+        private InputManager _input = null;
         private Config _config = null;
         private CombatManager _combat = null;
         
         private Vector2 _cameraMoveDir = Vector2.zero;
         private Vector3 _cameraMoveOffset = Vector3.zero;
-
+        
+        
         private const float kHorizonOffsetBuffer = 0.03f;
         private const float kVerticalOffsetBuffer = 0.03f;
+        
+        private Vector3? _prevFrameMousePos = null;
+        private const float kMouseMoveCameraRatio = -0.02f;
         
         public void Init(Camera camera)
         {
             _mainCamera = camera;
             _cameraTransform = _mainCamera.gameObject.transform;
             
-            _inputManager = Comet.Instance.ServiceLocator.Get<InputManager>();
+            _input = Comet.Instance.ServiceLocator.Get<InputManager>();
             _config = Comet.Instance.ServiceLocator.Get<Config>();
             _combat = Comet.Instance.ServiceLocator.Get<CombatManager>();
             
@@ -35,27 +39,40 @@ namespace comet.combat
         {
             _cameraMoveDir = Vector2.zero;
             KeyboardControl();
+            MouseControl();
             CheckAndMove(deltaTime);
         }
 
         private void KeyboardControl()
         {
-            if (_inputManager.IsKeyDown(InputManager.EKey.Up))
+            if (_input.IsKeyDown(InputManager.EKey.Up))
             {
                 _cameraMoveDir += Vector2.up;
             }
-            if (_inputManager.IsKeyDown(InputManager.EKey.Down))
+            if (_input.IsKeyDown(InputManager.EKey.Down))
             {
                 _cameraMoveDir += Vector2.down;
             }
-            if (_inputManager.IsKeyDown(InputManager.EKey.Left))
+            if (_input.IsKeyDown(InputManager.EKey.Left))
             {
                 _cameraMoveDir += Vector2.left;
             }            
-            if (_inputManager.IsKeyDown(InputManager.EKey.Right))
+            if (_input.IsKeyDown(InputManager.EKey.Right))
             {
                 _cameraMoveDir += Vector2.right;
             }
+        }
+
+        private void MouseControl()
+        {
+            if (_input.IsMouseButtonPressing(InputManager.EMouseBtn.Middle) && _prevFrameMousePos != null)
+            {
+                Vector3 mousePosThisFrame = _input.MousePosition();
+                Vector3 offset = mousePosThisFrame - _prevFrameMousePos.Value;
+                offset *= kMouseMoveCameraRatio;
+                MoveByOffset(new Vector3(offset.x,0,offset.y));
+            }
+            _prevFrameMousePos = _input.MousePosition();
         }
 
         private void CheckAndMove(float deltaTime)

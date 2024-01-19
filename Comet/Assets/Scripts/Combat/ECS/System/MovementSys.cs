@@ -2,14 +2,14 @@ using comet.combat;
 
 namespace comet.combat
 {
-    public class MovementSys : BaseSys 
+    public class MovementSys : BaseSys ,ITickSys
     {
         public MovementSys(World world) : base(world)
         {
             
         }
 
-        public override void OnUpdate(float deltaTime)
+        public void OnTick()
         {
             
         }

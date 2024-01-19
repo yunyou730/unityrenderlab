@@ -45,8 +45,8 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets/Scripts/Combat/Gfx/Comp/GfxActorComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/BaseWorldComp.cs" />
-     <Compile Include="Assets/Scripts/Combat/Gfx/GfxCreationSys.cs" />
      <Compile Include="Assets/Scripts/Core/ServiceLocator.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/BaseSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/GridRecord.cs" />
@@ -57,13 +57,20 @@
      <Compile Include="Assets/Scripts/Combat/Gfx/GridMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/CreationSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
-     <Compile Include="Assets/Scripts/Combat/Gfx/GfxCreationWorldComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GfxActor.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/UserCtrlComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Comp/ActorComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/System/GfxCreationSys.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Comp/CmdComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/Utils/Metrics.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxWorld.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/MapStateWorldComp.cs" />
      <Compile Include="Assets/Scripts/Input/InputManager.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/World.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/MovementSys.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/WorldComp/GfxCreationWorldComp.cs" />
      <Compile Include="Assets/Scripts/Res/ResManager.cs" />
+     <Compile Include="Assets/Scripts/Combat/Ctrl/ActorCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/CameraCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/GridPositionComp.cs" />
      <Compile Include="Assets/Scripts/Combat/CombatManager.cs" />
@@ -73,14 +80,18 @@
      <Folder Include="Assets/Scripts/Combat/ECS/WorldComp" />
      <Folder Include="Assets/Scripts/Core" />
      <Folder Include="Assets/Scripts/Res" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/System" />
      <Folder Include="Assets/Scripts/Combat/ECS" />
      <Folder Include="Assets/Scripts/Test" />
      <Folder Include="Assets/Scripts/Combat/ECS/Data" />
      <Folder Include="Assets/Resources/Prefabs" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/WorldComp" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/Utils" />
      <Folder Include="Assets/Resources/Materials" />
      <Folder Include="Assets/Scenes" />
      <Folder Include="Assets/Scripts/Combat/ECS/Utils" />
      <Folder Include="Assets/Scripts/Combat/ECS/System" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/Comp" />
      <Folder Include="Assets/Scripts/Combat/Ctrl" />
      <Folder Include="Assets/Scripts/Utils" />
      <Folder Include="Assets/Scripts/Combat" />

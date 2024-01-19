@@ -22,7 +22,7 @@ namespace comet.combat
         protected override void RegisterSystems()
         {
             base.RegisterSystems();
-            _allSystems.Add(new GfxCreationSys(this));
+            RegisterSys(new GfxCreationSys(this));
             
             Debug.Log("GfxWorld::RegisterSystems()");
         }

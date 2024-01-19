@@ -10,7 +10,6 @@ using comet.core;
 using comet.input;
 using comet.res;
 
-
 namespace comet
 {
     public class Comet : MonoBehaviour
@@ -52,7 +51,7 @@ namespace comet
         // Update is called once per frame
         void Update()
         {
-            _combatManager.OnUpdate(Time.deltaTime);
+            _combatManager?.OnUpdate(Time.deltaTime);
         }
 
         private void OnDestroy()

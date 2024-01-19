@@ -35,6 +35,15 @@ namespace comet.combat
             return _compMap.ContainsKey(type);
         }
 
+        public T GetComp<T>() where T : BaseComp
+        {
+            if (_compMap.ContainsKey(typeof(T)))
+            {
+                return (T)_compMap[typeof(T)];
+            }
+            return null;
+        }
+
         public void Dispose()
         {
             _compMap.Clear();

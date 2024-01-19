@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace comet.combat 
 {
@@ -8,10 +9,20 @@ namespace comet.combat
         private int _uuidSeed = 0;
 
         protected Dictionary<int, Entity> _entityMap = null;
-        protected List<BaseSys> _allSystems = null;
         protected Dictionary<Type, BaseWorldComp> _worldComps = null;
+        
+        protected List<IUpdateSys> _updateSystems = null;
+        protected List<ITickSys> _tickSystems = null;
 
         protected MapRecord _mapRecord = null;
+
+        protected const int kTickFPS = 20;
+        protected float _tickSpan = 1.0f / kTickFPS;
+        protected float _elapsedTime = 0.0f;
+        public float TickSpan
+        {
+            get { return _tickSpan; }
+        }
 
         public World(MapRecord mapRecord)
         {
@@ -22,7 +33,9 @@ namespace comet.combat
         {
             _worldComps = new Dictionary<Type, BaseWorldComp>();
             _entityMap = new Dictionary<int, Entity>();
-            _allSystems = new List<BaseSys>();
+            
+            _updateSystems = new List<IUpdateSys>();
+            _tickSystems = new List<ITickSys>();
             
             RegisterWorldComps();
             RegisterSystems();
@@ -35,9 +48,30 @@ namespace comet.combat
 
         public void OnUpdate(float deltaTime)
         {
-            foreach (var sys in _allSystems)
+            // Handle Tick
+            _elapsedTime += deltaTime;
+            if (_elapsedTime >= _tickSpan)
+            {
+                int ticks = (int)(_elapsedTime / _tickSpan);
+                for (int i = 0;i < ticks;i++)
+                {
+                    OnTick();
+                }
+                _elapsedTime -= ticks * _tickSpan;
+            }
+    
+            // Handle Update
+            foreach (var sys in _updateSystems)
             {
                 sys.OnUpdate(deltaTime);
+            }
+        }
+
+        protected void OnTick()
+        {
+            foreach (var sys in _tickSystems)
+            {
+                sys.OnTick();
             }
         }
 
@@ -49,7 +83,9 @@ namespace comet.combat
         public void Dispose()
         {
             _entityMap.Clear();
-            _allSystems.Clear();
+            
+            _updateSystems.Clear();
+            _tickSystems.Clear();
         }
 
         protected virtual void RegisterWorldComps()
@@ -59,9 +95,20 @@ namespace comet.combat
 
         protected virtual void RegisterSystems()
         {
-            _allSystems.Add(new CreationSys(this));
+            RegisterSys(new CreationSys(this));
         }
 
+        protected void RegisterSys(BaseSys sys)
+        {
+            if (sys is ITickSys)
+            {
+                _tickSystems.Add((ITickSys)sys);
+            }
+            if (sys is IUpdateSys)
+            {
+                _updateSystems.Add((IUpdateSys)sys);
+            }
+        }
 
         public Entity CreateEntity()
         {
@@ -83,6 +130,29 @@ namespace comet.combat
                 return (T)_worldComps[typeof(T)];
             }
             return null;
+        }
+
+        public List<Entity> GetEntities(Type[] requireComps)
+        {
+            List<Entity> result = new List<Entity>();
+            foreach (var entity in _entityMap.Values)
+            {
+                bool bCheckOK = true;
+                foreach (var compType in requireComps)
+                {
+                    if (!entity.HasComp(compType))
+                    {
+                        bCheckOK = false;
+                        break;
+                    }
+                }
+
+                if (bCheckOK)
+                {
+                    result.Add(entity);
+                }
+            }
+            return result;
         }
     }
 }

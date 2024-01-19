@@ -8,8 +8,21 @@ namespace comet.combat
         {
             _world = world;
         }
-
-        public abstract void OnUpdate(float deltaTime);
-        // public abstract void OnTick();
     }
+    
+    public interface IUpdateSys
+    {
+        public void OnUpdate(float deltaTime);
+    }
+    
+    public interface ITickSys
+    {
+        public void OnTick();
+    }
+
+    public interface ILateUpdateSys
+    {
+        public void OnLateUpdate();
+    }
+
 }
