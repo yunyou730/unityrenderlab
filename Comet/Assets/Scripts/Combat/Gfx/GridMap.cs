@@ -8,16 +8,15 @@ namespace comet.combat
     public class GridMap : MonoBehaviour
     {
         private MapRecord _mapRecord = null;
+        public MapRecord MapRecord => _mapRecord;
 
         private MeshFilter _meshFilter = null;
         private MeshRenderer _meshRenderer = null;
         private MeshCollider _meshCollider = null;
 
-        private float _gridSize = 1.0f;
-        public float GridSize
-        {
-            get { return _gridSize; }
-        }
+        private float _gridSize;
+        public float GridSize => _gridSize;
+        
         // private float _basePositionY = 0.0f;
 
         private void Awake()
@@ -27,11 +26,11 @@ namespace comet.combat
             _meshCollider = GetComponent<MeshCollider>();
         }
         
-        public void RefreshWithMapRecord(MapRecord mapRecord,float gridSize)
+        public void RefreshWithMapRecord(MapRecord mapRecord)
         {
             // hold data
             SetMapRecord(mapRecord);
-            _gridSize = gridSize;
+            _gridSize = mapRecord.GridSize;
             
             // refresh gfx
             Mesh mesh = CreateMapMesh();
@@ -41,11 +40,11 @@ namespace comet.combat
 
         public void GetGridCoordBy3DPos(Vector3 pos,out int x,out int y)
         {
-            x = (int)Math.Floor((pos.x / _gridSize));
-            y = (int)Math.Floor((pos.z / _gridSize));
-
-            x = Math.Clamp(x, 0, _mapRecord.Cols);
-            y = Math.Clamp(y, 0, _mapRecord.Rows);
+            x = (int)Mathf.Floor((pos.x / _gridSize));
+            y = (int)Mathf.Floor((pos.z / _gridSize));
+            
+            x = Mathf.Clamp(x, 0, _mapRecord.Cols);
+            y = Mathf.Clamp(y, 0, _mapRecord.Rows);
         }
 
         private void SetMapRecord(MapRecord mapRecord)

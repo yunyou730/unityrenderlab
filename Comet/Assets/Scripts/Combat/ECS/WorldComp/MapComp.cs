@@ -2,25 +2,28 @@ using Unity.VisualScripting;
 
 namespace comet.combat
 {
-    public class MapStateWorldComp : BaseWorldComp
+    public enum EGridOccupyState
     {
-        public enum EGridOccupyState
-        {
-            EMPTY,
-            OCCUPYIED
-        }
-        
+        EMPTY,
+        OCCUPYIED
+    }
+    
+    public class MapComp : BaseWorldComp
+    {
         public int Rows = 0;
         public int Cols = 0;
         public EGridOccupyState[] OccupyStates;
         
         private MapRecord _mapRecord = null;
-        
-        MapStateWorldComp(MapRecord mapRecord)
+        public MapRecord MapRecord { get { return _mapRecord; } }
+
+        public float GridSize = 1.0f;
+
+        public MapComp(MapRecord mapRecord)
         {
             _mapRecord = mapRecord;
             
-            // size
+            GridSize = mapRecord.GridSize;
             Rows = _mapRecord.Rows;
             Cols = _mapRecord.Cols;
             

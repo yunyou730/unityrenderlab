@@ -8,7 +8,8 @@ namespace comet.combat
     {
         private MapRecord _mapRecord = null;
         private GfxWorld _world = null;
-        
+        public GfxWorld World { get { return _world; } }
+
         private CameraCtrl _cameraCtrl = null;
         private ActorCtrl _actorCtrl = null;
 
@@ -16,18 +17,18 @@ namespace comet.combat
         
         public void Init(Camera mainCamera)
         {
-            _cameraCtrl = new CameraCtrl();
-            _actorCtrl = new ActorCtrl();
-            
-            _cameraCtrl.Init(mainCamera);
-            _actorCtrl.Init(mainCamera);
-
             _config = Comet.Instance.ServiceLocator.Get<Config>();
             
             // Create Map
             _mapRecord = CreateMapRecord();
             _world = new GfxWorld(_mapRecord);
             _world.Init();
+            
+            // Ctrl
+            _cameraCtrl = new CameraCtrl();
+            _actorCtrl = new ActorCtrl(this);
+            _cameraCtrl.Init(mainCamera);
+            _actorCtrl.Init(mainCamera);
         }
 
         public void Start()
@@ -45,7 +46,10 @@ namespace comet.combat
 
         public MapRecord CreateMapRecord()
         {
-            var mapRecord = new MapRecord(_config.DefaultGridMapRows,_config.DefaultGridMapCols);
+            var mapRecord = new MapRecord(
+                _config.DefaultGridMapRows,
+                _config.DefaultGridMapCols,
+                _config.DefaultGridSize);
             mapRecord.GenerateGrids(0,0);
             mapRecord.RandomizeAllGridsType();
             return mapRecord;

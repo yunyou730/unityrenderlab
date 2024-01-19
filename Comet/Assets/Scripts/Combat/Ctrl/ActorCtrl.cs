@@ -9,8 +9,17 @@ namespace comet.combat
         private Camera _mainCamera = null;
         private World _world = null;
 
+        private CombatManager _combat = null;
         private InputManager _input = null;
-        
+
+        private CmdComp _cmdComp = null; 
+
+        public ActorCtrl(CombatManager combat)
+        {
+            _combat = combat;
+            _cmdComp = _combat.World.GetWorldComp<CmdComp>();
+        }
+
         public void Init(Camera mainCamera)
         {
             _mainCamera = mainCamera;
@@ -67,12 +76,19 @@ namespace comet.combat
             param.UUIDs = new[] { gfxActor.UUID};
             
             Cmd cmd = new Cmd(ECmd.ActorSelection,param);
-            
+            _cmdComp.AddCmd(cmd);
         }
 
         private void OnSelectGridCoord(int gridX,int gridY)
         {
             Debug.Log("[" + gridX + "," + gridY + "]");
+
+            var param = new ActorMoveToGridParam();
+            param.GridX = gridX;
+            param.GridY = gridY;
+            
+            Cmd cmd = new Cmd(ECmd.ActorMoveToGrid,param);
+            _cmdComp.AddCmd(cmd);
         }
     }
 }

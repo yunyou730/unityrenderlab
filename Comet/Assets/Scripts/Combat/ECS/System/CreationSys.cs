@@ -3,10 +3,12 @@ namespace comet.combat
     public class CreationSys : BaseSys,ITickSys
     {
         private CreationComp _creation = null;
+        private MapComp _mapComp = null;
         
         public CreationSys(World world) : base(world)
         {
             _creation = world.GetWorldComp<CreationComp>();
+            _mapComp = world.GetWorldComp<MapComp>();
         }
 
         public void OnTick()
@@ -26,10 +28,13 @@ namespace comet.combat
         private void CreateActor(int row,int col)
         {
             var entity = _world.CreateEntity();
+            
             entity.AttachComp<ActorComp>(new ActorComp());
-            var gridPosComp = entity.AttachComp<GridPositionComp>(new GridPositionComp());
-            gridPosComp.X = col;
-            gridPosComp.Y = row;
+            
+            var posComp = entity.AttachComp<PositionComp>(new PositionComp());
+            posComp.SetGridPos(_mapComp.MapRecord,col,row);
+            
+            entity.AttachComp<MoveableComp>(new MoveableComp());
         }
 
     }

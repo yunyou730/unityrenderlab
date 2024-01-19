@@ -23,8 +23,7 @@ namespace comet.combat
         {
             base.RegisterSystems();
             RegisterSys(new GfxCreationSys(this));
-            
-            Debug.Log("GfxWorld::RegisterSystems()");
+            RegisterSys(new GfxSyncPosSys(this));
         }
         
         public GridMap GridMap

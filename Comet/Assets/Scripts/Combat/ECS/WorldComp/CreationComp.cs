@@ -21,8 +21,6 @@ namespace comet.combat
                 Col = col,
             });
         }
-
-
     }
 
     public struct SpawnInfo
@@ -30,8 +28,6 @@ namespace comet.combat
         public ECreationType CreationType;
         public int Row;
         public int Col;
-        
-        
     }
 
 }

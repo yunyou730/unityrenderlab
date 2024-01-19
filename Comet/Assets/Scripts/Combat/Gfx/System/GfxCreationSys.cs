@@ -9,10 +9,7 @@ namespace comet.combat
     {
         private GfxWorld _gfxWorld = null;
         private GridMap _gridMap = null;
-        public GridMap GridMap
-        {
-            get { return _gridMap; }
-        }
+        public GridMap GridMap { get { return _gridMap; } }
         
         private ResManager _resManager = null;
         private Config _config = null;
@@ -50,12 +47,12 @@ namespace comet.combat
             var resManager = Comet.Instance.ServiceLocator.Get<ResManager>();
             var prefab = resManager.Load<GameObject>("Prefabs/GridMap");
             _gridMap = GameObject.Instantiate(prefab).GetComponent<GridMap>();
-            _gridMap.RefreshWithMapRecord(mapRecord,_config.GridSize);
+            _gridMap.RefreshWithMapRecord(mapRecord);
         }
         
         protected void HandleCreateActor()
         {
-            Type[] comps = {typeof(ActorComp),typeof(GridPositionComp)};
+            Type[] comps = {typeof(ActorComp),typeof(PositionComp)};
             var entityList = _world.GetEntities(comps);
             
             foreach (var entity in entityList)
@@ -63,18 +60,17 @@ namespace comet.combat
                 var actorComp = entity.GetComp<ActorComp>();
                 if (!actorComp.bHasCreateGfx)
                 {
-                    CreateActorGfx(entity,actorComp,entity.GetComp<GridPositionComp>());
+                    CreateActorGfx(entity,actorComp,entity.GetComp<PositionComp>());
                     actorComp.bHasCreateGfx = true;
                 }
             }
         }
         
-        protected void CreateActorGfx(Entity entity,ActorComp actorComp,GridPositionComp gridPosComp)
+        protected void CreateActorGfx(Entity entity,ActorComp actorComp,PositionComp gridPosComp)
         {
             var prefab = _resManager.Load<GameObject>("Prefabs/Actor");
-            GameObject gameObject = GameObject.Instantiate(prefab);
-            gameObject.transform.position = Metrics.GetGridCenterPos(_gridMap,gridPosComp.Y,gridPosComp.X);
-            gameObject.AddComponent<GfxActor>().UUID = entity.UUID;
+            var gfxActorComp = entity.AttachComp<GfxActorComp>(new GfxActorComp());
+            gfxActorComp.Init(entity.UUID,prefab,_gridMap,gridPosComp.GridY,gridPosComp.GridX);
         }
     }
 }

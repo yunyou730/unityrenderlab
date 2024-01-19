@@ -90,12 +90,17 @@ namespace comet.combat
 
         protected virtual void RegisterWorldComps()
         {
+            RegisterWorldComp<MapComp>(new MapComp(_mapRecord));
             RegisterWorldComp<CreationComp>(new CreationComp());
+            RegisterWorldComp<CmdComp>(new CmdComp());
+            RegisterWorldComp<UserCtrlComp>(new UserCtrlComp());
         }
 
         protected virtual void RegisterSystems()
         {
             RegisterSys(new CreationSys(this));
+            RegisterSys(new CmdSys(this));
+            RegisterSys(new MovementSys(this));
         }
 
         protected void RegisterSys(BaseSys sys)
@@ -129,6 +134,16 @@ namespace comet.combat
             {
                 return (T)_worldComps[typeof(T)];
             }
+            return null;
+        }
+
+        public Entity GetEntity(int uuid)
+        {
+            if (_entityMap.ContainsKey(uuid))
+            {
+                return _entityMap[uuid];
+            }
+
             return null;
         }
 

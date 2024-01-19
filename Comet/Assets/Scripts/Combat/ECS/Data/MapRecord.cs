@@ -10,16 +10,19 @@ namespace comet
     {
         public int Rows => _rows;
         public int Cols => _cols;
+        public float GridSize => _gridSize;
 
         private int _rows;
         private int _cols;
+        private float _gridSize;
 
         private GridRecord[] _grids = null;
         
-        public MapRecord(int rows, int cols)
+        public MapRecord(int rows, int cols,float gridSize)
         {
             _rows = rows;
             _cols = cols;
+            _gridSize = gridSize;
             _grids = new GridRecord[rows * cols];
         }
         
