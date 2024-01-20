@@ -19,13 +19,17 @@ namespace comet.combat
             Metrics.GetGridCenterPos(mapRecord,gridX,gridY,out X,out Y,out Z);
         }
 
-        public void SetPos(MapRecord mapRecord,float x,float y,float z)
+        public void SetPos(MapRecord mapRecord,float x,float z)
         {
             X = x;
-            Y = y;
             Z = z;
             GridX = (int)(X / mapRecord.GridSize);
-            GridY = (int)(Y / mapRecord.GridSize);
+            GridY = (int)(Z / mapRecord.GridSize);
+        }
+
+        public void SetY(float y)
+        {
+            Y = y;
         }
     }
 }

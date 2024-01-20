@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace comet.combat
 {
-    public class GridMap : MonoBehaviour
+    public class GfxGridMap : MonoBehaviour
     {
         private MapRecord _mapRecord = null;
         public MapRecord MapRecord => _mapRecord;
@@ -13,17 +14,24 @@ namespace comet.combat
         private MeshFilter _meshFilter = null;
         private MeshRenderer _meshRenderer = null;
         private MeshCollider _meshCollider = null;
-
-        private float _gridSize;
-        public float GridSize => _gridSize;
         
+        private float _gridSize;
+
+        private Material _material = null;
+        
+        //public float GridSize => _gridSize;
         // private float _basePositionY = 0.0f;
+
+
+        private Texture2D _texMapData = null;
+        private Color[] _colorData = null;
 
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
             _meshRenderer = GetComponent<MeshRenderer>();
             _meshCollider = GetComponent<MeshCollider>();
+            _material = _meshRenderer.material;
         }
         
         public void RefreshWithMapRecord(MapRecord mapRecord)
@@ -36,6 +44,14 @@ namespace comet.combat
             Mesh mesh = CreateMapMesh();
             _meshFilter.mesh = mesh;
             _meshCollider.sharedMesh = mesh;
+            
+            // create texMapData
+            _texMapData = new Texture2D(_mapRecord.Cols,_mapRecord.Rows);
+            _colorData = new Color[_mapRecord.Rows * _mapRecord.Cols];
+            _texMapData.filterMode = FilterMode.Point;
+            RefreshTexData();
+
+            ShowGridWalkableState();
         }
 
         public void GetGridCoordBy3DPos(Vector3 pos,out int x,out int y)
@@ -58,25 +74,32 @@ namespace comet.combat
             Vector2[] uvs;
             int[] indices;
             Color[] colors;
+            Vector2[] uvs2;
             
-            GenerateMeshData(out vertices,out uvs,out indices,out colors);
+            GenerateMeshData(out vertices,out uvs,out uvs2,out indices,out colors);
             
             Mesh mesh = new Mesh();
             mesh.SetVertices(vertices);
             mesh.SetUVs(0,uvs);
+            mesh.SetUVs(1,uvs2);
             mesh.SetIndices(indices,MeshTopology.Triangles,0);
             mesh.SetColors(colors);
             
             return mesh;
         }
 
-        private void GenerateMeshData(out Vector3[] vertices,out Vector2[] uvs,out int[] indices,out Color[] colors)
+        private void GenerateMeshData(out Vector3[] vertices,
+            out Vector2[] uvs,
+            out Vector2[] uvs2,
+            out int[] indices,
+            out Color[] colors)
         {
             int verticesNum = _mapRecord.Rows * _mapRecord.Cols * 4;
             vertices = new Vector3[verticesNum]; 
             uvs = new Vector2[verticesNum];
             indices = new int[verticesNum * 6];
             colors = new Color[verticesNum];
+            uvs2 = new Vector2[verticesNum];
             
             int vertIdx = 0;
             int indiceIdx = 0;
@@ -101,6 +124,13 @@ namespace comet.combat
                     float y2 = GetGridsMaxHeight(gridRecord, west, westNorth, north);
                     float y3 = GetGridsMaxHeight(gridRecord, east, eastNorth, north);
                     // y0 = y1 = y2 = y3 = gridRecord.Height 
+                    
+                    
+                    /*
+                     * 2 - 3
+                     * |   |
+                     * 0 - 1 
+                     */
 
                     // vert position
                     float baseX = col * _gridSize;
@@ -109,12 +139,26 @@ namespace comet.combat
                     vertices[vertIdx + 1] = new Vector3(baseX + _gridSize, y1, baseZ);
                     vertices[vertIdx + 2] = new Vector3(baseX, y2, baseZ + _gridSize);
                     vertices[vertIdx + 3] = new Vector3(baseX + _gridSize, y3, baseZ + _gridSize);
-
-                    // vert uvs
+                    
+                    // vert uvs 1 , uv in grid
                     uvs[vertIdx] = new Vector2(0, 0);
                     uvs[vertIdx + 1] = new Vector2(1, 0);
                     uvs[vertIdx + 2] = new Vector2(0, 1);
                     uvs[vertIdx + 3] = new Vector2(1, 1);
+                    
+                    // vert uvs 2 , uv in whole mesh
+                    uvs2[vertIdx] = new Vector2(
+                        (float)col / (float)_mapRecord.Cols,
+                        (float)row / (float)_mapRecord.Rows);
+                    uvs2[vertIdx + 1] = new Vector2(
+                        (float)(col + 1) / (float)_mapRecord.Cols,
+                        (float)row / (float)_mapRecord.Rows);
+                    uvs2[vertIdx + 2] = new Vector2(
+                        (float)(col) / (float)_mapRecord.Cols,
+                        (float)(row + 1)/ (float)_mapRecord.Rows);                    
+                    uvs2[vertIdx + 3] = new Vector2(
+                        (float)(col + 1) / (float)_mapRecord.Cols,
+                        (float)(row + 1)/ (float)_mapRecord.Rows);    
 
                     // vert color , pass Grid Type data to vertices attribute
                     Color color = Color.white;
@@ -126,6 +170,9 @@ namespace comet.combat
                             break;
                         case GridRecord.EGridType.Plane:
                             color = Color.yellow;
+                            break;
+                        case GridRecord.EGridType.Wall:
+                            color = Color.gray;
                             break;
                         case GridRecord.EGridType.Water:
                             color = Color.cyan;
@@ -165,6 +212,39 @@ namespace comet.combat
             rect.width = _mapRecord.Cols * _gridSize;
             rect.height = _mapRecord.Rows * _gridSize;
             return rect;
+        }
+
+        public void RefreshTexData()
+        {
+            for (int y = 0;y < _mapRecord.Rows;y++)
+            {
+                for (int x = 0;x < _mapRecord.Cols;x++)
+                {
+                    GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
+                    if (gridRecord.GridType == GridRecord.EGridType.Plane)
+                    {
+                        _colorData[y * _mapRecord.Rows + x] = Color.yellow;
+                    }
+                    else
+                    {
+                        _colorData[y * _mapRecord.Rows + x] = Color.red;
+                    }
+                }                
+            }
+            
+            _texMapData.SetPixels(_colorData);
+            _texMapData.Apply();
+        }
+
+        public void ShowGridWalkableState()
+        {
+            _material.SetTexture(Shader.PropertyToID("_GridStateTex"),_texMapData);
+        }
+        
+        private void OnDestroy()
+        {
+            GameObject.Destroy(_texMapData);
+            _colorData = null;
         }
     }    
 }

@@ -21,9 +21,9 @@ namespace comet.combat
             gridY = (int)(y / mapRecord.GridSize);
         }
 
-        public static bool IsNear(Vector3 p1,Vector3 p2)
+        public static bool IsNear(Vector2 p1,Vector2 p2)
         {
-            return (p1 - p2).magnitude <= Double.Epsilon;
+            return (p1 - p2).magnitude <= 0.01f; //Double.Epsilon * 10.0f;
         }
     }
 }

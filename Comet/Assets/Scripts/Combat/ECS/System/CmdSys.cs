@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.XR;
 
 namespace comet.combat
@@ -18,6 +19,7 @@ namespace comet.combat
             {
                 HandleCmd(_cmd.cmds[i]);
             }
+            _cmd.ClearCmd();
         }
 
         private void HandleCmd(Cmd cmd)
@@ -44,8 +46,7 @@ namespace comet.combat
                         var moveableComp = entity.GetComp<MoveableComp>();
                         if (moveableComp != null)
                         {
-                            moveableComp.StopMove();
-                            moveableComp.StartMove(p.GridX,p.GridY); 
+                            HandlePlanRoute(entity,p.GridX,p.GridY);
                         }
                     }
                 }
@@ -53,6 +54,19 @@ namespace comet.combat
                 default:
                     break;
             }
+        }
+        
+        private void HandlePlanRoute(Entity entity,int gridX,int gridY)
+        {
+            var posComp = entity.GetComp<PositionComp>();
+            var routeComp = entity.GetComp<RoutePlanComp>();
+            routeComp.bNeedPlan = true;
+            routeComp.FromGrid = new Vector2Int(posComp.GridX,posComp.GridY);
+            routeComp.ToGrid = new Vector2Int(gridX,gridY);
+            
+            // MoveableComp moveableComp = entity.GetComp<MoveableComp>();
+            // moveableComp.StopMove();
+            // moveableComp.StartMove(gridX,gridY);
         }
     }
 }

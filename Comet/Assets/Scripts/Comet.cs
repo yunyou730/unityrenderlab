@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Unity.VisualScripting;
 using UnityEngine;
 
 using comet.combat;
@@ -26,7 +25,7 @@ namespace comet
         private ResManager _resManager = null;
         private InputManager _inputManager = null;
         private CombatManager _combatManager = null;
-
+        private UIManager _uiManager = null;
         
         private static Comet _sInstance = null;
         public static Comet Instance { get { return _sInstance; } }
@@ -39,19 +38,24 @@ namespace comet
         void Start()
         {
             _serviceLocator = new ServiceLocator();
-            _serviceLocator.Register<Config>(_config = new Config());
-            _serviceLocator.Register<ResManager>(_resManager = new ResManager());
-            _serviceLocator.Register<InputManager>(_inputManager = new InputManager()).Init();
-            _serviceLocator.Register<CombatManager>(_combatManager = new CombatManager()).Init(_mainCamera);
+            _serviceLocator.Register(_config = new Config());
+            _serviceLocator.Register(_resManager = new ResManager());
+            _serviceLocator.Register(_inputManager = new InputManager()).Init();
+            _serviceLocator.Register(_combatManager = new CombatManager()).Init(_mainCamera);
+            _serviceLocator.Register(_uiManager = new UIManager()).Init();
 
             _combatManager.Start();
         }
-        
         
         // Update is called once per frame
         void Update()
         {
             _combatManager?.OnUpdate(Time.deltaTime);
+        }
+
+        private void OnGUI()
+        {
+            _uiManager?.OnGUI();
         }
 
         private void OnDestroy()

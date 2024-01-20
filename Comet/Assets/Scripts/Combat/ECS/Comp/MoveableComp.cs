@@ -6,7 +6,7 @@ namespace comet.combat
         public int TargetGridY = -1;
         public bool IsMoving = false;
 
-        public void StartMove(int gridX,int gridY)
+        public void MoveTo(int gridX,int gridY)
         {
             IsMoving = true;
             TargetGridX = gridX;

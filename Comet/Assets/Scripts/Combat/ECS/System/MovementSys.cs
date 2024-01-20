@@ -11,6 +11,7 @@ namespace comet.combat
         private MapComp _mapComp = null;
 
         private float kSpeed = 5.0f;
+        private float kHeightFixValue = 1.0f;
         
         public MovementSys(World world) : base(world)
         {
@@ -37,22 +38,39 @@ namespace comet.combat
             
             Vector3 from = new Vector3(posComp.X, posComp.Y, posComp.Z);
             Vector3 to = new Vector3(x, y, z);
-
-            if (Metrics.IsNear(from,to))
-            {
-                moveable.IsMoving = false;
-                posComp.SetPos(_mapComp.MapRecord,x,y,z);
+            
+            if (Metrics.IsNear(new Vector2(from.x,from.z),new Vector2(to.x,to.z)))
+            {   
+                StopMoving(ref to,moveable,posComp);
             }
             else
             {
-                Vector3 dir = (to - from);
-                dir.y = 0;
-                dir = dir.normalized;
-                
-                Vector3 nextPos = from + dir * kSpeed * deltaTime;
-                posComp.SetPos(_mapComp.MapRecord,nextPos.x,nextPos.y,nextPos.z);
+                KeepMoving(ref from,ref to,posComp,deltaTime);
             }
 
+            SyncPosYByGrid(posComp,posComp.GridX,posComp.GridY);
+        }
+
+        private void StopMoving(ref Vector3 destPos,MoveableComp moveable,PositionComp posComp)
+        {
+            moveable.IsMoving = false;
+            posComp.SetPos(_mapComp.MapRecord,destPos.x,destPos.z);
+        }
+
+        private void KeepMoving(ref Vector3 from ,ref Vector3 to,PositionComp posComp,float deltaTime)
+        {
+            Vector3 dir = (to - from);
+            dir.y = 0;
+            dir = dir.normalized;
+                
+            Vector3 nextPos = from + dir * kSpeed * deltaTime;
+            posComp.SetPos(_mapComp.MapRecord,nextPos.x,nextPos.z);
+        }
+
+        private void SyncPosYByGrid(PositionComp posComp,int gridX,int gridY)
+        {
+            GridRecord gridRecord = _mapComp.MapRecord.GetGridAt(gridY, gridX);
+            posComp.Y = gridRecord.Height + kHeightFixValue;
         }
     }
 }

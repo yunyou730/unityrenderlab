@@ -101,6 +101,7 @@ namespace comet.combat
             RegisterSys(new CreationSys(this));
             RegisterSys(new CmdSys(this));
             RegisterSys(new MovementSys(this));
+            RegisterSys(new RoutePlanSys(this));
         }
 
         protected void RegisterSys(BaseSys sys)

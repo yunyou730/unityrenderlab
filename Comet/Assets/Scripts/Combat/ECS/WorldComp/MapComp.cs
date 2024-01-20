@@ -17,7 +17,7 @@ namespace comet.combat
         private MapRecord _mapRecord = null;
         public MapRecord MapRecord { get { return _mapRecord; } }
 
-        public float GridSize = 1.0f;
+        public float GridSize;
 
         public MapComp(MapRecord mapRecord)
         {

@@ -34,7 +34,7 @@ namespace comet.combat
         public void Start()
         {
             _world.Start();
-            _world.GetWorldComp<CreationComp>().AddCreationItem(ECreationType.Actor, 10, 12);
+            _world.GetWorldComp<CreationComp>().AddCreationItem(ECreationType.Actor, 20, 18);
         }
 
         public void OnUpdate(float deltaTime)
@@ -62,9 +62,9 @@ namespace comet.combat
             _world.Dispose();
         }
 
-        public GridMap GetGridMap()
+        public GfxGridMap GetGridMap()
         {
-            return _world.GridMap;
+            return _world.GfxGridMap;
         }
 
         private void SpawnActor()

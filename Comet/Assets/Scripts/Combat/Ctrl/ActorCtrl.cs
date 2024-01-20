@@ -7,7 +7,7 @@ namespace comet.combat
     public class ActorCtrl
     {
         private Camera _mainCamera = null;
-        private World _world = null;
+        // private World _world = null;
 
         private CombatManager _combat = null;
         private InputManager _input = null;
@@ -57,11 +57,11 @@ namespace comet.combat
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit))
                 {
-                    GridMap gfxGridMap = hit.transform.GetComponent<GridMap>();
-                    if (gfxGridMap != null)
+                    GfxGridMap gfxGfxGridMap = hit.transform.GetComponent<GfxGridMap>();
+                    if (gfxGfxGridMap != null)
                     {
                         int x, y;
-                        gfxGridMap.GetGridCoordBy3DPos(hit.point,out x,out y);
+                        gfxGfxGridMap.GetGridCoordBy3DPos(hit.point,out x,out y);
                         OnSelectGridCoord(x,y);
                     }
                 }
@@ -70,7 +70,7 @@ namespace comet.combat
 
         private void OnSelectActor(GfxActor gfxActor)
         {
-            Debug.Log(gfxActor.UUID);
+            Debug.Log("Select UUID:" + gfxActor.UUID);
 
             var param = new ActorSelectionParam();
             param.UUIDs = new[] { gfxActor.UUID};
@@ -81,7 +81,7 @@ namespace comet.combat
 
         private void OnSelectGridCoord(int gridX,int gridY)
         {
-            Debug.Log("[" + gridX + "," + gridY + "]");
+            Debug.Log("OnSelectGridCoord[" + gridX + "," + gridY + "]");
 
             var param = new ActorMoveToGridParam();
             param.GridX = gridX;

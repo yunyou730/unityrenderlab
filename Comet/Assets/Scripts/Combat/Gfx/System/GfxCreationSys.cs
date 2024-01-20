@@ -8,8 +8,8 @@ namespace comet.combat
     public class GfxCreationSys : BaseSys,IUpdateSys
     {
         private GfxWorld _gfxWorld = null;
-        private GridMap _gridMap = null;
-        public GridMap GridMap { get { return _gridMap; } }
+        private GfxGridMap _gfxGridMap = null;
+        public GfxGridMap GfxGridMap { get { return _gfxGridMap; } }
         
         private ResManager _resManager = null;
         private Config _config = null;
@@ -30,6 +30,9 @@ namespace comet.combat
         {
             HandleCreateMap();
             HandleCreateActor();
+            
+            
+            _gfxGridMap.RefreshTexData();
         }
 
         protected void HandleCreateMap()
@@ -38,7 +41,7 @@ namespace comet.combat
             {
                 _gfxCreation.bNeedCreateMap = false;
                 CreateGridMapGfx(_gfxCreation.MapRecord);
-                _gfxWorld.GridMap = _gridMap;
+                _gfxWorld.GfxGridMap = _gfxGridMap;
             }
         }
         
@@ -46,8 +49,8 @@ namespace comet.combat
         {
             var resManager = Comet.Instance.ServiceLocator.Get<ResManager>();
             var prefab = resManager.Load<GameObject>("Prefabs/GridMap");
-            _gridMap = GameObject.Instantiate(prefab).GetComponent<GridMap>();
-            _gridMap.RefreshWithMapRecord(mapRecord);
+            _gfxGridMap = GameObject.Instantiate(prefab).GetComponent<GfxGridMap>();
+            _gfxGridMap.RefreshWithMapRecord(mapRecord);
         }
         
         protected void HandleCreateActor()
@@ -70,7 +73,7 @@ namespace comet.combat
         {
             var prefab = _resManager.Load<GameObject>("Prefabs/Actor");
             var gfxActorComp = entity.AttachComp<GfxActorComp>(new GfxActorComp());
-            gfxActorComp.Init(entity.UUID,prefab,_gridMap,gridPosComp.GridY,gridPosComp.GridX);
+            gfxActorComp.Init(entity.UUID,prefab,_gfxGridMap,gridPosComp.GridY,gridPosComp.GridX);
         }
     }
 }

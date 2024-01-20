@@ -61,7 +61,9 @@ namespace comet
             var rand = new System.Random();
             for (int i = 0; i < _grids.Length; i++)
             {
-                int gridType = rand.Next((int)GridRecord.EGridType.Max);
+                int randValue = rand.Next(100);
+                GridRecord.EGridType gridType =
+                    randValue < 15 ? GridRecord.EGridType.Wall : GridRecord.EGridType.Plane;
                 _grids[i].SetGridType((GridRecord.EGridType)gridType);
             }
         }

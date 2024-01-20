@@ -29,12 +29,18 @@ namespace comet.combat
         {
             var entity = _world.CreateEntity();
             
+            // Actor Comp
             entity.AttachComp<ActorComp>(new ActorComp());
             
+            // Position Comp
             var posComp = entity.AttachComp<PositionComp>(new PositionComp());
             posComp.SetGridPos(_mapComp.MapRecord,col,row);
             
+            // Moveable Comp
             entity.AttachComp<MoveableComp>(new MoveableComp());
+            
+            // Route Plan Comp
+            entity.AttachComp(new RoutePlanComp());
         }
 
     }

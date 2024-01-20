@@ -9,8 +9,9 @@ namespace comet
         public enum EGridType
         {
             Plane,
-            Grass,
+            Wall,
             Water,
+            Grass,
             Max,
         }
         
@@ -21,15 +22,9 @@ namespace comet
         private EGridType _gridType = EGridType.Plane;
         private float _height = 0;
         
-        public GridRecord()
-        {
-            
-        }
-
         public void SetGridType(EGridType gridType)
         {
             _gridType = gridType;
         }
-
     }   
 }

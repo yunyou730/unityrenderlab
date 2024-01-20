@@ -3,7 +3,9 @@ namespace comet.combat
 {
     public class GfxWorld : World
     {
-        private GridMap _gridMap = null;
+        private GfxGridMap _gfxGridMap = null;
+        
+        private Texture2D _walkableBuffer = null;
         
         public GfxWorld(MapRecord mapRecord) : base(mapRecord)
         {
@@ -26,10 +28,10 @@ namespace comet.combat
             RegisterSys(new GfxSyncPosSys(this));
         }
         
-        public GridMap GridMap
+        public GfxGridMap GfxGridMap
         {
-            get => _gridMap;
-            set => _gridMap = value;
+            get => _gfxGridMap;
+            set => _gfxGridMap = value;
         }
         
     }
