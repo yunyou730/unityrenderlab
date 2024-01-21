@@ -66,6 +66,22 @@ namespace comet.combat
                     }
                 }
             }
+
+            if (_input.IsMouseButtonDown(InputManager.EMouseBtn.Left))
+            {
+                Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    GfxGridMap gfxGfxGridMap = hit.transform.GetComponent<GfxGridMap>();
+                    if (gfxGfxGridMap != null)
+                    {
+                        int x, y;
+                        gfxGfxGridMap.GetGridCoordBy3DPos(hit.point,out x,out y);
+                        OnChangeGridType(x,y);
+                    }
+                }
+            }
         }
 
         private void OnSelectActor(GfxActor gfxActor)
@@ -82,12 +98,23 @@ namespace comet.combat
         private void OnSelectGridCoord(int gridX,int gridY)
         {
             Debug.Log("OnSelectGridCoord[" + gridX + "," + gridY + "]");
-
+            
             var param = new ActorMoveToGridParam();
             param.GridX = gridX;
             param.GridY = gridY;
             
             Cmd cmd = new Cmd(ECmd.ActorMoveToGrid,param);
+            _cmdComp.AddCmd(cmd);
+        }
+
+        private void OnChangeGridType(int gridX,int gridY)
+        {
+            var param = new SetGridTypeParam();
+            param.GridX = gridX;
+            param.GridY = gridY;
+            param.GridType = GridRecord.EGridType.Wall;
+
+            Cmd cmd = new Cmd(ECmd.SetGridType,param);
             _cmdComp.AddCmd(cmd);
         }
     }

@@ -1,15 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace comet.combat
 {
     public class GfxWorld : World
     {
         private GfxGridMap _gfxGridMap = null;
+        public MiniMap MiniMap = null;
         
-        private Texture2D _walkableBuffer = null;
-        
-        public GfxWorld(MapRecord mapRecord) : base(mapRecord)
+        public GfxWorld(MapRecord mapRecord,Image imgMiniMap) : base(mapRecord)
         {
-            
+            MiniMap = new MiniMap(imgMiniMap);
         }
 
         protected override void RegisterWorldComps()

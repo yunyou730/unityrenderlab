@@ -8,11 +8,19 @@ namespace comet.combat
         OCCUPYIED
     }
     
+    public enum EFogOfWarState
+    {
+        NotExplorer,
+        Explorered,
+        Visible
+    }
+    
     public class MapComp : BaseWorldComp
     {
         public int Rows = 0;
         public int Cols = 0;
-        public EGridOccupyState[] OccupyStates;
+        public EGridOccupyState[,] OccupyState;
+        public EFogOfWarState[,] FogOfWarState;
         
         private MapRecord _mapRecord = null;
         public MapRecord MapRecord { get { return _mapRecord; } }
@@ -27,11 +35,16 @@ namespace comet.combat
             Rows = _mapRecord.Rows;
             Cols = _mapRecord.Cols;
             
-            // occupy states
-            OccupyStates = new EGridOccupyState[Rows * Cols];
-            for (int i = 0;i < Rows * Cols;i++)
+            OccupyState = new EGridOccupyState[Rows, Cols];
+            FogOfWarState = new EFogOfWarState[Rows, Cols];
+            
+            for (int y = 0; y < Rows; y++)
             {
-                OccupyStates[i] = EGridOccupyState.EMPTY;
+                for (int x = 0;x < Cols;x++)
+                {
+                    OccupyState[y,x] = EGridOccupyState.EMPTY;
+                    FogOfWarState[y,x] = EFogOfWarState.NotExplorer;
+                }
             }
         }
     }

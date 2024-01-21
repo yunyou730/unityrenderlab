@@ -14,6 +14,7 @@ namespace comet
     public class Comet : MonoBehaviour
     {
         [SerializeField] private Camera _mainCamera = null;
+        [SerializeField] private UnityEngine.UI.Image _miniMapImage = null;
         
         private ServiceLocator _serviceLocator = null;
         public ServiceLocator ServiceLocator
@@ -41,7 +42,10 @@ namespace comet
             _serviceLocator.Register(_config = new Config());
             _serviceLocator.Register(_resManager = new ResManager());
             _serviceLocator.Register(_inputManager = new InputManager()).Init();
-            _serviceLocator.Register(_combatManager = new CombatManager()).Init(_mainCamera);
+            _serviceLocator.Register(_combatManager = new CombatManager()).Init(
+                _mainCamera,
+                _miniMapImage
+            );
             _serviceLocator.Register(_uiManager = new UIManager()).Init();
 
             _combatManager.Start();

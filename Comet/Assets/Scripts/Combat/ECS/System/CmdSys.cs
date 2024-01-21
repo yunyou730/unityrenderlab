@@ -7,10 +7,13 @@ namespace comet.combat
     {
         private CmdComp _cmd = null;
         private UserCtrlComp _userCtrl = null;
+        private MapComp _map = null;
+        
         public CmdSys(World world) : base(world)
         {
             _cmd = _world.GetWorldComp<CmdComp>();
             _userCtrl = _world.GetWorldComp<UserCtrlComp>();
+            _map = _world.GetWorldComp<MapComp>();
         }
 
         public void OnTick()
@@ -48,6 +51,16 @@ namespace comet.combat
                         {
                             HandlePlanRoute(entity,p.GridX,p.GridY);
                         }
+                    }
+                }
+                    break;
+                case ECmd.SetGridType:
+                {
+                    var p = (SetGridTypeParam)cmd.Param;
+                    GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY,p.GridX);
+                    if (gridRecord != null)
+                    {
+                        gridRecord.SetGridType(p.GridType);
                     }
                 }
                     break;

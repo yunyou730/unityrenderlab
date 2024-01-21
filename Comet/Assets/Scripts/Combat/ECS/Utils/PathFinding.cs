@@ -42,7 +42,7 @@ namespace comet.combat
         {
             public int X;
             public int Y;
-            public bool IsWall;
+            //public bool IsWall;
             public List<Node> Neighbors;
             public Node Parent;
             public float GCost;
@@ -53,7 +53,7 @@ namespace comet.combat
             {
                 X = x;
                 Y = y;
-                IsWall = false;
+                //IsWall = false;
                 Neighbors = new List<Node>();
                 Parent = null;
                 GCost = 0;
@@ -65,6 +65,14 @@ namespace comet.combat
                 Parent = null;
                 GCost = 0;
                 HCost = 0;
+            }
+
+            public bool IsWall(MapRecord mapRecord)
+            {
+                GridRecord gridRecord = mapRecord.GetGridAt(Y, X);
+                if (gridRecord == null)
+                    return true;
+                return gridRecord.GridType != GridRecord.EGridType.Plane;
             }
         }
 
@@ -85,7 +93,7 @@ namespace comet.combat
                     _nodes[y, x] = node;
                     
                     GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
-                    node.IsWall = (gridRecord.GridType != GridRecord.EGridType.Plane);
+                    //node.IsWall = (gridRecord.GridType != GridRecord.EGridType.Plane);
                 }
             }
             
@@ -161,7 +169,7 @@ namespace comet.combat
                 
                 foreach (Node neighbor in curNode.Neighbors)
                 {
-                    if (closeSet.Contains(neighbor) || neighbor.IsWall)
+                    if (closeSet.Contains(neighbor) || neighbor.IsWall(_mapRecord))
                     {
                         continue;
                     }

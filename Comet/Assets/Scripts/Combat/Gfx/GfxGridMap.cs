@@ -25,6 +25,7 @@ namespace comet.combat
 
         private Texture2D _texMapData = null;
         private Color[] _colorData = null;
+        public Texture2D TexMapData => _texMapData;
 
         private void Awake()
         {

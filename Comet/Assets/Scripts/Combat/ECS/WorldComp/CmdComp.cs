@@ -23,6 +23,7 @@ namespace comet.combat
     {
         ActorSelection,
         ActorMoveToGrid,
+        SetGridType,
         
         None,
     }    
@@ -48,5 +49,12 @@ namespace comet.combat
     {
         public int GridX;
         public int GridY;
+    }
+
+    public struct SetGridTypeParam
+    {
+        public int GridX;
+        public int GridY;
+        public GridRecord.EGridType GridType;
     }
 }

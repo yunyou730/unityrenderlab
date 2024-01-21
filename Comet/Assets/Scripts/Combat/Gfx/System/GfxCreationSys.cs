@@ -15,10 +15,13 @@ namespace comet.combat
         private Config _config = null;
 
         private GfxCreationWorldComp _gfxCreation = null;
+
+        private MiniMap _miniMap = null;
         
         public GfxCreationSys(World world) : base(world)
         {
             _gfxWorld = (GfxWorld)world;
+            _miniMap = _gfxWorld.MiniMap;
             
             _resManager = Comet.Instance.ServiceLocator.Get<ResManager>();
             _config = Comet.Instance.ServiceLocator.Get<Config>();
@@ -30,8 +33,6 @@ namespace comet.combat
         {
             HandleCreateMap();
             HandleCreateActor();
-            
-            
             _gfxGridMap.RefreshTexData();
         }
 
@@ -42,6 +43,7 @@ namespace comet.combat
                 _gfxCreation.bNeedCreateMap = false;
                 CreateGridMapGfx(_gfxCreation.MapRecord);
                 _gfxWorld.GfxGridMap = _gfxGridMap;
+                _miniMap.BindTexture(_gfxGridMap.TexMapData);
             }
         }
         

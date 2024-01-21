@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets/Scripts/Combat/Gfx/Comp/GfxActorComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CmdComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/HUD/MiniMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/BaseWorldComp.cs" />
      <Compile Include="Assets/Scripts/Core/ServiceLocator.cs" />
      <Compile Include="Assets/Scripts/UI/GridDebug.cs" />
@@ -98,6 +99,7 @@
      <Folder Include="Assets/Scripts/Combat/Gfx/WorldComp" />
      <Folder Include="Assets/Scripts/Combat/Gfx/Utils" />
      <Folder Include="Assets/Resources/Materials" />
+     <Folder Include="Assets/Scripts/Combat/HUD" />
      <Folder Include="Assets/Scenes" />
      <Folder Include="Assets/Scripts/Combat/ECS/Utils" />
      <Folder Include="Assets/Scripts/Combat/ECS/System" />

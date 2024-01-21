@@ -1,6 +1,7 @@
 using System;
 using comet.res;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace comet.combat
 {
@@ -15,13 +16,13 @@ namespace comet.combat
 
         private Config _config = null;
         
-        public void Init(Camera mainCamera)
+        public void Init(Camera mainCamera,Image imgMiniMap)
         {
             _config = Comet.Instance.ServiceLocator.Get<Config>();
             
             // Create Map
             _mapRecord = CreateMapRecord();
-            _world = new GfxWorld(_mapRecord);
+            _world = new GfxWorld(_mapRecord,imgMiniMap);
             _world.Init();
             
             // Ctrl
