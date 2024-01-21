@@ -52,9 +52,9 @@
      <Compile Include="Assets/Scripts/UI/GridDebug.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/BaseSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/MapComp.cs" />
-     <Compile Include="Assets/Scripts/Combat/ECS/Utils/AStar.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/GridRecord.cs" />
      <Compile Include="Assets/Scripts/Comet.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Utils/PathFinding.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/RoutePlanSys.cs" />
      <Compile Include="Assets/Scripts/Config/Config.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/BaseComp.cs" />

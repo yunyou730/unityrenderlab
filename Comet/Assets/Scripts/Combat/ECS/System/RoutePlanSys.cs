@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace comet.combat
 {
@@ -9,10 +11,13 @@ namespace comet.combat
         Type[] _types = { typeof(RoutePlanComp)};
         
         private MapComp _mapComp = null;
+
+        private AStar _astar = null;
         
         public RoutePlanSys(World world) : base(world)
         {
             _mapComp = _world.GetWorldComp<MapComp>();
+            _astar = new AStar(_mapComp.MapRecord);
         }
 
         public void OnTick()
@@ -43,10 +48,22 @@ namespace comet.combat
             //           + routeComp.ToGrid.Value.x + ","
             //           + routeComp.ToGrid.Value.y);
 
-            List<Vector2Int> path = AStar.FindPath(_mapComp.MapRecord,routeComp.FromGrid.Value,routeComp.ToGrid.Value);
+            /*
+            List<Vector2Int> path = SimplePathFinding.FindPath(_mapComp.MapRecord,routeComp.FromGrid.Value,routeComp.ToGrid.Value);
             routeComp.ResetPath(path);
             routeComp.DontNeedPlan();
+            */
             
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            List<Vector2Int> path = _astar.FindPath(routeComp.FromGrid.Value, routeComp.ToGrid.Value);  ;
+            watch.Stop();
+            Debug.Log("AStar.FindPath() Cost:" + watch.Elapsed);
+            
+            routeComp.ResetPath(path);
+            routeComp.DontNeedPlan();
+        
+
             // Debug.Log("[route]" + path);
             // foreach (var grid in path)
             // {
