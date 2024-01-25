@@ -67,21 +67,21 @@ namespace comet.combat
                 }
             }
 
-            if (_input.IsMouseButtonDown(InputManager.EMouseBtn.Left))
-            {
-                Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    GfxGridMap gfxGfxGridMap = hit.transform.GetComponent<GfxGridMap>();
-                    if (gfxGfxGridMap != null)
-                    {
-                        int x, y;
-                        gfxGfxGridMap.GetGridCoordBy3DPos(hit.point,out x,out y);
-                        OnChangeGridType(x,y);
-                    }
-                }
-            }
+            // if (_input.IsMouseButtonDown(InputManager.EMouseBtn.Left))
+            // {
+            //     Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
+            //     RaycastHit hit;
+            //     if (Physics.Raycast(ray, out hit))
+            //     {
+            //         GfxGridMap gfxGfxGridMap = hit.transform.GetComponent<GfxGridMap>();
+            //         if (gfxGfxGridMap != null)
+            //         {
+            //             int x, y;
+            //             gfxGfxGridMap.GetGridCoordBy3DPos(hit.point,out x,out y);
+            //             OnChangeGridType(x,y);
+            //         }
+            //     }
+            // }
         }
 
         private void OnSelectActor(GfxActor gfxActor)
@@ -107,15 +107,15 @@ namespace comet.combat
             _cmdComp.AddCmd(cmd);
         }
 
-        private void OnChangeGridType(int gridX,int gridY)
-        {
-            var param = new SetGridTypeParam();
-            param.GridX = gridX;
-            param.GridY = gridY;
-            param.GridType = GridRecord.EGridType.Wall;
-
-            Cmd cmd = new Cmd(ECmd.SetGridType,param);
-            _cmdComp.AddCmd(cmd);
-        }
+        // private void OnChangeGridType(int gridX,int gridY)
+        // {
+        //     var param = new SetGridTypeParam();
+        //     param.GridX = gridX;
+        //     param.GridY = gridY;
+        //     param.GridType = GridRecord.EGridType.Wall;
+        //
+        //     Cmd cmd = new Cmd(ECmd.SetGridType,param);
+        //     _cmdComp.AddCmd(cmd);
+        // }
     }
 }

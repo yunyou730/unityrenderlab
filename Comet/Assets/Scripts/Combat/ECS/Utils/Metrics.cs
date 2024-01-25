@@ -5,6 +5,16 @@ namespace comet.combat
 {
     public class Metrics
     {
+        public static Vector3 GetGridOriginPos(MapRecord mapRecord,int gridX,int gridY)
+        {
+            float gridSize = mapRecord.GridSize;
+            Vector3 result = new Vector3(
+                gridSize * gridX,
+                0,
+                gridSize * gridY);
+            return result;
+        }
+
         public static void GetGridCenterPos(MapRecord mapRecord, 
                 int gridX, int gridY,
                 out float x,out float y,out float z)

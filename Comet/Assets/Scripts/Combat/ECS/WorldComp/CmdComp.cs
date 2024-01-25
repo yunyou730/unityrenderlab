@@ -24,6 +24,7 @@ namespace comet.combat
         ActorSelection,
         ActorMoveToGrid,
         SetGridType,
+        SetGridTexture,
         
         None,
     }    

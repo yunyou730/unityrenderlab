@@ -20,7 +20,6 @@ namespace comet
             "mode1", "mode2"
         };
         
-
         public void Init()
         {
             
@@ -56,6 +55,9 @@ namespace comet
             {
                 Debug.Log("Flow Field");
             }
+            
+            
+            
         }
     }
 }

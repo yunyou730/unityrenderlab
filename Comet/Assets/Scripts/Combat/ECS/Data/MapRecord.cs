@@ -39,7 +39,7 @@ namespace comet
                 
                 // grid type
                 //int gridType = rand.Next((int)GridRecord.EGridType.Max);
-                int gridType = (int)GridRecord.EGridType.Plane;
+                int gridType = (int)GridRecord.EGridType.Ground;
                 gridRecord.SetGridType((GridRecord.EGridType)gridType);
                 
                 // hold GridRecord
@@ -63,7 +63,7 @@ namespace comet
             {
                 int randValue = rand.Next(100);
                 GridRecord.EGridType gridType =
-                    randValue < 15 ? GridRecord.EGridType.Wall : GridRecord.EGridType.Plane;
+                    randValue < 15 ? GridRecord.EGridType.Wall : GridRecord.EGridType.Ground;
                 _grids[i].SetGridType((GridRecord.EGridType)gridType);
             }
         }

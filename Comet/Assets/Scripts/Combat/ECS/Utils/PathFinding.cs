@@ -72,7 +72,7 @@ namespace comet.combat
                 GridRecord gridRecord = mapRecord.GetGridAt(Y, X);
                 if (gridRecord == null)
                     return true;
-                return gridRecord.GridType != GridRecord.EGridType.Plane;
+                return gridRecord.GridType == GridRecord.EGridType.Wall;
             }
         }
 

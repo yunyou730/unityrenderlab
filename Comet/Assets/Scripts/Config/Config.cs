@@ -11,6 +11,7 @@ namespace comet
         
         public int DefaultGridMapRows = 50;
         public int DefaultGridMapCols = 50;
+        //public float DefaultGridSize = 5;
         public float DefaultGridSize = 1;
     }
 }

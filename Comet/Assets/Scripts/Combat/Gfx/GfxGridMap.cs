@@ -169,7 +169,7 @@ namespace comet.combat
                         case GridRecord.EGridType.Grass:
                             color = Color.green;
                             break;
-                        case GridRecord.EGridType.Plane:
+                        case GridRecord.EGridType.Ground:
                             color = Color.yellow;
                             break;
                         case GridRecord.EGridType.Wall:
@@ -222,7 +222,7 @@ namespace comet.combat
                 for (int x = 0;x < _mapRecord.Cols;x++)
                 {
                     GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
-                    if (gridRecord.GridType == GridRecord.EGridType.Plane)
+                    if (gridRecord.GridType == GridRecord.EGridType.Ground)
                     {
                         _colorData[y * _mapRecord.Rows + x] = Color.yellow;
                     }

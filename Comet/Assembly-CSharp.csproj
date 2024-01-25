@@ -49,6 +49,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CmdComp.cs" />
      <Compile Include="Assets/Scripts/Combat/HUD/MiniMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/BaseWorldComp.cs" />
+     <Compile Include="Assets/Scripts/UI/TerrainTextureSelector.cs" />
      <Compile Include="Assets/Scripts/Core/ServiceLocator.cs" />
      <Compile Include="Assets/Scripts/UI/GridDebug.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/BaseSys.cs" />
@@ -63,6 +64,8 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Entity.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Math.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/MoveableComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Ctrl/TerrainTextureCtrl.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Comp/VisionComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/CreationSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/PositionComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
@@ -106,6 +109,7 @@
      <Folder Include="Assets/Scripts/Combat/Gfx/Comp" />
      <Folder Include="Assets/Scripts/Combat/Ctrl" />
      <Folder Include="Assets/Scripts/UI" />
+     <Folder Include="Assets/Resources/Textures/TerrainTexture" />
      <Folder Include="Assets/Scripts/Utils" />
      <Folder Include="Assets/Scripts/Combat" />
      <Folder Include="Assets/Scripts" />
