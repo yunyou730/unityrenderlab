@@ -8,8 +8,8 @@ Shader "Comet/GridMap"
         _TerrainGround("Texture",2D) = "white" {}
         _TerrainGrass("Texture",2D) = "white" {}
         
-        _ToggleShowGridLine("Toggle Grid Line",Integer) = 1
-        _ToggleShowBlock("Toggle Show Block",Integer) = 0
+        [Toggle(ENABLE_GRID_LINE)] _TOGGLE_GRID_LINE("Toggle Grid Line",Float) = 1
+        [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_SHOW_WALKABLE("Toggle Show Block",Integer) = 0
     }
     SubShader
     {
@@ -50,8 +50,8 @@ Shader "Comet/GridMap"
             
             float4 _GridStateTex_TexelSize;
             
-            float _ToggleShowGridLine;
-            float _ToggleShowBlock;
+            float _TOGGLE_GRID_LINE;
+            float _TOGGLE_SHOW_WALKABLE;
 
             v2f vert (appdata v)
             {
@@ -204,22 +204,25 @@ Shader "Comet/GridMap"
                 }
 
                 // walkable
-                if(_ToggleShowBlock > 1.0)
+                if(_TOGGLE_SHOW_WALKABLE > 0.5)
                 {
                     if(data.r > 0.5)
                     {
-                        col = fixed4(1,1,0,1);
-                    }
+                        col = col * fixed4(1,1,0,1);
+                    }    
                 }
                 
                 // grid border
-                if(_ToggleShowGridLine > 0.5)
+                if(_TOGGLE_GRID_LINE > 0.5)
                 {
                     if(i.uv.x < kBorderSize || i.uv.y < kBorderSize || i.uv.x > 1-kBorderSize || i.uv.y > 1-kBorderSize)
                     {
                         col = fixed4(0,0,0,1);
                     }
                 }
+       
+                
+                
 
                 //col = tex2D(_GridStateTex,i.uv2);
                 //col = float4(col.b,col.b,col.b,1.0);
