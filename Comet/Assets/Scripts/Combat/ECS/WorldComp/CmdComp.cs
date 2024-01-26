@@ -56,6 +56,14 @@ namespace comet.combat
     {
         public int GridX;
         public int GridY;
-        public GridRecord.EGridType GridType;
+        public EGridType GridType;
+    }
+
+    public struct SetGridTextureTypeParam
+    {
+        public int GridX;
+        public int GridY;
+        public int TextureLayer;
+        public EGridTextureType GridTextureType;
     }
 }

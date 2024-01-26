@@ -31,12 +31,7 @@ namespace comet.combat
             {
                 case ECmd.ActorSelection:
                 {
-                    // remove selected
-                    _userCtrl.ClearSelectActors();
-                    
-                    // select new
-                    var p = (ActorSelectionParam)cmd.Param;
-                    _userCtrl.AddSelectActors(p.UUIDs);
+                    SelectActor(cmd);
                 }
                     break;
                 case ECmd.ActorMoveToGrid:
@@ -64,6 +59,16 @@ namespace comet.combat
                     }
                 }
                     break;
+                case ECmd.SetGridTexture:
+                {
+                    var p = (SetGridTextureTypeParam)cmd.Param;
+                    GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY,p.GridX);
+                    if (gridRecord != null)
+                    {
+                        gridRecord.SetTextureType(p.TextureLayer,p.GridTextureType);
+                    }
+                }
+                    break;
                 default:
                     break;
             }
@@ -81,5 +86,18 @@ namespace comet.combat
             // moveableComp.StopMove();
             // moveableComp.StartMove(gridX,gridY);
         }
+
+
+        private void SelectActor(Cmd cmd)
+        {
+            // remove selected
+            _userCtrl.ClearSelectActors();
+            
+            // select new 
+            var p = (ActorSelectionParam)cmd.Param;
+            _userCtrl.AddSelectActors(p.UUIDs);
+        }
+        
+        
     }
 }

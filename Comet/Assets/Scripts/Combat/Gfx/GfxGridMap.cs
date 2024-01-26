@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using comet.res;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace comet.combat
 {
     public class GfxGridMap : MonoBehaviour
     {
+        private ResManager _res = null;
+        
         private MapRecord _mapRecord = null;
         public MapRecord MapRecord => _mapRecord;
 
@@ -19,10 +22,6 @@ namespace comet.combat
 
         private Material _material = null;
         
-        //public float GridSize => _gridSize;
-        // private float _basePositionY = 0.0f;
-
-
         private Texture2D _texMapData = null;
         private Color[] _colorData = null;
         public Texture2D TexMapData => _texMapData;
@@ -33,6 +32,8 @@ namespace comet.combat
             _meshRenderer = GetComponent<MeshRenderer>();
             _meshCollider = GetComponent<MeshCollider>();
             _material = _meshRenderer.material;
+
+            _res = Comet.Instance.ServiceLocator.Get<ResManager>();
         }
         
         public void RefreshWithMapRecord(MapRecord mapRecord)
@@ -46,13 +47,21 @@ namespace comet.combat
             _meshFilter.mesh = mesh;
             _meshCollider.sharedMesh = mesh;
             
-            // create texMapData
+            // create texture map data
             _texMapData = new Texture2D(_mapRecord.Cols,_mapRecord.Rows);
             _colorData = new Color[_mapRecord.Rows * _mapRecord.Cols];
             _texMapData.filterMode = FilterMode.Point;
+            
+            // terrain textures
+            //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
+            var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/Grass");
+            var terrainTextureGround = _res.Load<Texture2D>("Textures/TerrainTexture/Ground");
+            _material.SetTexture(Shader.PropertyToID("_TerrainGrass"),terrainTextureGrass);
+            _material.SetTexture(Shader.PropertyToID("_TerrainGround"),terrainTextureGround);
+            
+            // refresh texture data , and pass it to GPU 
             RefreshTexData();
-
-            ShowGridWalkableState();
+            PassTextureDataToMaterial();
         }
 
         public void GetGridCoordBy3DPos(Vector3 pos,out int x,out int y)
@@ -166,16 +175,16 @@ namespace comet.combat
                     
                     switch (gridRecord.GridType)
                     {
-                        case GridRecord.EGridType.Grass:
+                        case EGridType.Grass:
                             color = Color.green;
                             break;
-                        case GridRecord.EGridType.Ground:
+                        case EGridType.Ground:
                             color = Color.yellow;
                             break;
-                        case GridRecord.EGridType.Wall:
+                        case EGridType.Wall:
                             color = Color.gray;
                             break;
-                        case GridRecord.EGridType.Water:
+                        case EGridType.Water:
                             color = Color.cyan;
                             break;
                     }
@@ -214,7 +223,15 @@ namespace comet.combat
             rect.height = _mapRecord.Rows * _gridSize;
             return rect;
         }
-
+        
+        /*
+         * Texture has multiple meanings 
+         * Texture Pixel Type: RGBA
+         * R: >= 0.5 can walk;  < 0.5 can not walk
+         * G: >= 0.5 ground texture; < 0.5 no ground texture
+         * B: >= 0.5 grass texture; < 0.5 no ground texture
+         * A: temp for the 3rd terrain texture 
+         */
         public void RefreshTexData()
         {
             for (int y = 0;y < _mapRecord.Rows;y++)
@@ -222,14 +239,25 @@ namespace comet.combat
                 for (int x = 0;x < _mapRecord.Cols;x++)
                 {
                     GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
-                    if (gridRecord.GridType == GridRecord.EGridType.Ground)
-                    {
-                        _colorData[y * _mapRecord.Rows + x] = Color.yellow;
-                    }
-                    else
-                    {
-                        _colorData[y * _mapRecord.Rows + x] = Color.red;
-                    }
+                    
+                    // walkable data
+                    Color color = Color.black;
+                    color.r = gridRecord.GridType == EGridType.Ground ? 1.0f : 0.0f;
+                    
+                    // terrain texture data, 3 layers
+                    color.g = gridRecord.GetTerrainTexture(0) == EGridTextureType.Ground ? 1.0f : 0.0f;
+                    color.b = gridRecord.GetTerrainTexture(1) == EGridTextureType.Grass ? 1.0f : 0.0f;
+                    
+                    _colorData[y * _mapRecord.Rows + x] = color;
+
+                    // if (gridRecord.GridType == EGridType.Ground)
+                    // {
+                    //     _colorData[y * _mapRecord.Rows + x] = Color.yellow;
+                    // }
+                    // else
+                    // {
+                    //     _colorData[y * _mapRecord.Rows + x] = Color.red;
+                    // }
                 }                
             }
             
@@ -237,7 +265,7 @@ namespace comet.combat
             _texMapData.Apply();
         }
 
-        public void ShowGridWalkableState()
+        public void PassTextureDataToMaterial()
         {
             _material.SetTexture(Shader.PropertyToID("_GridStateTex"),_texMapData);
         }

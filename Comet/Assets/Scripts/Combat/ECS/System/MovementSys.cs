@@ -62,7 +62,7 @@ namespace comet.combat
             Vector3 dir = (to - from);
             dir.y = 0;
             dir = dir.normalized;
-                
+            
             Vector3 nextPos = from + dir * kSpeed * deltaTime;
             posComp.SetPos(_mapComp.MapRecord,nextPos.x,nextPos.z);
         }

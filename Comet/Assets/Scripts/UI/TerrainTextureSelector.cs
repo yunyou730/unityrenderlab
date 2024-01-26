@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace comet
 {
-
     public class TerrainTextureSelector
     {
         const int kWidth = 200;
@@ -22,17 +21,17 @@ namespace comet
             
             if (GUI.Button(new Rect(330,40,kWidth,kHeight),"None"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTexture.None;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.None;
             }
     
             if (GUI.Button(new Rect(330,100,kWidth,kHeight),"Ground"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTexture.Ground;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.Ground;
             }
             
             if (GUI.Button(new Rect(330,160,kWidth,kHeight),"Grass"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTexture.Grass;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.Grass;
             }
             
         }

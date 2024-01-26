@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-namespace comet
+namespace comet.combat
 {
     public class MapRecord : IDisposable
     {
@@ -39,8 +39,8 @@ namespace comet
                 
                 // grid type
                 //int gridType = rand.Next((int)GridRecord.EGridType.Max);
-                int gridType = (int)GridRecord.EGridType.Ground;
-                gridRecord.SetGridType((GridRecord.EGridType)gridType);
+                int gridType = (int)EGridType.Ground;
+                gridRecord.SetGridType((EGridType)gridType);
                 
                 // hold GridRecord
                 _grids[i] = gridRecord;
@@ -62,9 +62,9 @@ namespace comet
             for (int i = 0; i < _grids.Length; i++)
             {
                 int randValue = rand.Next(100);
-                GridRecord.EGridType gridType =
-                    randValue < 15 ? GridRecord.EGridType.Wall : GridRecord.EGridType.Ground;
-                _grids[i].SetGridType((GridRecord.EGridType)gridType);
+                EGridType gridType =
+                    randValue < 15 ? EGridType.Wall : EGridType.Ground;
+                _grids[i].SetGridType(gridType);
             }
         }
 

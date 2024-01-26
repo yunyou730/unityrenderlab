@@ -51,7 +51,6 @@ namespace comet
             _combatManager.Start();
         }
         
-        // Update is called once per frame
         void Update()
         {
             _combatManager?.OnUpdate(Time.deltaTime);

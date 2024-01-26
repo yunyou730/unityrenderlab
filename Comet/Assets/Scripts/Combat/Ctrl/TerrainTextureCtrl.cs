@@ -3,20 +3,12 @@ using comet.core;
 using comet.input;
 using comet.res;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace comet.combat
 {
-    public enum ETerrainTexture
-    {
-        None,
-        Ground,
-        Grass,
-    }
-    
     public class TerrainTextureCtrl : IDisposable
     {
-        public ETerrainTexture _selectedTerrainTexture = ETerrainTexture.None;
+        public EGridTextureType _selectedTerrainTexture = EGridTextureType.None;
 
         private CombatManager _combat = null;
         InputManager _input = null;
@@ -27,7 +19,7 @@ namespace comet.combat
 
         private CmdComp _cmdComp = null;
 
-        public ETerrainTexture SelectedTerrainTexture
+        public EGridTextureType SelectedTerrainTexture
         {
             get => _selectedTerrainTexture;
             set => _selectedTerrainTexture = value;
@@ -57,10 +49,12 @@ namespace comet.combat
 
         public void OnUpdate()
         {
-            if (_selectedTerrainTexture == ETerrainTexture.None)
+            if (_selectedTerrainTexture == EGridTextureType.None)
             {
+                _terrainGridSelectorGameObject.SetActive(false);
                 return;
             }
+            _terrainGridSelectorGameObject.SetActive(true);
 
             Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
             RaycastHit hit;
@@ -70,7 +64,7 @@ namespace comet.combat
                 if (gfxMap != null)
                 {
                     Vector2Int atGrid = MoveGameObject(hit.point);
-                    if (_input.IsMouseButtonDown(InputManager.EMouseBtn.Left))
+                    if (_input.IsMouseButtonPressing(InputManager.EMouseBtn.Left))
                     {
                         MarkGridsTerrainTexture(atGrid.x,atGrid.y);
                     }
@@ -85,7 +79,6 @@ namespace comet.combat
 
         private Vector2Int MoveGameObject(Vector3 point)
         {
-            
             Vector3 pos = point;
             
             // Move select GameObject 
@@ -109,7 +102,6 @@ namespace comet.combat
 
         private void MarkGridsTerrainTexture(int gridX,int gridY)
         {
-            // Mark Grids 
             Vector2Int[] gridCoords = new Vector2Int[4]; 
             gridCoords[0] = new Vector2Int(gridX,gridY);
             gridCoords[1] = new Vector2Int(gridX - 1,gridY);
@@ -118,12 +110,21 @@ namespace comet.combat
             
             for (int i = 0;i < gridCoords.Length;i++)
             {
-                var param = new SetGridTypeParam();
+                // var param = new SetGridTypeParam();
+                // param.GridX = gridCoords[i].x;
+                // param.GridY = gridCoords[i].y;
+                // param.GridType = EGridType.Wall;
+                //
+                // Cmd cmd = new Cmd(ECmd.SetGridType,param);
+                // _cmdComp.AddCmd(cmd);
+
+                var param = new SetGridTextureTypeParam();
                 param.GridX = gridCoords[i].x;
                 param.GridY = gridCoords[i].y;
-                param.GridType = GridRecord.EGridType.Wall;
+                param.TextureLayer = 1;
+                param.GridTextureType = _selectedTerrainTexture;
                 
-                Cmd cmd = new Cmd(ECmd.SetGridType,param);
+                Cmd cmd = new Cmd(ECmd.SetGridTexture,param);
                 _cmdComp.AddCmd(cmd);
             }
         }
