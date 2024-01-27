@@ -115,6 +115,7 @@
      <Folder Include="Assets/Scripts/Combat" />
      <Folder Include="Assets/Scripts" />
      <Folder Include="Assets/Scripts/Combat/Gfx" />
+     <None Include="Assets/Resources/Materials/MiniMap.shader" />
      <Folder Include="Assets/Scripts/Combat/ECS/Comp" />
      <Folder Include="Assets/Resources/Textures" />
      <None Include="Assets/Resources/Materials/GridMap.shader" />

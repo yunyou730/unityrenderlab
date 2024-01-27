@@ -12,7 +12,7 @@ Shader "Comet/GridMap"
         _TerrainGrass("Texture",2D) = "white" {}
         
         [Toggle(ENABLE_GRID_LINE)] _TOGGLE_GRID_LINE("Toggle Grid Line",Float) = 1
-        [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_SHOW_WALKABLE("Toggle Show Block",Integer) = 0
+        [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_WALKABLE("Toggle Show Block",Float) = 0
     }
     SubShader
     {
@@ -55,10 +55,8 @@ Shader "Comet/GridMap"
             sampler2D _TerrainGround;
             sampler2D _TerrainGrass;
             
-            
-            
             float _TOGGLE_GRID_LINE;
-            float _TOGGLE_SHOW_WALKABLE;
+            float _TOGGLE_WALKABLE;
 
             v2f vert (appdata v)
             {
@@ -181,14 +179,17 @@ Shader "Comet/GridMap"
                     col = terrainCol * terrainCol.a + col * (1 - terrainCol.a);
                 }                
                 
-                
                 // walkable
-                if(_TOGGLE_SHOW_WALKABLE > 0.5)
+                if(_TOGGLE_WALKABLE > 0.5)
                 {
                     if(blockerAndHeightData.r > 0.5)
                     {
-                        col += fixed4(1,1,0,1);
-                    }    
+                        col *= fixed4(0,1,0,1);
+                    }
+                    else
+                    {
+                        col *= fixed4(1,0,0,1);
+                    }
                 }
                 
                 // grid border
@@ -199,13 +200,8 @@ Shader "Comet/GridMap"
                         col = fixed4(0,0,0,1);
                     }
                 }
-
-
-                // col = blockerAndHeightData;
                 
                 return col;
-
-                // return blockerAndHeightData;
             }
             ENDCG
         }

@@ -38,6 +38,12 @@ namespace comet.combat
         private Dictionary<int, Color[]> _terrainColorData = new Dictionary<int, Color[]>();
         public Texture2D[] TerrainDataTextures => _terrainDataTextures;
         
+        /*
+         * Render State Flags
+         */
+        private bool _bShowGrid = true;
+        private bool _bShowBlock = false;
+        
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
@@ -261,7 +267,7 @@ namespace comet.combat
                 {
                     GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
                     RefreshColorDataAndTexturesForOneGrid(gridRecord,x,y);
-                }                
+                }
             }
             
             // Colors to texture
@@ -288,7 +294,7 @@ namespace comet.combat
         {
             int pixelIndex = y * _mapRecord.Rows + x;
             
-            // blocker data.
+            // blocker walkable data.
             // Channel R: Blocker or not
             // Channel G: Height value, temp only 0
             Color color = new Color(0, 0, 0, 1);
@@ -323,6 +329,18 @@ namespace comet.combat
             }
             _terrainDataTextures = null;
             _terrainColorData = null;
+        }
+        
+        public void ToggleShowGrid()
+        {
+            _bShowGrid = !_bShowGrid;
+            _material.SetFloat(Shader.PropertyToID("_TOGGLE_GRID_LINE"),_bShowGrid?1.0f:0.0f);
+        }
+
+        public void ToggleShowBlock()
+        {
+            _bShowBlock = !_bShowBlock;
+            _material.SetFloat(Shader.PropertyToID("_TOGGLE_WALKABLE"),_bShowBlock?1.0f:0.0f);
         }
     }    
 }

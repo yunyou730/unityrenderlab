@@ -73,7 +73,7 @@ namespace comet.combat
             _world.Dispose();
         }
 
-        public GfxGridMap GetGridMap()
+        public GfxGridMap GetGfxGridMap()
         {
             return _world.GfxGridMap;
         }

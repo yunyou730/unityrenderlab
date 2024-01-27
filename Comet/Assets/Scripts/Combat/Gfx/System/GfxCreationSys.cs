@@ -43,7 +43,7 @@ namespace comet.combat
                 _gfxCreation.bNeedCreateMap = false;
                 CreateGridMapGfx(_gfxCreation.MapRecord);
                 _gfxWorld.GfxGridMap = _gfxGridMap;
-                _miniMap.BindTexture(_gfxGridMap.BlockerAndHeightTexture);
+                _miniMap.BindGridMap(_gfxGridMap);
             }
         }
         
