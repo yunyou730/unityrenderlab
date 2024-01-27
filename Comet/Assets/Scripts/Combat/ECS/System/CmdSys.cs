@@ -65,7 +65,17 @@ namespace comet.combat
                     GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY,p.GridX);
                     if (gridRecord != null)
                     {
-                        gridRecord.SetTextureType(p.TextureLayer,p.GridTextureType);
+                        // Set Target Layer 
+                        gridRecord.SetTextureType((int)p.TextureLayer,p.GridTextureType);
+
+                        // When we are setting base layer ,will clear other layer's data
+                        if (p.TextureLayer == ETerrainTextureLayer.BaseLayer)
+                        {
+                            for (int i = 1;i < (int)ETerrainTextureLayer.Max;i++)
+                            {
+                                gridRecord.SetTextureType((int)i,EGridTextureType.None);       
+                            }
+                        }
                     }
                 }
                     break;

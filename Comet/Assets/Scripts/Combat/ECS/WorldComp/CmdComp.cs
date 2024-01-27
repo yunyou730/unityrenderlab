@@ -63,7 +63,7 @@ namespace comet.combat
     {
         public int GridX;
         public int GridY;
-        public int TextureLayer;
+        public ETerrainTextureLayer TextureLayer;
         public EGridTextureType GridTextureType;
     }
 }

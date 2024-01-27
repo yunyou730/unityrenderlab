@@ -3,7 +3,10 @@ Shader "Comet/GridMap"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _GridStateTex("Texture",2D) = "white" {}
+        
+        _BlockerAndHeightDataTex("Blocker Height Texture",2D) = "white" {}
+        _TerrainLayer_0("Terrain Layer 0",2D) = "white" {}
+        _TerrainLayer_1("Terrain Layer 1",2D) = "white" {}
         
         _TerrainGround("Texture",2D) = "white" {}
         _TerrainGrass("Texture",2D) = "white" {}
@@ -44,11 +47,15 @@ Shader "Comet/GridMap"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             
-            sampler2D _GridStateTex;
+            sampler2D _BlockerAndHeightDataTex;
+            sampler2D _TerrainLayer_0;
+            sampler2D _TerrainLayer_1;
+            float4 _BlockerAndHeightDataTex_TexelSize;
+            
             sampler2D _TerrainGround;
             sampler2D _TerrainGrass;
             
-            float4 _GridStateTex_TexelSize;
+            
             
             float _TOGGLE_GRID_LINE;
             float _TOGGLE_SHOW_WALKABLE;
@@ -113,102 +120,74 @@ Shader "Comet/GridMap"
                 return uv;
             }
 
-            int GetLayer0BlockIndex(float2 uv)
+            int GetLayerBlockIndex(sampler2D tex, float2 uv)
             {
-                float2 dataTexelSize = _GridStateTex_TexelSize;
+                float2 dataTexelSize = _BlockerAndHeightDataTex_TexelSize;
                 float2 westNorthDataUV = uv + float2(-dataTexelSize.x,dataTexelSize.y);
                 float2 eastNorthDataUV = uv + float2(dataTexelSize.x,dataTexelSize.y);
                 float2 westSouthDataUV = uv + float2(-dataTexelSize.x,-dataTexelSize.y);
                 float2 eastSouthDataUV = uv + float2(dataTexelSize.x,-dataTexelSize.y);
 
                 int blockIndex = 0;
-                if(tex2D(_GridStateTex,westNorthDataUV).g > 0.5)
+                if(tex2D(tex,westNorthDataUV).r > 0.5)
                 {
                     blockIndex += 2;
                 }
-                if(tex2D(_GridStateTex,eastNorthDataUV).g > 0.5)
+                if(tex2D(tex,eastNorthDataUV).r > 0.5)
                 {
                     blockIndex += 1;
                 }
-                if(tex2D(_GridStateTex,westSouthDataUV).g > 0.5)
+                if(tex2D(tex,westSouthDataUV).r > 0.5)
                 {
                     blockIndex += 8;
                 }
-                if(tex2D(_GridStateTex,eastSouthDataUV).g > 0.5)
+                if(tex2D(tex,eastSouthDataUV).r > 0.5)
                 {
                     blockIndex += 4;
                 }
 
-                // if(blockIndex >= 15)
-                // {
-                //     blockIndex = RandomRange(15,31,uv.x + uv.y);
-                // }
-                return blockIndex;
-            }
+                if(blockIndex >= 15)
+                {
+                    blockIndex = ceil(tex2D(tex,uv).g * 100.0f);
+                }
 
-            int GetLayer1BlockIndex(float2 uv)
-            {
-                float2 dataTexelSize = _GridStateTex_TexelSize;
-                float2 westNorthDataUV = uv + float2(-dataTexelSize.x,dataTexelSize.y);
-                float2 eastNorthDataUV = uv + float2(dataTexelSize.x,dataTexelSize.y);
-                float2 westSouthDataUV = uv + float2(-dataTexelSize.x,-dataTexelSize.y);
-                float2 eastSouthDataUV = uv + float2(dataTexelSize.x,-dataTexelSize.y);
-
-                int blockIndex = 0;
-                if(tex2D(_GridStateTex,westNorthDataUV).b > 0.5)
-                {
-                    blockIndex += 2;
-                }
-                if(tex2D(_GridStateTex,eastNorthDataUV).b > 0.5)
-                {
-                    blockIndex += 1;
-                }
-                if(tex2D(_GridStateTex,westSouthDataUV).b > 0.5)
-                {
-                    blockIndex += 8;
-                }
-                if(tex2D(_GridStateTex,eastSouthDataUV).b > 0.5)
-                {
-                    blockIndex += 4;
-                }
-                // if(blockIndex >= 15)
-                // {
-                //     blockIndex = RandomRange(15,31,uv.x + uv.y);
-                // }
+                //blockIndex = ceil(tex2D(tex,uv).g * 100.0f);
                 return blockIndex;
-            }
+            }            
 
             fixed4 frag (v2f i) : SV_Target
             {
                 const float kBorderSize = 0.05;
                 
-                fixed4 data = tex2D(_GridStateTex,i.uv2);
+                fixed4 blockerAndHeightData = tex2D(_BlockerAndHeightDataTex,i.uv2);
+                fixed4 terrainLayer0Data = tex2D(_TerrainLayer_0,i.uv2);
+                fixed4 terrainLayer1Data = tex2D(_TerrainLayer_1,i.uv2);
+                
                 fixed4 col = float4(0,0,0,1);
 
-                // terrrain texture ,layer 0, ground
-                if(data.g > 0.5)
+                if(terrainLayer0Data.r > 0.5)
                 {
-                    int blockIndex = GetLayer0BlockIndex(i.uv2);
-                    float2 uv = terrainBlockIndexToUV(i.uv,blockIndex);
-                    col = tex2D(_TerrainGround,uv);
+                    int blockIndex = GetLayerBlockIndex(_TerrainLayer_0,i.uv2);
+                    float2 blockUV = terrainBlockIndexToUV(i.uv,blockIndex);
+                    float4 terrainCol = tex2D(_TerrainGround,blockUV);
+                    col = terrainCol * terrainCol.a + col * (1 - terrainCol.a);
                 }
+
+                if(terrainLayer1Data.r > 0.5)
+                {
+                    int blockIndex = GetLayerBlockIndex(_TerrainLayer_1,i.uv2);
+                    float2 blockUV = terrainBlockIndexToUV(i.uv,blockIndex);
+                    float4 terrainCol = tex2D(_TerrainGrass,blockUV);
+                    col = terrainCol * terrainCol.a + col * (1 - terrainCol.a);
+                }                
                 
-                // terrain texture , layer 1, grass 
-                if(data.b > 0.5)
-                {
-                    int blockIndex = GetLayer1BlockIndex(i.uv2);
-                    float2 uv = terrainBlockIndexToUV(i.uv,blockIndex);
-
-                    float4 layer1Color = tex2D(_TerrainGrass,uv);
-                    col = layer1Color * layer1Color.a + col * (1-layer1Color.a);   // blend
-                }
-
+                
                 // walkable
                 if(_TOGGLE_SHOW_WALKABLE > 0.5)
                 {
-                    if(data.r > 0.5)
+                    if(blockerAndHeightData.r > 0.5)
                     {
-                        col = col * fixed4(1,1,0,1);
+                        col += fixed4(1,1,0,1);
                     }    
                 }
                 
@@ -220,14 +199,13 @@ Shader "Comet/GridMap"
                         col = fixed4(0,0,0,1);
                     }
                 }
-       
-                
-                
 
-                //col = tex2D(_GridStateTex,i.uv2);
-                //col = float4(col.b,col.b,col.b,1.0);
+
+                // col = blockerAndHeightData;
                 
                 return col;
+
+                // return blockerAndHeightData;
             }
             ENDCG
         }

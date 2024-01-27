@@ -15,4 +15,13 @@ namespace comet.combat
         Ground,
         Grass,
     }
+
+
+    public enum ETerrainTextureLayer
+    {
+        BaseLayer,
+        DecoratorLayer,
+        
+        Max,
+    }
 }

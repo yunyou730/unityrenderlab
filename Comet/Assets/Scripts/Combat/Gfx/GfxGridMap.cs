@@ -19,13 +19,25 @@ namespace comet.combat
         private MeshCollider _meshCollider = null;
         
         private float _gridSize;
-
         private Material _material = null;
         
-        private Texture2D _texMapData = null;
-        private Color[] _colorData = null;
-        public Texture2D TexMapData => _texMapData;
-
+        /*
+         Base data texture.
+         Channel R: is tile a blocker 
+         Channel G: tile height
+         */
+        private Texture2D _blockerAndHeightTexture = null;
+        private Color[] _blockerAndHeightData = null;
+        public Texture2D BlockerAndHeightTexture => _blockerAndHeightTexture;
+        
+        /*
+         * Terrain data textures
+         */
+        private const int kTerrainLayers = (int)ETerrainTextureLayer.Max;
+        private Texture2D[] _terrainDataTextures = new Texture2D[kTerrainLayers];
+        private Dictionary<int, Color[]> _terrainColorData = new Dictionary<int, Color[]>();
+        public Texture2D[] TerrainDataTextures => _terrainDataTextures;
+        
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
@@ -47,10 +59,18 @@ namespace comet.combat
             _meshFilter.mesh = mesh;
             _meshCollider.sharedMesh = mesh;
             
-            // create texture map data
-            _texMapData = new Texture2D(_mapRecord.Cols,_mapRecord.Rows);
-            _colorData = new Color[_mapRecord.Rows * _mapRecord.Cols];
-            _texMapData.filterMode = FilterMode.Point;
+            // Data Texture :blocker and height  
+            _blockerAndHeightTexture = new Texture2D(_mapRecord.Cols,_mapRecord.Rows);
+            _blockerAndHeightTexture.filterMode = FilterMode.Point;
+            _blockerAndHeightData = new Color[_mapRecord.Rows * _mapRecord.Cols];
+            
+            // Data Texture of Terrain 
+            for (int i = 0;i < kTerrainLayers;i++)
+            {
+                _terrainDataTextures[i] = new Texture2D(_mapRecord.Cols,_mapRecord.Rows);
+                _terrainDataTextures[i].filterMode = FilterMode.Point;
+                _terrainColorData.Add(i, new Color[_mapRecord.Rows * _mapRecord.Cols]);
+            }
             
             // terrain textures
             //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
@@ -61,7 +81,7 @@ namespace comet.combat
             
             // refresh texture data , and pass it to GPU 
             RefreshTexData();
-            PassTextureDataToMaterial();
+            BindDataTexturesToMaterial();
         }
 
         public void GetGridCoordBy3DPos(Vector3 pos,out int x,out int y)
@@ -234,46 +254,75 @@ namespace comet.combat
          */
         public void RefreshTexData()
         {
+            // Refresh Colors
             for (int y = 0;y < _mapRecord.Rows;y++)
             {
                 for (int x = 0;x < _mapRecord.Cols;x++)
                 {
                     GridRecord gridRecord = _mapRecord.GetGridAt(y, x);
-                    
-                    // walkable data
-                    Color color = Color.black;
-                    color.r = gridRecord.GridType == EGridType.Ground ? 1.0f : 0.0f;
-                    
-                    // terrain texture data, 3 layers
-                    color.g = gridRecord.GetTerrainTexture(0) == EGridTextureType.Ground ? 1.0f : 0.0f;
-                    color.b = gridRecord.GetTerrainTexture(1) == EGridTextureType.Grass ? 1.0f : 0.0f;
-                    
-                    _colorData[y * _mapRecord.Rows + x] = color;
-
-                    // if (gridRecord.GridType == EGridType.Ground)
-                    // {
-                    //     _colorData[y * _mapRecord.Rows + x] = Color.yellow;
-                    // }
-                    // else
-                    // {
-                    //     _colorData[y * _mapRecord.Rows + x] = Color.red;
-                    // }
+                    RefreshColorDataAndTexturesForOneGrid(gridRecord,x,y);
                 }                
             }
             
-            _texMapData.SetPixels(_colorData);
-            _texMapData.Apply();
+            // Colors to texture
+            _blockerAndHeightTexture.SetPixels(_blockerAndHeightData);
+            _blockerAndHeightTexture.Apply();
+            for (int i = 0;i < kTerrainLayers;i++)
+            {
+                _terrainDataTextures[i].SetPixels(_terrainColorData[i]);
+                _terrainDataTextures[i].Apply();
+            }
+        }
+        
+        public void BindDataTexturesToMaterial()
+        {
+            _material.SetTexture(Shader.PropertyToID("_BlockerAndHeightDataTex"),_blockerAndHeightTexture);
+            for (int i = 0;i < kTerrainLayers;i++)
+            {
+                string layerUniformName = "_TerrainLayer_" + i;
+                _material.SetTexture(Shader.PropertyToID(layerUniformName),_terrainDataTextures[i]);
+            }
         }
 
-        public void PassTextureDataToMaterial()
+        private void RefreshColorDataAndTexturesForOneGrid(GridRecord gridRecord,int x,int y)
         {
-            _material.SetTexture(Shader.PropertyToID("_GridStateTex"),_texMapData);
+            int pixelIndex = y * _mapRecord.Rows + x;
+            
+            // blocker data.
+            // Channel R: Blocker or not
+            // Channel G: Height value, temp only 0
+            Color color = new Color(0, 0, 0, 1);
+            color.r = gridRecord.GridType == EGridType.Ground ? 1.0f : 0.0f;
+            color.g = 0.0f;
+            _blockerAndHeightData[pixelIndex] = color;
+            
+            // layer data
+            // Channel R: whether have data
+            // Channel G: When grid is in terrain texture center(not in corner), which UV index should we use
+            for (int i = 0;i < kTerrainLayers;i++)
+            {
+                EGridTextureType gridTextureType = gridRecord.GetTerrainTexture(i);
+                Color c = Color.black;
+                c.r = gridTextureType == EGridTextureType.None ? 0.0f : 1.0f;
+                c.g = gridRecord.FlagTerrainTextureIndex / 100.0f;
+                
+                _terrainColorData[i][pixelIndex] = c;
+            }
         }
         
         private void OnDestroy()
         {
-            GameObject.Destroy(_texMapData);
-            _colorData = null;
+            // Release Blocker And Height Data Texture 
+            GameObject.Destroy(_blockerAndHeightTexture);
+            _blockerAndHeightData = null;
+            
+            // Release Terrain Data Textures
+            for (int i = 0;i < kTerrainLayers;i++)
+            {
+                GameObject.Destroy(_terrainDataTextures[i]);
+            }
+            _terrainDataTextures = null;
+            _terrainColorData = null;
         }
     }    
 }

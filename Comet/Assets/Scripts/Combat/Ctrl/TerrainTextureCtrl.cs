@@ -2,6 +2,7 @@ using System;
 using comet.core;
 using comet.input;
 using comet.res;
+using UnityEditor;
 using UnityEngine;
 
 namespace comet.combat
@@ -49,13 +50,16 @@ namespace comet.combat
 
         public void OnUpdate()
         {
+            // Check shall we enable Brush Feature 
             if (_selectedTerrainTexture == EGridTextureType.None)
             {
                 _terrainGridSelectorGameObject.SetActive(false);
                 return;
             }
             _terrainGridSelectorGameObject.SetActive(true);
-
+            
+            
+            // Brush Terrain Texture on Grids
             Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
             RaycastHit hit;
             if (Physics.Raycast(ray,out hit))
@@ -121,11 +125,24 @@ namespace comet.combat
                 var param = new SetGridTextureTypeParam();
                 param.GridX = gridCoords[i].x;
                 param.GridY = gridCoords[i].y;
-                param.TextureLayer = 1;
+                param.TextureLayer = GetLayerIndex();
                 param.GridTextureType = _selectedTerrainTexture;
                 
                 Cmd cmd = new Cmd(ECmd.SetGridTexture,param);
                 _cmdComp.AddCmd(cmd);
+            }
+        }
+
+        private ETerrainTextureLayer GetLayerIndex()
+        {
+            switch (_selectedTerrainTexture)
+            {
+                case EGridTextureType.Ground:
+                    return ETerrainTextureLayer.BaseLayer;
+                case EGridTextureType.Grass:
+                    return ETerrainTextureLayer.DecoratorLayer;
+                default:
+                    return ETerrainTextureLayer.Max;
             }
         }
     }
