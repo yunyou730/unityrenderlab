@@ -21,17 +21,17 @@ namespace comet
             
             if (GUI.Button(new Rect(330,40,kWidth,kHeight),"None"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.None;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.None;
             }
     
             if (GUI.Button(new Rect(330,100,kWidth,kHeight),"Ground"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.Ground;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Ground;
             }
             
             if (GUI.Button(new Rect(330,160,kWidth,kHeight),"Grass"))
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = EGridTextureType.Grass;
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Grass;
             }
             
         }

@@ -9,7 +9,7 @@ namespace comet.combat
 {
     public class TerrainTextureCtrl : IDisposable
     {
-        public EGridTextureType _selectedTerrainTexture = EGridTextureType.None;
+        public ETerrainTextureType _selectedTerrainTexture = ETerrainTextureType.None;
 
         private CombatManager _combat = null;
         InputManager _input = null;
@@ -20,7 +20,7 @@ namespace comet.combat
 
         private CmdComp _cmdComp = null;
 
-        public EGridTextureType SelectedTerrainTexture
+        public ETerrainTextureType SelectedTerrainTexture
         {
             get => _selectedTerrainTexture;
             set => _selectedTerrainTexture = value;
@@ -51,7 +51,7 @@ namespace comet.combat
         public void OnUpdate()
         {
             // Check shall we enable Brush Feature 
-            if (_selectedTerrainTexture == EGridTextureType.None)
+            if (_selectedTerrainTexture == ETerrainTextureType.None)
             {
                 _terrainGridSelectorGameObject.SetActive(false);
                 return;
@@ -137,9 +137,9 @@ namespace comet.combat
         {
             switch (_selectedTerrainTexture)
             {
-                case EGridTextureType.Ground:
+                case ETerrainTextureType.Ground:
                     return ETerrainTextureLayer.BaseLayer;
-                case EGridTextureType.Grass:
+                case ETerrainTextureType.Grass:
                     return ETerrainTextureLayer.DecoratorLayer;
                 default:
                     return ETerrainTextureLayer.Max;

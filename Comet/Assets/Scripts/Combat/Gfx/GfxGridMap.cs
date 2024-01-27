@@ -307,9 +307,9 @@ namespace comet.combat
             // Channel G: When grid is in terrain texture center(not in corner), which UV index should we use
             for (int i = 0;i < kTerrainLayers;i++)
             {
-                EGridTextureType gridTextureType = gridRecord.GetTerrainTexture(i);
+                ETerrainTextureType gridTextureType = gridRecord.GetTerrainTexture(i);
                 Color c = Color.black;
-                c.r = gridTextureType == EGridTextureType.None ? 0.0f : 1.0f;
+                c.r = gridTextureType == ETerrainTextureType.None ? 0.0f : 1.0f;
                 c.g = gridRecord.FlagTerrainTextureIndex / 100.0f;
                 
                 _terrainColorData[i][pixelIndex] = c;

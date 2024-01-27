@@ -73,7 +73,7 @@ namespace comet.combat
                         {
                             for (int i = 1;i < (int)ETerrainTextureLayer.Max;i++)
                             {
-                                gridRecord.SetTextureType((int)i,EGridTextureType.None);       
+                                gridRecord.SetTextureType((int)i,ETerrainTextureType.None);       
                             }
                         }
                     }

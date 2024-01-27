@@ -75,6 +75,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/ActorComp.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/System/GfxCreationSys.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxWorld.cs" />
+     <Compile Include="Assets/Scripts/Combat/Ctrl/TerrainHeightCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/System/GfxSyncPosSys.cs" />
      <Compile Include="Assets/Scripts/Input/InputManager.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/RoutePlanComp.cs" />

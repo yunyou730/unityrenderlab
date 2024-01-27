@@ -8,13 +8,13 @@ namespace comet.combat
     public class GridRecord
     {
         public EGridType GridType => _gridType;
-        public EGridTextureType[] TerrainTextureType => _terrainTextureType;
+        public ETerrainTextureType[] TerrainTextureType => _terrainTextureType;
         
         public float Height => _height;
         public void SetHeight(float height) => _height = height;
 
         private EGridType _gridType = EGridType.Ground;
-        private EGridTextureType[] _terrainTextureType = null;
+        private ETerrainTextureType[] _terrainTextureType = null;
         
         private float _height = 0;
 
@@ -24,11 +24,11 @@ namespace comet.combat
         public GridRecord()
         {
             int kLayerCount = (int)ETerrainTextureLayer.Max;
-            _terrainTextureType = new EGridTextureType[kLayerCount];
-            _terrainTextureType[(int)ETerrainTextureLayer.BaseLayer] = EGridTextureType.Ground; 
+            _terrainTextureType = new ETerrainTextureType[kLayerCount];
+            _terrainTextureType[(int)ETerrainTextureLayer.BaseLayer] = ETerrainTextureType.Ground; 
             for (int layer = 1;layer < kLayerCount;layer++)
             {
-                _terrainTextureType[layer] = EGridTextureType.None; 
+                _terrainTextureType[layer] = ETerrainTextureType.None; 
             }
             InitFlagTerrainTextureIndex();
         }
@@ -38,13 +38,13 @@ namespace comet.combat
             _gridType = gridType;
         }
 
-        public void SetTextureType(int layer,EGridTextureType textureType)
+        public void SetTextureType(int layer,ETerrainTextureType textureType)
         {
             Debug.Assert(layer >= 0 && layer < 3);
             _terrainTextureType[layer] = textureType;
         }
 
-        public EGridTextureType GetTerrainTexture(int layer)
+        public ETerrainTextureType GetTerrainTexture(int layer)
         {
             Debug.Assert(layer >= 0 && layer < 3);
             return _terrainTextureType[layer];

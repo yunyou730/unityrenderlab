@@ -9,7 +9,7 @@ namespace comet.combat
         Max,
     }
 
-    public enum EGridTextureType
+    public enum ETerrainTextureType
     {
         None,
         Ground,
