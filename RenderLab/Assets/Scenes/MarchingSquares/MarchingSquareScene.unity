@@ -409,6 +409,12 @@ MonoBehaviour:
   _SE: 0
   _SW: 0
   _NW: 0
+  _borderSize: 3
+  _center: {x: 0, y: 0, z: 0}
+  _topFactor: 0.5
+  _rightFactor: 0.5
+  _bottomFactor: 0.5
+  _leftFactor: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

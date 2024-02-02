@@ -11,13 +11,16 @@ namespace ayy.ms
 {
     public class Square : MonoBehaviour
     {
-        [SerializeField] private bool _NE = false;
-        [SerializeField] private bool _SE;
-        [SerializeField] private bool _SW;
-        [SerializeField] private bool _NW;
+        [SerializeField] private float _topRightValue;
+        [SerializeField] private float _bottomRightValue;
+        [SerializeField] private float _bottomLeftValue;
+        [SerializeField] private float _topLeftValue;
 
         [SerializeField] private float _borderSize = 3.0f;
         [SerializeField] private Vector3 _center = Vector3.zero;
+        
+
+        [SerializeField] private float _isoValue = 0.0f;
         
         private Vector3 _topRight;
         private Vector3 _bottomRight;
@@ -41,7 +44,7 @@ namespace ayy.ms
             _mesh = new Mesh();
             _meshFilter.mesh = _mesh;
             
-            InitPointsPosition();
+            
         }
 
         void Start()
@@ -51,21 +54,29 @@ namespace ayy.ms
         
         void Update()
         {
+            CalcPointsPosition();
             int configValue = GetConfiguration();
             UpdateMesh(configValue);
         }
 
-        private void InitPointsPosition()
+        private void CalcPointsPosition()
         {
             _topRight = _center + new Vector3(_borderSize * 0.5f,0,_borderSize * 0.5f);
             _bottomRight = _center + new Vector3(_borderSize * 0.5f,0,-_borderSize * 0.5f);
             _bottomLeft = _center + new Vector3(-_borderSize * 0.5f,0,-_borderSize * 0.5f);
             _topLeft = _center + new Vector3(-_borderSize * 0.5f,0,_borderSize * 0.5f);
             
-            _top = _center + new Vector3(0,0,_borderSize * 0.5f);
-            _right = _center + new Vector3(_borderSize * 0.5f,0,0);
-            _bottom = _center + new Vector3(0,0,-_borderSize * 0.5f);
-            _left = _center + new Vector3(-_borderSize * 0.5f,0,0);
+            float topFactor = Mathf.Clamp01((_isoValue - _topLeftValue) / (_topRightValue - _topLeftValue));
+            _top = _topLeft + (_topRight - _topLeft) * topFactor;
+
+            float rightFactor = Mathf.Clamp01((_isoValue - _topRightValue)/(_bottomRightValue - _topRightValue));
+            _right = _topRight + (_bottomRight - _topRight) * rightFactor;
+
+            float bottomFactor = Mathf.Clamp01((_isoValue - _bottomLeftValue)/(_bottomRightValue - _bottomLeftValue));
+            _bottom = _bottomLeft + (_bottomRight - _bottomLeft) * bottomFactor;
+            
+            float leftFactor = Mathf.Clamp01((_isoValue - _topLeftValue)/(_bottomLeftValue - _topLeftValue));
+            _left = _topLeft + (_bottomLeft - _topLeft) * leftFactor;
         }
 
         private void UpdateMesh(int configValue)
@@ -168,22 +179,22 @@ namespace ayy.ms
             Gizmos.DrawSphere(_topLeft,_borderSize * kGizmoSizeFactor);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(_top,_borderSize * kGizmoSizeFactor);
-            Gizmos.DrawSphere(_right,_borderSize * kGizmoSizeFactor);
-            Gizmos.DrawSphere(_bottom,_borderSize * kGizmoSizeFactor);
-            Gizmos.DrawSphere(_left,_borderSize * kGizmoSizeFactor);
+            Gizmos.DrawSphere(_top,_borderSize * kGizmoSizeFactor * 0.5f);
+            Gizmos.DrawSphere(_right,_borderSize * kGizmoSizeFactor * 0.5f);
+            Gizmos.DrawSphere(_bottom,_borderSize * kGizmoSizeFactor * 0.5f);
+            Gizmos.DrawSphere(_left,_borderSize * kGizmoSizeFactor * 0.5f);
         }
 
         int GetConfiguration()
         {
             int value = 0;
-            if (_NE)
+            if (_topRightValue > _isoValue)
                 value += 1;
-            if (_SE)
+            if (_bottomRightValue > _isoValue)
                 value += 2;
-            if (_SW)
+            if (_bottomLeftValue > _isoValue)
                 value += 4;
-            if (_NW)
+            if (_topLeftValue > _isoValue)
                 value += 8;
             return value;
         }
