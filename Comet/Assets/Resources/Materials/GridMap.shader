@@ -121,28 +121,56 @@ Shader "Comet/GridMap"
             int GetLayerBlockIndex(sampler2D tex, float2 uv)
             {
                 float2 dataTexelSize = _BlockerAndHeightDataTex_TexelSize;
-                float2 westNorthDataUV = uv + float2(-dataTexelSize.x,dataTexelSize.y);
-                float2 eastNorthDataUV = uv + float2(dataTexelSize.x,dataTexelSize.y);
-                float2 westSouthDataUV = uv + float2(-dataTexelSize.x,-dataTexelSize.y);
-                float2 eastSouthDataUV = uv + float2(dataTexelSize.x,-dataTexelSize.y);
+                // float2 westNorthDataUV = uv + float2(-dataTexelSize.x,dataTexelSize.y);
+                // float2 eastNorthDataUV = uv + float2(dataTexelSize.x,dataTexelSize.y);
+                // float2 westSouthDataUV = uv + float2(-dataTexelSize.x,-dataTexelSize.y);
+                // float2 eastSouthDataUV = uv + float2(dataTexelSize.x,-dataTexelSize.y);
+                //
+                // float2 northUV = uv + float2(0,dataTexelSize.y);
+                // float2 southUV = uv + float2(0,-dataTexelSize.y);
+                // float2 westUV = uv + float2(-dataTexelSize.x,0);
+                // float2 eastUV = uv + float2(dataTexelSize.x,0);
+
+
+                float westNorth = tex2D(tex,uv + float2(-dataTexelSize.x,dataTexelSize.y));
+                float eastNorth = tex2D(tex,uv + float2(dataTexelSize.x,dataTexelSize.y));
+                float westSouth = tex2D(tex,uv + float2(-dataTexelSize.x,-dataTexelSize.y));
+                float eastSouth = tex2D(tex,uv + float2(dataTexelSize.x,-dataTexelSize.y));
+
+                float north = tex2D(tex,uv + float2(0,dataTexelSize.y));
+                float south = tex2D(tex,uv + float2(0,-dataTexelSize.y));
+                float west = tex2D(tex,uv + float2(-dataTexelSize.x,0));
+                float east = tex2D(tex,uv + float2(dataTexelSize.x,0));
+                
+                
 
                 int blockIndex = 0;
-                if(tex2D(tex,westNorthDataUV).r > 0.5)
+                if(westNorth.r > 0.5)
                 {
                     blockIndex += 2;
                 }
-                if(tex2D(tex,eastNorthDataUV).r > 0.5)
+                if(eastNorth.r > 0.5)
                 {
                     blockIndex += 1;
                 }
-                if(tex2D(tex,westSouthDataUV).r > 0.5)
+                if(westSouth.r > 0.5)
                 {
                     blockIndex += 8;
                 }
-                if(tex2D(tex,eastSouthDataUV).r > 0.5)
+                if(eastSouth.r > 0.5)
                 {
                     blockIndex += 4;
                 }
+                
+                // 15 special rule
+                if(north.r > 0.5
+                    && south.r > 0.5
+                    && west.r > 0.5
+                    && east.r > 0.5)
+                {
+                    blockIndex = 15;
+                }
+                
 
                 if(blockIndex >= 15)
                 {

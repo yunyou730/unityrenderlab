@@ -18,6 +18,8 @@ namespace comet.combat
 
         private GridRecord[] _grids = null;
         
+        private const int kBlockerRate = 0;
+        
         public MapRecord(int rows, int cols,float gridSize)
         {
             _rows = rows;
@@ -63,7 +65,7 @@ namespace comet.combat
             {
                 int randValue = rand.Next(100);
                 EGridType gridType =
-                    randValue < 15 ? EGridType.Wall : EGridType.Ground;
+                    randValue < kBlockerRate ? EGridType.Wall : EGridType.Ground;
                 _grids[i].SetGridType(gridType);
             }
         }

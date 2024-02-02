@@ -79,8 +79,8 @@ namespace comet.combat
             }
             
             // terrain textures
-            //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
-            var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/Grass");
+            var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
+            //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/Grass");
             var terrainTextureGround = _res.Load<Texture2D>("Textures/TerrainTexture/Ground");
             _material.SetTexture(Shader.PropertyToID("_TerrainGrass"),terrainTextureGrass);
             _material.SetTexture(Shader.PropertyToID("_TerrainGround"),terrainTextureGround);

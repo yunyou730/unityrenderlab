@@ -1,0 +1,39 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using comet.combat;
+using comet.res;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace comet.posteffect
+{
+    public class PostEffect : MonoBehaviour
+    {
+        // private ResManager _res = null;
+        // private CombatManager _combat = null;
+        // private Material _fogOfWarMaterial = null;
+        
+        // void Start()
+        // {
+            // _res = Comet.Instance.ServiceLocator.Get<ResManager>();
+            // _combat = Comet.Instance.ServiceLocator.Get<CombatManager>();
+            //
+            // _fogOfWarMaterial = _res.Load<Material>("Materials/FogOfWar");
+        // }
+        
+        // private void OnRenderImage(RenderTexture source, RenderTexture destination)
+        // {
+        //     if (_combat.GetGfxGridMap() != null)
+        //     {
+        //         Graphics.Blit(source,destination,_fogOfWarMaterial);    
+        //     }
+        //     else
+        //     {
+        //         Graphics.Blit(source,destination);
+        //     }
+        // }
+        
+    }
+}
+
