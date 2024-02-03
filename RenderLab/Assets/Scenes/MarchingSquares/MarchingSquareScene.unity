@@ -170,6 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enableGizmo: 0
+  _enableInterpolate: 1
+  _buildMode: 0
   _rows: 100
   _cols: 100
   _gridSize: 1

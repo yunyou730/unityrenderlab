@@ -46,9 +46,12 @@ namespace ayy.ms
             _left = _topLeft + (_bottomLeft - _topLeft) * 0.5f;
         }
         
-        public void Triangulate(float isoValue,float[] values)
+        public void Triangulate(float isoValue,float[] values,bool bEnableInterpolate)
         {
-            Interpolate(isoValue,values);
+            if (bEnableInterpolate)
+            {
+                Interpolate(isoValue,values);
+            }
             int conf = GetConfiguration(isoValue, values);
             Triangulate(conf);
         }
@@ -141,11 +144,6 @@ namespace ayy.ms
 
         private void Interpolate(float isoValue,float[] values)
         {
-            _top = _topLeft + (_topRight - _topLeft) * 0.5f;
-            _right = _topRight + (_bottomRight - _topRight) * 0.5f;
-            _bottom = _bottomLeft + (_bottomRight - _bottomLeft) * 0.5f;
-            _left = _topLeft + (_bottomLeft - _topLeft) * 0.5f;
-            
             float topFactor = Mathf.Clamp01((isoValue - values[3]) / (values[0] - values[3]));
             _top = _topLeft + (_topRight - _topLeft) * topFactor;
 

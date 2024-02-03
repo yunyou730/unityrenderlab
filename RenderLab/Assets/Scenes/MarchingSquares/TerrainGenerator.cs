@@ -19,6 +19,8 @@ namespace ayy.marchingsquare
     public class TerrainGenerator : MonoBehaviour
     {
         [SerializeField] private bool _enableGizmo = false;
+        [SerializeField] private bool _enableInterpolate = true;
+        [SerializeField] private bool _buildMode = false;   // whether we build mesh from zero,or clip from full mesh
         
         [SerializeField] private int _rows = 50;
         [SerializeField] private int _cols = 50;
@@ -88,8 +90,7 @@ namespace ayy.marchingsquare
             {
                 _prevMousePos = null;
             }
-
-
+            
             BuildTerrainMesh();
             
         }
@@ -103,7 +104,10 @@ namespace ayy.marchingsquare
                     if (gridY >= 0 && gridY <= _rows && gridX >= 0 && gridX <= _cols)
                     {
                         FieldRecord field = _fields[gridY, gridX];
-                        field.Value -= _brushStrength;    
+                        if (_buildMode)
+                            field.Value += _brushStrength;
+                        else
+                            field.Value -= _brushStrength;    
                     }
                 }
             }
@@ -127,7 +131,7 @@ namespace ayy.marchingsquare
                 for (int x = 0;x <= _cols;x++)
                 {
                     _fields[y, x] = new FieldRecord();
-                    _fields[y, x].Value = 10.0f;
+                    _fields[y, x].Value = _buildMode ? 0.0f : 10.0f; 
                 }
             }
         }
@@ -160,7 +164,7 @@ namespace ayy.marchingsquare
                     values[1] = _fields[y, x + 1].Value;
                     values[2] = _fields[y, x].Value;
                     values[3] = _fields[y + 1, x].Value;
-                    square.Triangulate(_isoValue,values);
+                    square.Triangulate(_isoValue,values,_enableInterpolate);
                     
                     List<Vector3> gridVertices = square.GetVertices();
                     List<int> gridTriangles = square.GetTriangles();
