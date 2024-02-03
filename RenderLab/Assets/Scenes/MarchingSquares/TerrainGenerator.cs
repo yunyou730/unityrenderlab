@@ -18,6 +18,8 @@ namespace ayy.marchingsquare
 
     public class TerrainGenerator : MonoBehaviour
     {
+        [SerializeField] private bool _enableGizmo = false;
+        
         [SerializeField] private int _rows = 50;
         [SerializeField] private int _cols = 50;
         [SerializeField] private float _gridSize = 1.0f;
@@ -31,9 +33,10 @@ namespace ayy.marchingsquare
         private MeshFilter _terrainMeshFilter = null;
         private Mesh _terrainMesh = null;
         
-        //private GridRecord[,] _gridRecords = null;
         private SquareMeshBuilder[,] _squares = null;
         private FieldRecord[,] _fields = null;
+
+        private Vector3? _prevMousePos = null;
         
         void Awake()
         {
@@ -52,7 +55,8 @@ namespace ayy.marchingsquare
         
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            //if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -63,10 +67,31 @@ namespace ayy.marchingsquare
                     if (gridPos.x >= 0 && gridPos.x < _cols && gridPos.y >= 0 && gridPos.y < _rows)
                     {
                         HandleBrushGrid(gridPos.x,gridPos.y);
-                        BuildTerrainMesh();
+                        //BuildTerrainMesh();
                     }
                 }
             }
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                _prevMousePos = Input.mousePosition;
+            }
+            if (Input.GetMouseButton(2))
+            {
+                Vector3 delta = Input.mousePosition - _prevMousePos.Value;
+                delta *= -Time.deltaTime * 3.0f;
+                Camera.main.transform.position += new Vector3(delta.x,0,delta.y);
+        
+                _prevMousePos = Input.mousePosition;
+            }
+            if (Input.GetMouseButtonUp(2))
+            {
+                _prevMousePos = null;
+            }
+
+
+            BuildTerrainMesh();
+            
         }
 
         private void HandleBrushGrid(int x,int y)
@@ -86,27 +111,17 @@ namespace ayy.marchingsquare
 
         private void InitGridsAndSquares()
         {
-            //_gridRecords = new GridRecord[_rows,_cols];
+            _fields = new FieldRecord[_rows + 1, _cols + 1];
             _squares = new SquareMeshBuilder[_rows, _cols];
             for (int y = 0;y < _rows;y++)
             {
                 for (int x = 0;x < _cols;x++)
                 {
-                    // Grid Record
-                    // var gridRecord = new GridRecord();
-                    // gridRecord.FieldValue = 10.0f;
-                    // gridRecord.ConfigValue = Random.Range(0,16);
-                    // gridRecord.HasValue = false;
-                    // _gridRecords[y, x] = gridRecord;
-                    
-                    // Square
                     var square = new SquareMeshBuilder(GridPosToWorldPos(x,y),_gridSize);
                     _squares[y, x] = square;
                 }
             }
             
-            // Field Value
-            _fields = new FieldRecord[_rows + 1, _cols + 1];
             for (int y = 0;y <= _rows;y++)
             {
                 for (int x = 0;x <= _cols;x++)
@@ -115,7 +130,6 @@ namespace ayy.marchingsquare
                     _fields[y, x].Value = 10.0f;
                 }
             }
-
         }
 
         Vector3 GridPosToWorldPos(int x,int y)
@@ -140,7 +154,6 @@ namespace ayy.marchingsquare
             {
                 for (int x = 0;x < _cols;x++)
                 {
-                    // @miao @temp
                     SquareMeshBuilder square = _squares[y, x];
                     float[] values = new float[4];
                     values[0] = _fields[y + 1, x + 1].Value;
@@ -178,6 +191,9 @@ namespace ayy.marchingsquare
 
         private void OnDrawGizmos()
         {
+            if (!_enableGizmo)
+                return;
+            
             Gizmos.color = Color.red;
             for (int y = 0;y <= _rows;y++)
             {
@@ -196,13 +212,6 @@ namespace ayy.marchingsquare
                 }
             }
         }
-
-        // private GridRecord GetGridRecordAt(int x,int y)
-        // {
-        //     if (x >= 0 && x < _cols && y >= 0 && y < _rows)
-        //         return _gridRecords[y, x];
-        //     return null;
-        // }
     }
 
 }
