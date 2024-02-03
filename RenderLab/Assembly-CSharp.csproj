@@ -66,6 +66,7 @@
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/MovementController.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/CameraController.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/Metrics.cs" />
+     <Compile Include="Assets/Scenes/MarchingSquares/TerrainGenerator.cs" />
      <Compile Include="Assets/Scenes/MarchingSquares/Square.cs" />
      <Compile Include="Assets/Scenes/ComputeShaderTest/sample/SampleCompute.cs" />
      <Compile Include="Assets/Scenes/RadialBlur/RadialBlur.cs" />
