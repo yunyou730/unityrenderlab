@@ -73,9 +73,8 @@ namespace comet.input
         
         public bool IsMouseButtonUp(EMouseBtn mouseBtn)
         {
-            if (_mouseBtnMapping.ContainsKey(mouseBtn))
+            if (_mouseBtnMapping.TryGetValue(mouseBtn, out var mouseBtnCode))
             {
-                int mouseBtnCode = _mouseBtnMapping[mouseBtn];
                 return Input.GetMouseButtonUp(mouseBtnCode);
             }
             return false;
@@ -84,6 +83,11 @@ namespace comet.input
         public Vector3 MousePosition()
         {
             return Input.mousePosition;
+        }
+
+        public float MouseScrollDeltaInDirectionY()
+        {
+            return Input.mouseScrollDelta.y;
         }
 
         public void Dispose()

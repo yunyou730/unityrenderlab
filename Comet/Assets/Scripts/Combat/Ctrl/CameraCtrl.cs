@@ -22,6 +22,8 @@ namespace comet.combat
         
         private Vector3? _prevFrameMousePos = null;
         private const float kMouseMoveCameraRatio = -0.02f;
+
+        private const float kScrollMoveCameraSpeed = 20.0f;
         
         public void Init(Camera camera)
         {
@@ -39,7 +41,7 @@ namespace comet.combat
         {
             _cameraMoveDir = Vector2.zero;
             KeyboardControl();
-            MouseControl();
+            MouseControl(deltaTime);
             CheckAndMove(deltaTime);
         }
 
@@ -63,8 +65,9 @@ namespace comet.combat
             }
         }
 
-        private void MouseControl()
+        private void MouseControl(float deltaTime)
         {
+            // holding mid button to move camera
             if (_input.IsMouseButtonPressing(InputManager.EMouseBtn.Middle) && _prevFrameMousePos != null)
             {
                 Vector3 mousePosThisFrame = _input.MousePosition();
@@ -73,6 +76,15 @@ namespace comet.combat
                 MoveByOffset(new Vector3(offset.x,0,offset.y));
             }
             _prevFrameMousePos = _input.MousePosition();
+            
+            
+            // mouse scrolling  
+            if (Mathf.Abs(_input.MouseScrollDeltaInDirectionY()) > Mathf.Epsilon)
+            {
+                float offset = _input.MouseScrollDeltaInDirectionY() * kScrollMoveCameraSpeed * deltaTime;
+                ZoomCamera(offset);
+                //Debug.Log("mouse scroll:" + Input.mouseScrollDelta);
+            }
         }
 
         private void CheckAndMove(float deltaTime)
@@ -93,6 +105,13 @@ namespace comet.combat
             _cameraTransform.position = _config.CameraInitPosition;
             _cameraTransform.rotation = Quaternion.Euler(_config.CameraInitEuler);
         }
+
+        private void ZoomCamera(float offset)
+        {
+            Vector3 nextPos = _cameraTransform.position + _cameraTransform.forward * offset;
+            _cameraTransform.position = nextPos;
+        }
+
 
         private void MoveByOffset(Vector3 offset)
         {
