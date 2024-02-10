@@ -19,7 +19,7 @@ namespace comet.combat
         private float _height = 0;
 
         private int _flatTerrainTextureIndex = 15;  // random from [15,31] ,for terrain texture reason
-        public int FlagTerrainTextureIndex => _flatTerrainTextureIndex;
+        public int FlatTerrainTextureIndex => _flatTerrainTextureIndex;
 
         public GridRecord()
         {

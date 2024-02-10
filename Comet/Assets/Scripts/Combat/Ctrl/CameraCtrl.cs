@@ -83,7 +83,6 @@ namespace comet.combat
             {
                 float offset = _input.MouseScrollDeltaInDirectionY() * kScrollMoveCameraSpeed * deltaTime;
                 ZoomCamera(offset);
-                //Debug.Log("mouse scroll:" + Input.mouseScrollDelta);
             }
         }
 

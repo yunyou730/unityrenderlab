@@ -4,14 +4,15 @@ Shader "Comet/GridMap"
     {
         _MainTex ("Texture", 2D) = "white" {}
         
-        _BlockerAndHeightDataTex("Blocker Height Texture",2D) = "white" {}
+        //_BlockerAndHeightDataTex("Blocker Height Texture",2D) = "white" {}
+        _MapGridsDataTex("Grids Texture",2D) = "white" {}
         _MapPointsDataTex("Points Texture",2D) = "white" {}
         
-        _TerrainLayer_0("Terrain Layer 0",2D) = "white" {}
-        _TerrainLayer_1("Terrain Layer 1",2D) = "white" {}
+        //_TerrainLayer_0("Terrain Layer 0",2D) = "white" {}
+        //_TerrainLayer_1("Terrain Layer 1",2D) = "white" {}
         
-        _TerrainTextureGround("Texture",2D) = "white" {}
-        _TerrainTextureGrass("Texture",2D) = "white" {}
+        _TerrainTextureGround("Terrain Texture, Ground",2D) = "white" {}
+        _TerrainTextureGrass("Terrain Texture, Grass",2D) = "white" {}
         
         [Toggle(ENABLE_GRID_LINE)] _TOGGLE_GRID_LINE("Toggle Grid Line",Float) = 1
         [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_WALKABLE("Toggle Show Block",Float) = 0
@@ -51,13 +52,13 @@ Shader "Comet/GridMap"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             
-            sampler2D _BlockerAndHeightDataTex;
+            sampler2D _MapGridsDataTex;
             sampler2D _MapPointsDataTex;
             
-            sampler2D _TerrainLayer_0;
-            sampler2D _TerrainLayer_1;
+            //sampler2D _TerrainLayer_0;
+            //sampler2D _TerrainLayer_1;
             
-            float4 _BlockerAndHeightDataTex_TexelSize;
+            float4 _MapGridsDataTex_TexelSize;
             float4 _MapPointsDataTex_TexelSize;
             
             sampler2D _TerrainTextureGround;
@@ -166,6 +167,14 @@ Shader "Comet/GridMap"
 //                 return blockIndex;
 //             }
 
+            int RemapTileSetIndex(int tileSetIndex,sampler2D dataTexture,float2 uvByGrid)
+            {
+                if(tileSetIndex == 15)
+                {
+                //     tileSetIndex = floor(tex2D(dataTexture,uvByGrid).g * 100.0f);
+                }
+                return tileSetIndex;
+            }
 
             fixed4 sampleTerrainTexture(v2f i)
             {
@@ -179,14 +188,16 @@ Shader "Comet/GridMap"
 
 
                 // Ground
+                // make flat pattern ,not pure one part of terrain texture 
                 int tileSetIndex = 15;
+                tileSetIndex = RemapTileSetIndex(tileSetIndex,_MapGridsDataTex,i.uv2);
+                
                 float2 tileSetUV = TileSetIndexToUV(i.uv,tileSetIndex);
                 float4 terrainColor = tex2D(_TerrainTextureGround,tileSetUV);
                 col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
                 
-
                 // Grass
-                float2 centerPointUV = i.uv3;
+                const float2 centerPointUV = i.uv3;
                 float2 nw = centerPointUV + float2(0, _MapPointsDataTex_TexelSize.y);
                 float2 ne = centerPointUV + float2(_MapPointsDataTex_TexelSize.x, _MapPointsDataTex_TexelSize.y);
                 float2 se = centerPointUV + float2(_MapPointsDataTex_TexelSize.x,0);
@@ -210,6 +221,9 @@ Shader "Comet/GridMap"
                     tileSetIndex += 4;
                 }
 
+                // make flat pattern ,not pure one part of terrain texture
+                tileSetIndex = RemapTileSetIndex(tileSetIndex,_MapPointsDataTex,i.uv2);   
+                
                 if(tileSetIndex > 0)
                 {
                     // Grass
@@ -217,9 +231,6 @@ Shader "Comet/GridMap"
                     float4 terrainColor = tex2D(_TerrainTextureGrass,tileSetUV);
                     col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
                 }
-       
-                
-                
                 
                 
                 return col;
@@ -256,11 +267,11 @@ Shader "Comet/GridMap"
             
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 blockerAndHeightData = tex2D(_BlockerAndHeightDataTex,i.uv2);
+                fixed4 gridsData = tex2D(_MapGridsDataTex,i.uv2);
                 // sample tileset texture
                 fixed4 col = sampleTerrainTexture(i);
                 // debug color, for walkable
-                col = showWalkableColor(col,blockerAndHeightData);
+                col = showWalkableColor(col,gridsData);
                 // debug color, for grid border
                 col = showGridLineColor(col,i.uv);
                 

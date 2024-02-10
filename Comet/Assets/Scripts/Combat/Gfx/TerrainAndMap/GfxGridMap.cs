@@ -25,13 +25,11 @@ namespace comet.combat
         
         /*
          Base data texture.
-         Channel R: is tile a blocker 
-         Channel G: tile height
+         Channel R: is grid a blocker 
          */
-        private Texture2D _blockerAndHeightTexture = null;
-        private Color[] _blockerAndHeightData = null;
-        public Texture2D BlockerAndHeightTexture => _blockerAndHeightTexture;
-        
+        private Texture2D _gridTexture = null;
+        private Color[] _gridData = null;
+        public Texture2D GridTexture => _gridTexture;
         
         /*
          * Point data & point texture
@@ -44,10 +42,10 @@ namespace comet.combat
         /*
          * Terrain data textures
          */
-        private const int kTerrainLayers = (int)ETerrainTextureLayer.Max;
-        private Texture2D[] _terrainDataTextures = new Texture2D[kTerrainLayers];
-        private Dictionary<int, Color[]> _terrainColorData = new Dictionary<int, Color[]>();
-        public Texture2D[] TerrainDataTextures => _terrainDataTextures;
+        //private const int kTerrainLayers = (int)ETerrainTextureLayer.Max;
+        //private Texture2D[] _terrainDataTextures = new Texture2D[kTerrainLayers];
+        //private Dictionary<int, Color[]> _terrainColorData = new Dictionary<int, Color[]>();
+        //public Texture2D[] TerrainDataTextures => _terrainDataTextures;
         
         /*
          * Render State Flags
@@ -78,22 +76,22 @@ namespace comet.combat
             _meshCollider.sharedMesh = mesh;
             
             // Data Texture: blocker and height  
-            _blockerAndHeightTexture = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
-            _blockerAndHeightTexture.filterMode = FilterMode.Point;
-            _blockerAndHeightData = new Color[_mapRecord.GridRows * _mapRecord.GridCols];
+            _gridTexture = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
+            _gridTexture.filterMode = FilterMode.Point;
+            _gridData = new Color[_mapRecord.GridRows * _mapRecord.GridCols];
             
             // Data Texture: point cliff level, point texture type  
             _mapPointsTexture = new Texture2D(_mapRecord.GridCols + 1,_mapRecord.GridRows + 1);
             _mapPointsTexture.filterMode = FilterMode.Point;
             _mapPointsData = new Color[_mapRecord.PointsInRow * _mapRecord.PointsInCol];
             
-            // Data Texture of Terrain 
-            for (int i = 0;i < kTerrainLayers;i++)
-            {
-                _terrainDataTextures[i] = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
-                _terrainDataTextures[i].filterMode = FilterMode.Point;
-                _terrainColorData.Add(i, new Color[_mapRecord.GridRows * _mapRecord.GridCols]);
-            }
+            // // Data Texture of Terrain 
+            // for (int i = 0;i < kTerrainLayers;i++)
+            // {
+            //     _terrainDataTextures[i] = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
+            //     _terrainDataTextures[i].filterMode = FilterMode.Point;
+            //     _terrainColorData.Add(i, new Color[_mapRecord.GridRows * _mapRecord.GridCols]);
+            // }
             
             // terrain textures
             //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
@@ -121,7 +119,6 @@ namespace comet.combat
             _mapRecord = mapRecord;
         }
         
-
         public Rect GetBounds()
         {
             Rect rect = Rect.zero;
@@ -161,14 +158,16 @@ namespace comet.combat
             }
             
             // Color Data to textures
-            _blockerAndHeightTexture.SetPixels(_blockerAndHeightData);
-            _blockerAndHeightTexture.Apply();
+            _gridTexture.SetPixels(_gridData);
+            _gridTexture.Apply();
             
-            for (int i = 0;i < kTerrainLayers;i++)
-            {
-                _terrainDataTextures[i].SetPixels(_terrainColorData[i]);
-                _terrainDataTextures[i].Apply();
-            }
+            
+            // for (int i = 0;i < kTerrainLayers;i++)
+            // {
+            //     _terrainDataTextures[i].SetPixels(_terrainColorData[i]);
+            //     _terrainDataTextures[i].Apply();
+            // }
+            
             
             _mapPointsTexture.SetPixels(_mapPointsData);
             _mapPointsTexture.Apply();
@@ -178,14 +177,14 @@ namespace comet.combat
         public void BindDataTexturesToMaterial()
         {
             // Grid blockers textures
-            _material.SetTexture(Shader.PropertyToID("_BlockerAndHeightDataTex"),_blockerAndHeightTexture);
+            _material.SetTexture(Shader.PropertyToID("_MapGridsDataTex"),_gridTexture);
             
-            // Terrain Data Textures
-            for (int i = 0;i < kTerrainLayers;i++)
-            {
-                string layerUniformName = "_TerrainLayer_" + i;
-                _material.SetTexture(Shader.PropertyToID(layerUniformName),_terrainDataTextures[i]);
-            }
+            // // Terrain Data Textures
+            // for (int i = 0;i < kTerrainLayers;i++)
+            // {
+            //     string layerUniformName = "_TerrainLayer_" + i;
+            //     _material.SetTexture(Shader.PropertyToID(layerUniformName),_terrainDataTextures[i]);
+            // }
             
             // Points Texture
             _material.SetTexture(Shader.PropertyToID("_MapPointsDataTex"),_mapPointsTexture);
@@ -195,26 +194,14 @@ namespace comet.combat
         {
             int pixelIndex = y * _mapRecord.GridRows + x;
             
-            // blocker walkable data.
+            // Data for each grid.
             // Channel R: Blocker or not
-            // Channel G: Height value, temp only 0
+            // Channel G: When grid is flat, which tileSet index shall we use
             Color color = new Color(0, 0, 0, 1);
             color.r = gridRecord.GridType == EGridType.Ground ? 1.0f : 0.0f;
-            color.g = 0.0f;
-            _blockerAndHeightData[pixelIndex] = color;
-            
-            // layer data
-            // Channel R: whether have Terrain Texture Type data
-            // Channel G: When grid is in terrain texture center(not in corner), which UV index should we use
-            for (int i = 0;i < kTerrainLayers;i++)
-            {
-                ETerrainTextureType gridTextureType = gridRecord.GetTerrainTexture(i);
-                Color c = Color.black;
-                c.r = gridTextureType == ETerrainTextureType.None ? 0.0f : 1.0f;
-                c.g = gridRecord.FlagTerrainTextureIndex / 100.0f;
-                
-                _terrainColorData[i][pixelIndex] = c;
-            }
+            color.g = gridRecord.FlatTerrainTextureIndex / 100.0f;
+            //color.g = (float)gridRecord.FlatTerrainTextureIndex;
+            _gridData[pixelIndex] = color;
         }
 
         private void RefreshColorDataAndTexturesForOnePoint(PointRecord pointRecord,int x,int y)
@@ -230,17 +217,20 @@ namespace comet.combat
             _meshGenrator.Dispose();
             _meshGenrator = null;
             
-            // Release Blocker And Height Data Texture 
-            GameObject.Destroy(_blockerAndHeightTexture);
-            _blockerAndHeightData = null;
+            // Release Textures & Texture's Data
+            Destroy(_gridTexture);
+            _gridData = null;
             
-            // Release Terrain Data Textures
-            for (int i = 0;i < kTerrainLayers;i++)
-            {
-                GameObject.Destroy(_terrainDataTextures[i]);
-            }
-            _terrainDataTextures = null;
-            _terrainColorData = null;
+            Destroy(_mapPointsTexture);
+            _mapPointsData = null;
+            
+            // // Release Terrain Data Textures
+            // for (int i = 0;i < kTerrainLayers;i++)
+            // {
+            //     Destroy(_terrainDataTextures[i]);
+            // }
+            //_terrainDataTextures = null;
+            //_terrainColorData = null;
         }
         
         public void ToggleShowGrid()

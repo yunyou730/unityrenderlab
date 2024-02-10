@@ -18,9 +18,9 @@ namespace comet.combat
 
         public void BindGridMap(GfxGridMap gfxGridMap)
         {
-            _material.SetTexture(Shader.PropertyToID("_WalkableTex"),gfxGridMap.BlockerAndHeightTexture);
-            _material.SetTexture(Shader.PropertyToID("_TerrainLayer0Tex"),gfxGridMap.TerrainDataTextures[0]);
-            _material.SetTexture(Shader.PropertyToID("_TerrainLayer1Tex"),gfxGridMap.TerrainDataTextures[1]);
+            _material.SetTexture(Shader.PropertyToID("_WalkableTex"),gfxGridMap.GridTexture);
+            //_material.SetTexture(Shader.PropertyToID("_TerrainLayer0Tex"),gfxGridMap.TerrainDataTextures[0]);
+            //_material.SetTexture(Shader.PropertyToID("_TerrainLayer1Tex"),gfxGridMap.TerrainDataTextures[1]);
         }
 
         public void Show()
