@@ -61,8 +61,9 @@ namespace comet.combat
                 _config.DefaultGridMapCols,
                 _config.DefaultGridSize);
             //mapRecord.GenerateGrids(-1,0);
-            mapRecord.GenerateGrids(minHeight,maxHeight);
-            mapRecord.RandomizeAllGridsType();
+            mapRecord.Generate(minHeight,maxHeight);
+            // mapRecord.RandomizeAllGridsType();
+            
             return mapRecord;
         }
         

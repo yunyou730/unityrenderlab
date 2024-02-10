@@ -38,8 +38,8 @@ namespace comet.combat
             _mapRecord = mapRecord;
             
             GridSize = mapRecord.GridSize;
-            Rows = _mapRecord.Rows;
-            Cols = _mapRecord.Cols;
+            Rows = _mapRecord.GridRows;
+            Cols = _mapRecord.GridCols;
             
             OccupyState = new EGridOccupyState[Rows, Cols];
             FogOfWarState = new FogOfWarGridState[Rows, Cols];

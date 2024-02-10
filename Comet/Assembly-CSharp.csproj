@@ -63,6 +63,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/BaseComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Metrics.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Entity.cs" />
+     <Compile Include="Assets/Scripts/Combat/ECS/Data/PointRecord.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Math.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/MoveableComp.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/TerrainTextureCtrl.cs" />
@@ -72,8 +73,8 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxActor.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/UserCtrlComp.cs" />
-     <Compile Include="Assets/Scripts/Combat/Gfx/GfxGridMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/ActorComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/GfxMapMeshGenerator.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/System/GfxCreationSys.cs" />
      <Compile Include="Assets/Scripts/PostEffect/PostEffect.cs" />
      <Compile Include="Assets/Scripts/Combat/PostEffect/FogOfWar.cs" />
@@ -92,6 +93,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Data/Enum.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/CameraCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/CombatManager.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/GfxGridMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CreationComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/FlowFieldComp.cs" />
      <Folder Include="Assets" />
@@ -124,6 +126,7 @@
      <None Include="Assets/Resources/Materials/MiniMap.shader" />
      <Folder Include="Assets/Scripts/Combat/ECS/Comp" />
      <Folder Include="Assets/Resources/Textures" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/TerrainAndMap" />
      <None Include="Assets/Resources/Materials/GridMap.shader" />
      <Folder Include="Assets/Scripts/Config" />
      <Folder Include="Assets/Scripts/Input" />

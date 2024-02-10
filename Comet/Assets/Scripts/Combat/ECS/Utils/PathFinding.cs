@@ -82,12 +82,12 @@ namespace comet.combat
         public AStar(MapRecord mapRecord)
         {
             _mapRecord = mapRecord;
-            _nodes = new Node[_mapRecord.Rows,_mapRecord.Cols];
+            _nodes = new Node[_mapRecord.GridRows,_mapRecord.GridCols];
             
             // Create all nodes
-            for (int y = 0;y < _mapRecord.Rows;y++)
+            for (int y = 0;y < _mapRecord.GridRows;y++)
             {
-                for (int x = 0; x < _mapRecord.Cols; x++)
+                for (int x = 0; x < _mapRecord.GridCols; x++)
                 {
                     Node node = new Node(x,y);
                     _nodes[y, x] = node;
@@ -98,9 +98,9 @@ namespace comet.combat
             }
             
             // Record all neigbors
-            for (int y = 0;y < _mapRecord.Rows;y++)
+            for (int y = 0;y < _mapRecord.GridRows;y++)
             {
-                for (int x = 0; x < _mapRecord.Cols; x++)
+                for (int x = 0; x < _mapRecord.GridCols; x++)
                 {
                     Node west = GetNode(x - 1, y);
                     Node north = GetNode(x, y + 1);
@@ -125,9 +125,9 @@ namespace comet.combat
 
         public void Reset()
         {
-            for (int y = 0;y < _mapRecord.Rows;y++)
+            for (int y = 0;y < _mapRecord.GridRows;y++)
             {
-                for (int x = 0; x < _mapRecord.Cols; x++)
+                for (int x = 0; x < _mapRecord.GridCols; x++)
                 {
                     _nodes[y,x].Reset();           
                 }
@@ -143,7 +143,7 @@ namespace comet.combat
 
         bool CheckValid(int x,int y)
         {
-            return !(x < 0 || x >= _mapRecord.Cols || y < 0 || y >= _mapRecord.Rows);
+            return !(x < 0 || x >= _mapRecord.GridCols || y < 0 || y >= _mapRecord.GridRows);
         }
 
         public List<Vector2Int> FindPath(Vector2Int from,Vector2Int to)

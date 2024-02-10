@@ -35,5 +35,13 @@ namespace comet.combat
         {
             return (p1 - p2).magnitude <= 0.01f; //Double.Epsilon * 10.0f;
         }
+
+        public static Vector3 GetPosByPointCoordinate(MapRecord mapRecord, int pointX, int pointY)
+        {
+            float y = 0.0f;
+            float x = pointX * mapRecord.GridSize;
+            float z = pointY * mapRecord.GridSize;
+            return new Vector3(x,y,z);
+        }
     }
 }

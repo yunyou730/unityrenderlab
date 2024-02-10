@@ -59,23 +59,13 @@ namespace comet.combat
                     }
                 }
                     break;
-                case ECmd.SetGridTexture:
+                case ECmd.SpecifyPointTexture:
                 {
-                    var p = (SetGridTextureTypeParam)cmd.Param;
-                    GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY,p.GridX);
-                    if (gridRecord != null)
+                    var p = (SpecifyPointTextureTypeParam)cmd.Param;
+                    PointRecord pointRecord = _map.MapRecord.GetPointAt(p.PointY, p.PointX);
+                    if (pointRecord != null)
                     {
-                        // Set Target Layer 
-                        gridRecord.SetTextureType((int)p.TextureLayer,p.GridTextureType);
-
-                        // When we are setting base layer ,will clear other layer's data
-                        if (p.TextureLayer == ETerrainTextureLayer.BaseLayer)
-                        {
-                            for (int i = 1;i < (int)ETerrainTextureLayer.Max;i++)
-                            {
-                                gridRecord.SetTextureType((int)i,ETerrainTextureType.None);       
-                            }
-                        }
+                        pointRecord.TerrainTextureType = p.PointTextureType;
                     }
                 }
                     break;

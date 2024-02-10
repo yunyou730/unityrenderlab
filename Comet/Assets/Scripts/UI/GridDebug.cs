@@ -42,7 +42,7 @@ namespace comet
             const int kBaseButtonX = 20;
             const int kBaseButtonY = 40;
             
-            GUI.Box(new Rect(10,10,250,350),"Grid Mode");
+            GUI.Box(new Rect(10,10,250,410),"Grid Mode");
             if (GUI.Button(new Rect(40,40,kWidth,kHeight),"Passable"))
             {
                 Debug.Log("Passable");
@@ -66,6 +66,18 @@ namespace comet
             if (GUI.Button(new Rect(40,280,kWidth,kHeight),"Toggle Show Grid"))
             {
                 _combat.GetGfxGridMap().ToggleShowGrid();
+            }
+
+            if (GUI.Button(new Rect(40, 340, kWidth, kHeight), "Toggle MiniMap"))
+            {
+                if (_combat.World.MiniMap.IsShowing())
+                {
+                    _combat.World.MiniMap.Hide();
+                }
+                else
+                {
+                    _combat.World.MiniMap.Show();
+                }
             }
         }
     }

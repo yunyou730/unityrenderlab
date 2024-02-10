@@ -26,7 +26,7 @@ namespace comet.combat
             set => _selectedTerrainTexture = value;
         }
 
-        private GameObject _terrainGridSelectorGameObject = null;
+        private GameObject _terrainGridSelector = null;
         
         public TerrainTextureCtrl(CombatManager combat)
         {
@@ -44,8 +44,8 @@ namespace comet.combat
 
             float gridScale = _mapRecord.GridSize * 2.0f;
             GameObject prefab = _res.Load<GameObject>("Prefabs/TerrainGridSelector");
-            _terrainGridSelectorGameObject = GameObject.Instantiate(prefab);
-            _terrainGridSelectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,1);
+            _terrainGridSelector = GameObject.Instantiate(prefab);
+            _terrainGridSelector.transform.localScale = new Vector3(gridScale,gridScale,1);
         }
 
         public void OnUpdate()
@@ -53,10 +53,10 @@ namespace comet.combat
             // Check shall we enable Brush Feature 
             if (_selectedTerrainTexture == ETerrainTextureType.None)
             {
-                _terrainGridSelectorGameObject.SetActive(false);
+                _terrainGridSelector.SetActive(false);
                 return;
             }
-            _terrainGridSelectorGameObject.SetActive(true);
+            _terrainGridSelector.SetActive(true);
             
             
             // Brush Terrain Texture on Grids
@@ -64,74 +64,91 @@ namespace comet.combat
             RaycastHit hit;
             if (Physics.Raycast(ray,out hit))
             {
+                Vector2Int pointCoord = Vector2Int.zero;
+                MoveGridSelector(hit.point,ref pointCoord);
+                
                 GfxGridMap gfxMap = hit.transform.GetComponent<GfxGridMap>();
-                if (gfxMap != null)
+                if (gfxMap != null && _input.IsMouseButtonPressing(InputManager.EMouseBtn.Left))
                 {
-                    Vector2Int atGrid = MoveGameObject(hit.point);
-                    if (_input.IsMouseButtonPressing(InputManager.EMouseBtn.Left))
-                    {
-                        MarkGridsTerrainTexture(atGrid.x,atGrid.y);
-                    }
+                    MarkPointTerrainTexture(pointCoord.x,pointCoord.y);
                 }
+                
             }
         }
 
         public void Dispose()
         {
-            GameObject.Destroy(_terrainGridSelectorGameObject);
+            GameObject.Destroy(_terrainGridSelector);
         }
 
-        private Vector2Int MoveGameObject(Vector3 point)
+        private void MoveGridSelector(Vector3 point,ref Vector2Int atPoint)
         {
+            // Calc point coordinate 
             Vector3 pos = point;
             
-            // Move select GameObject 
-            int gridX = (int)(pos.x/_mapRecord.GridSize);
+            int gridX = (int)(pos.x / _mapRecord.GridSize);
             int gridY = (int)(pos.z / _mapRecord.GridSize);
             
-            float x = pos.x - gridX * _mapRecord.GridSize;
-            float y = pos.z - gridY * _mapRecord.GridSize;
+            float xPct = (pos.x - gridX * _mapRecord.GridSize)/_mapRecord.GridSize;
+            float yPct = (pos.z - gridY * _mapRecord.GridSize)/_mapRecord.GridSize;
             
+            int pointX = xPct < 0.5 ? gridX : gridX + 1;
+            int pointY = yPct < 0.5 ? gridY : gridY + 1;
             
-            gridX = x > 0.5 ? gridX + 1 : gridX;
-            gridY = y > 0.5 ? gridY + 1 : gridY;
-
-            pos = Metrics.GetGridOriginPos(_mapRecord, gridX, gridY);
+            // Do move by point coordinate 
+            pos = Metrics.GetPosByPointCoordinate(_mapRecord,pointX,pointY);
             pos.y = 0.0001f;
-            _terrainGridSelectorGameObject.transform.localPosition = pos;
-
-            Vector2Int result = new Vector2Int(gridX,gridY);
-            return result;
+            _terrainGridSelector.transform.localPosition = pos;
+            
+            // Pass point coordinate result 
+            atPoint.x = pointX;
+            atPoint.y = pointY;
         }
 
-        private void MarkGridsTerrainTexture(int gridX,int gridY)
+        private void MarkPointTerrainTexture(int pointX,int pointY)
         {
-            Vector2Int[] gridCoords = new Vector2Int[4]; 
-            gridCoords[0] = new Vector2Int(gridX,gridY);
-            gridCoords[1] = new Vector2Int(gridX - 1,gridY);
-            gridCoords[2] = new Vector2Int(gridX,gridY - 1);
-            gridCoords[3] = new Vector2Int(gridX - 1,gridY - 1);
-            
-            for (int i = 0;i < gridCoords.Length;i++)
+            PointRecord pointRecord = _mapRecord.GetPointAt(pointY, pointX);
+            if (pointRecord != null)
             {
-                // var param = new SetGridTypeParam();
-                // param.GridX = gridCoords[i].x;
-                // param.GridY = gridCoords[i].y;
-                // param.GridType = EGridType.Wall;
-                //
-                // Cmd cmd = new Cmd(ECmd.SetGridType,param);
-                // _cmdComp.AddCmd(cmd);
-
-                var param = new SetGridTextureTypeParam();
-                param.GridX = gridCoords[i].x;
-                param.GridY = gridCoords[i].y;
+                var param = new SpecifyPointTextureTypeParam();
+                param.PointX = pointX;
+                param.PointY = pointY;
                 param.TextureLayer = GetLayerIndex();
-                param.GridTextureType = _selectedTerrainTexture;
+                param.PointTextureType = _selectedTerrainTexture;
                 
-                Cmd cmd = new Cmd(ECmd.SetGridTexture,param);
+                Cmd cmd = new Cmd(ECmd.SpecifyPointTexture,param);
                 _cmdComp.AddCmd(cmd);
             }
         }
+
+        // private void MarkGridsTerrainTexture(int gridX,int gridY)
+        // {
+        //     Vector2Int[] gridCoords = new Vector2Int[4]; 
+        //     gridCoords[0] = new Vector2Int(gridX,gridY);
+        //     gridCoords[1] = new Vector2Int(gridX - 1,gridY);
+        //     gridCoords[2] = new Vector2Int(gridX,gridY - 1);
+        //     gridCoords[3] = new Vector2Int(gridX - 1,gridY - 1);
+        //     
+        //     for (int i = 0;i < gridCoords.Length;i++)
+        //     {
+        //         // var param = new SetGridTypeParam();
+        //         // param.GridX = gridCoords[i].x;
+        //         // param.GridY = gridCoords[i].y;
+        //         // param.GridType = EGridType.Wall;
+        //         //
+        //         // Cmd cmd = new Cmd(ECmd.SetGridType,param);
+        //         // _cmdComp.AddCmd(cmd);
+        //
+        //         var param = new SetGridTextureTypeParam();
+        //         param.GridX = gridCoords[i].x;
+        //         param.GridY = gridCoords[i].y;
+        //         param.TextureLayer = GetLayerIndex();
+        //         param.GridTextureType = _selectedTerrainTexture;
+        //         
+        //         Cmd cmd = new Cmd(ECmd.SetGridTexture,param);
+        //         _cmdComp.AddCmd(cmd);
+        //     }
+        // }
 
         private ETerrainTextureLayer GetLayerIndex()
         {
