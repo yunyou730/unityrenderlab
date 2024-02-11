@@ -17,7 +17,7 @@ namespace comet
         
         public void OnGUI()
         {
-            GUI.Box(new Rect(300,10,250,250),"Terrain Texture");
+            GUI.Box(new Rect(300,10,250,350),"Terrain Texture");
             
             if (GUI.Button(new Rect(330,40,kWidth,kHeight),"None"))
             {
@@ -33,6 +33,17 @@ namespace comet
             {
                 _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Grass;
             }
+            
+            if (GUI.Button(new Rect(330,220,kWidth,kHeight),"Dirt-Rough"))
+            {
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.DirtRough;
+            }
+            
+            if (GUI.Button(new Rect(330,280,kWidth,kHeight),"Blight"))
+            {
+                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Blight;
+            }
+            
             
         }
     }

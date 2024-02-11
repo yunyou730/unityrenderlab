@@ -14,6 +14,8 @@ namespace comet.combat
         None,
         Ground,
         Grass,
+        DirtRough,
+        Blight,
     }
 
 

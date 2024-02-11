@@ -8,11 +8,10 @@ Shader "Comet/GridMap"
         _MapGridsDataTex("Grids Texture",2D) = "white" {}
         _MapPointsDataTex("Points Texture",2D) = "white" {}
         
-        //_TerrainLayer_0("Terrain Layer 0",2D) = "white" {}
-        //_TerrainLayer_1("Terrain Layer 1",2D) = "white" {}
-        
-        _TerrainTextureGround("Terrain Texture, Ground",2D) = "white" {}
-        _TerrainTextureGrass("Terrain Texture, Grass",2D) = "white" {}
+        _TerrainTextureGround("Terrain Texture - Ground",2D) = "white" {}
+        _TerrainTextureGrass("Terrain Texture - Grass",2D) = "white" {}
+        _TerrainTextureDirt("Terrain Texture - Dirt",2D) = "white" {}
+        _TerrainTextureBlight("Terrain Texture -Blight",2D) = "white" {}
         
         [Toggle(ENABLE_GRID_LINE)] _TOGGLE_GRID_LINE("Toggle Grid Line",Float) = 1
         [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_WALKABLE("Toggle Show Block",Float) = 0
@@ -63,6 +62,8 @@ Shader "Comet/GridMap"
             
             sampler2D _TerrainTextureGround;
             sampler2D _TerrainTextureGrass;
+            sampler2D _TerrainTextureDirt;
+            sampler2D _TerrainTextureBlight;
             
             float _TOGGLE_GRID_LINE;
             float _TOGGLE_WALKABLE;
@@ -115,121 +116,82 @@ Shader "Comet/GridMap"
                 
                 return uv;
             }
+            
 
-//             int GetTileSetIndex(sampler2D tex, float2 uvByGrid,float2 uvByPoints)
-//             {
-//                 //float2 gridTexelSize = _BlockerAndHeightDataTex_TexelSize;
-//                 
-//                 float2 pointTexelSize = _MapPointsDataTex_TexelSize;
-//
-//                 float westNorth = tex2D(tex,uvByPoints + float2(-pointTexelSize.x,pointTexelSize.y));
-//                 float eastNorth = tex2D(tex,uvByPoints + float2(pointTexelSize.x,pointTexelSize.y));
-//                 float westSouth = tex2D(tex,uvByPoints + float2(-pointTexelSize.x,-pointTexelSize.y));
-//                 float eastSouth = tex2D(tex,uvByPoints + float2(pointTexelSize.x,-pointTexelSize.y));
-//                 
-//                 /*
-//                 float westNorth = tex2D(tex,uvByGrid + float2(-gridTexelSize.x,gridTexelSize.y));
-//                 float eastNorth = tex2D(tex,uvByGrid + float2(gridTexelSize.x,gridTexelSize.y));
-//                 float westSouth = tex2D(tex,uvByGrid + float2(-gridTexelSize.x,-gridTexelSize.y));
-//                 float eastSouth = tex2D(tex,uvByGrid + float2(gridTexelSize.x,-gridTexelSize.y));
-//
-//                 float north = tex2D(tex,uvByGrid + float2(0,gridTexelSize.y));
-//                 float south = tex2D(tex,uvByGrid + float2(0,-gridTexelSize.y));
-//                 float west = tex2D(tex,uvByGrid + float2(-gridTexelSize.x,0));
-//                 float east = tex2D(tex,uvByGrid + float2(gridTexelSize.x,0));
-//                 */
-//                 
-//                 
-//                 int blockIndex = 0;
-//                 if(westNorth.r > 0.5)
-//                 {
-//                     blockIndex += 2;
-//                 }
-//                 if(eastNorth.r > 0.5)
-//                 {
-//                     blockIndex += 1;
-//                 }
-//                 if(westSouth.r > 0.5)
-//                 {
-//                     blockIndex += 8;
-//                 }
-//                 if(eastSouth.r > 0.5)
-//                 {
-//                     blockIndex += 4;
-//                 }
-//                 //   texture's G channel, saved the pre - randomized tileset index, so we use the G channel
-//                 if(blockIndex >= 15)
-//                 {
-//                     blockIndex = ceil(tex2D(tex,uvByGrid).g * 100.0f);  // @miao @temp
-//                 }
-//
-//                 //blockIndex = ceil(tex2D(tex,uv).g * 100.0f);
-//                 return blockIndex;
-//             }
-
-            int RemapTileSetIndex(int tileSetIndex,sampler2D dataTexture,float2 uvByGrid)
+            int MarchingQuadValue(sampler2D valueTex,float threshold,float2 nw,float2 ne,float2 se,float2 sw)
             {
-                if(tileSetIndex == 15)
+                const float epsilon = 0.01;
+                int v = 0;
+                if(abs(tex2D(valueTex,nw).r - threshold) < epsilon)
                 {
-                //     tileSetIndex = floor(tex2D(dataTexture,uvByGrid).g * 100.0f);
+                    v += 2;
                 }
-                return tileSetIndex;
+                if(abs(tex2D(valueTex,ne).r - threshold) < epsilon)
+                {
+                    v += 1;
+                }
+                if(abs(tex2D(valueTex,sw).r - threshold) < epsilon)
+                {
+                    v += 8;
+                }
+                if(abs(tex2D(valueTex,se).r - threshold) < epsilon)
+                {
+                    v += 4;
+                }
+                return v;
             }
+
+
+            // float4 handleTerrainTexture(float4 col,sampler2D terrainTexture,int tileSetIndex,float2 uvInGrid)
+            // {
+            //     float2 tileSetUV = TileSetIndexToUV(uvInGrid,tileSetIndex);
+            //     float4 terrainColor = tex2D(terrainTexture,tileSetUV);
+            //     float4 result = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
+            //     return result;
+            // }
 
             fixed4 sampleTerrainTexture(v2f i)
             {
-                // layer 0: whether we have ground 
-                // layer 1: whether we have grass 
-                //fixed4 terrainLayer0Data = tex2D(_TerrainLayer_0,i.uv2);        
-                //fixed4 terrainLayer1Data = tex2D(_TerrainLayer_1,i.uv2);
-                //fixed4 terrainTextureData = tex2D(_MapPointsDataTex,i.uv3);
-                
                 fixed4 col = float4(0,0,0,1);
-
-
-                // Ground
-                // make flat pattern ,not pure one part of terrain texture 
-                int tileSetIndex = 15;
-                tileSetIndex = RemapTileSetIndex(tileSetIndex,_MapGridsDataTex,i.uv2);
                 
+                // Base Layer: Ground
+                int tileSetIndex = 15;
                 float2 tileSetUV = TileSetIndexToUV(i.uv,tileSetIndex);
                 float4 terrainColor = tex2D(_TerrainTextureGround,tileSetUV);
                 col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
                 
-                // Grass
+                // Center Layer: Grass or Dirt
                 const float2 centerPointUV = i.uv3;
                 float2 nw = centerPointUV + float2(0, _MapPointsDataTex_TexelSize.y);
                 float2 ne = centerPointUV + float2(_MapPointsDataTex_TexelSize.x, _MapPointsDataTex_TexelSize.y);
                 float2 se = centerPointUV + float2(_MapPointsDataTex_TexelSize.x,0);
                 float2 sw = centerPointUV + float2(0,0);
                 
-                tileSetIndex = 0;
-                if(tex2D(_MapPointsDataTex,nw).r > 0.5)
+                const int grassTileSetIndex = MarchingQuadValue(_MapPointsDataTex,0.1,nw,ne,se,sw);
+                const int dirtTileSetIndex = MarchingQuadValue(_MapPointsDataTex,0.2,nw,ne,se,sw);
+                const int blightTileSetIndex = MarchingQuadValue(_MapPointsDataTex,0.3,nw,ne,se,sw);
+                
+                if(grassTileSetIndex > 0)
                 {
-                    tileSetIndex += 2;
+                    float2 tileSetUV = TileSetIndexToUV(i.uv,grassTileSetIndex);
+                    float4 terrainColor = tex2D(_TerrainTextureGrass,tileSetUV);
+                    col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);                    
                 }
-                if(tex2D(_MapPointsDataTex,ne).r > 0.5)
+                else if(dirtTileSetIndex > 0)
                 {
-                    tileSetIndex += 1;
-                }
-                if(tex2D(_MapPointsDataTex,sw).r > 0.5)
-                {
-                    tileSetIndex += 8;
-                }
-                if(tex2D(_MapPointsDataTex,se).r > 0.5)
-                {
-                    tileSetIndex += 4;
+                    float2 tileSetUV = TileSetIndexToUV(i.uv,dirtTileSetIndex);
+                    float4 terrainColor = tex2D(_TerrainTextureDirt,tileSetUV);
+                    col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);                    
                 }
 
-                // make flat pattern ,not pure one part of terrain texture
-                tileSetIndex = RemapTileSetIndex(tileSetIndex,_MapPointsDataTex,i.uv2);   
-                
-                if(tileSetIndex > 0)
+
+                // Top Layer , Blight 
+                if(blightTileSetIndex > 0)
                 {
-                    // Grass
-                    float2 tileSetUV = TileSetIndexToUV(i.uv,tileSetIndex);
-                    float4 terrainColor = tex2D(_TerrainTextureGrass,tileSetUV);
+                    float2 tileSetUV = TileSetIndexToUV(i.uv,blightTileSetIndex);
+                    float4 terrainColor = tex2D(_TerrainTextureBlight,tileSetUV);
                     col = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
+                    //col = terrainColor;
                 }
                 
                 

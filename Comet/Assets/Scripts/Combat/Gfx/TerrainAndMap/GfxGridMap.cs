@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using comet.res;
+using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -95,10 +96,15 @@ namespace comet.combat
             
             // terrain textures
             //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
-            var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/Grass");
-            var terrainTextureGround = _res.Load<Texture2D>("Textures/TerrainTexture/Ground");
+            var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/grass");
+            var terrainTextureGround = _res.Load<Texture2D>("Textures/TerrainTexture/ground");
+            var terrainTextureDirt = _res.Load<Texture2D>("Textures/TerrainTexture/dirt_rough");
+            var terrainTextureBlight = _res.Load<Texture2D>("Textures/TerrainTexture/blight");
+            
             _material.SetTexture(Shader.PropertyToID("_TerrainTextureGrass"),terrainTextureGrass);
             _material.SetTexture(Shader.PropertyToID("_TerrainTextureGround"),terrainTextureGround);
+            _material.SetTexture(Shader.PropertyToID("_TerrainTextureDirt"),terrainTextureDirt);
+            _material.SetTexture(Shader.PropertyToID("_TerrainTextureBlight"),terrainTextureBlight);
             
             // refresh texture data , and pass it to GPU 
             RefreshTexData();
@@ -208,7 +214,21 @@ namespace comet.combat
         {
             int pixelIndex = y * _mapRecord.PointsInRow + x;
             Color col = new Color(0, 0, 0, 1);
-            col.r = pointRecord.TerrainTextureType == ETerrainTextureType.Grass ? 1.0f : 0.0f;
+            switch (pointRecord.TerrainTextureType)
+            {
+                case ETerrainTextureType.Grass:
+                    col.r = 0.1f;
+                    break;
+                case ETerrainTextureType.DirtRough:
+                    col.r = 0.2f;
+                    break;
+                case ETerrainTextureType.Blight:
+                    col.r = 0.3f;
+                    break;
+                default:
+                    col.r = 0.0f;
+                    break;
+            }
             _mapPointsData[pixelIndex] = col;
         }
 
