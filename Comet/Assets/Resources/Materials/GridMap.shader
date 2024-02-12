@@ -2,9 +2,6 @@ Shader "Comet/GridMap"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        
-        //_BlockerAndHeightDataTex("Blocker Height Texture",2D) = "white" {}
         _MapGridsDataTex("Grids Texture",2D) = "white" {}
         _MapPointsDataTex("Points Texture",2D) = "white" {}
         
@@ -15,6 +12,9 @@ Shader "Comet/GridMap"
         
         [Toggle(ENABLE_GRID_LINE)] _TOGGLE_GRID_LINE("Toggle Grid Line",Float) = 1
         [Toggle(ENABLE_SHOW_WALKABLE)] _TOGGLE_WALKABLE("Toggle Show Block",Float) = 0
+        
+        [Toggle(_TOGGLE_GRID_UV)] _TOGGLE_GRID_UV("Toggle Show Grid UV",Float) = 0
+        [Toggle(_TOGGLE_MAP_UV)] _TOGGLE_MAP_UV("Toggle Show Map UV",Float) = 0
     }
     SubShader
     {
@@ -47,15 +47,9 @@ Shader "Comet/GridMap"
                 float2 uv2 : TEXCOORD1;     // uv2: uv in whole map mesh, in gridRows x gridCols
                 float2 uv3 : TEXCOORD2;     // uv3: uv in whole map mesh, in pointRows x pointCols
             };
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
             
             sampler2D _MapGridsDataTex;
             sampler2D _MapPointsDataTex;
-            
-            //sampler2D _TerrainLayer_0;
-            //sampler2D _TerrainLayer_1;
             
             float4 _MapGridsDataTex_TexelSize;
             float4 _MapPointsDataTex_TexelSize;
@@ -67,12 +61,13 @@ Shader "Comet/GridMap"
             
             float _TOGGLE_GRID_LINE;
             float _TOGGLE_WALKABLE;
+            float _TOGGLE_GRID_UV;
+            float _TOGGLE_MAP_UV;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.uv = v.uv;
                 o.vertColor = v.vertColor;
                 o.uv2 = v.uv2;
@@ -234,6 +229,19 @@ Shader "Comet/GridMap"
                 fixed4 col = sampleTerrainTexture(i);
                 // debug color, for walkable
                 col = showWalkableColor(col,gridsData);
+                
+
+                
+                if(_TOGGLE_GRID_UV > 0.5)
+                {
+                    col = float4(i.uv,0.0,1.0);
+                }
+
+                if(_TOGGLE_MAP_UV > 0.5)
+                {
+                    col = float4(i.uv2,0.0,1.0);
+                }
+
                 // debug color, for grid border
                 col = showGridLineColor(col,i.uv);
                 

@@ -53,6 +53,8 @@ namespace comet.combat
          */
         private bool _bShowGrid = true;
         private bool _bShowBlock = false;
+        private bool _bShowGridUV = false;
+        private bool _bShowMapUV = false;
         
         private void Awake()
         {
@@ -199,7 +201,12 @@ namespace comet.combat
         private void RefreshColorDataAndTexturesForOneGrid(GridRecord gridRecord,int x,int y)
         {
             int pixelIndex = y * _mapRecord.GridRows + x;
-            
+
+            if (pixelIndex >= _gridData.Length)
+            {
+                Debug.Log("xxx");
+            }
+
             // Data for each grid.
             // Channel R: Blocker or not
             // Channel G: When grid is flat, which tileSet index shall we use
@@ -263,6 +270,18 @@ namespace comet.combat
         {
             _bShowBlock = !_bShowBlock;
             _material.SetFloat(Shader.PropertyToID("_TOGGLE_WALKABLE"),_bShowBlock?1.0f:0.0f);
+        }
+        
+        public void ToggleShowGridUV()
+        {
+            _bShowGridUV = !_bShowGridUV;
+            _material.SetFloat(Shader.PropertyToID("_TOGGLE_GRID_UV"),_bShowBlock?1.0f:0.0f);
+        }
+        
+        public void ToggleShowMapUV()
+        {
+            _bShowMapUV = !_bShowMapUV;
+            _material.SetFloat(Shader.PropertyToID("_TOGGLE_MAP_UV"),_bShowBlock?1.0f:0.0f);
         }
     }    
 }
