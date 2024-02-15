@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace comet.combat
 {
-    public class TerrainTextureCtrl : IDisposable
+    public class TerrainTextureCtrl : ITerrainModifier,IDisposable
     {
         public ETerrainTextureType _selectedTerrainTexture = ETerrainTextureType.None;
 
@@ -18,13 +18,15 @@ namespace comet.combat
 
         private CmdComp _cmdComp = null;
 
+        private TerrainCrossPointSelector _crossPointSelector = null;
+
         public ETerrainTextureType SelectedTerrainTexture
         {
             get => _selectedTerrainTexture;
             set => _selectedTerrainTexture = value;
         }
 
-        private GameObject _terrainGridSelector = null;
+        // private GameObject _terrainGridSelector = null;
         
         public TerrainTextureCtrl(CombatManager combat)
         {
@@ -35,73 +37,28 @@ namespace comet.combat
             _cmdComp = _combat.World.GetWorldComp<CmdComp>();
         }
 
-        public void Init(Camera mainCamera,MapRecord mapRecord)
+        public void Init(Camera mainCamera,MapRecord mapRecord,TerrainCrossPointSelector crossPointSelector)
         {
             _mainCamera = mainCamera;
             _mapRecord = mapRecord;
-
-            float gridScale = _mapRecord.GridSize * 2.0f;
-            GameObject prefab = _res.Load<GameObject>("Prefabs/TerrainGridSelector");
-            _terrainGridSelector = GameObject.Instantiate(prefab);
-            _terrainGridSelector.transform.localScale = new Vector3(gridScale,gridScale,1);
+            _crossPointSelector = crossPointSelector;
         }
 
-        public void OnUpdate()
+        public bool ShouldWorking()
         {
-            // Check shall we enable Brush Feature 
-            if (_selectedTerrainTexture == ETerrainTextureType.None)
-            {
-                _terrainGridSelector.SetActive(false);
-                return;
-            }
-            _terrainGridSelector.SetActive(true);
-            
-            
-            // Brush Terrain Texture on Grids
-            Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
-            RaycastHit hit;
-            if (Physics.Raycast(ray,out hit))
-            {
-                Vector2Int pointCoord = Vector2Int.zero;
-                MoveGridSelector(hit.point,ref pointCoord);
-                
-                GfxGridMap gfxMap = hit.transform.GetComponent<GfxGridMap>();
-                if (gfxMap != null && _input.IsMouseButtonPressing(InputManager.EMouseBtn.Left))
-                {
-                    MarkPointTerrainTexture(pointCoord.x,pointCoord.y);
-                }
-            }
+            return _selectedTerrainTexture != ETerrainTextureType.None;
         }
 
+        public void DoJob(int crossPointX,int crossPointY)
+        {
+            MarkPointTerrainTexture(crossPointX,crossPointY);
+        }
+        
         public void Dispose()
         {
-            GameObject.Destroy(_terrainGridSelector);
+            
         }
-
-        private void MoveGridSelector(Vector3 point,ref Vector2Int atPoint)
-        {
-            // Calc point coordinate 
-            Vector3 pos = point;
-            
-            int gridX = (int)(pos.x / _mapRecord.GridSize);
-            int gridY = (int)(pos.z / _mapRecord.GridSize);
-            
-            float xPct = (pos.x - gridX * _mapRecord.GridSize)/_mapRecord.GridSize;
-            float yPct = (pos.z - gridY * _mapRecord.GridSize)/_mapRecord.GridSize;
-            
-            int pointX = xPct < 0.5 ? gridX : gridX + 1;
-            int pointY = yPct < 0.5 ? gridY : gridY + 1;
-            
-            // Do move by point coordinate 
-            pos = Metrics.GetPosByPointCoordinate(_mapRecord,pointX,pointY);
-            pos.y = 0.0001f;
-            _terrainGridSelector.transform.localPosition = pos;
-            
-            // Pass point coordinate result 
-            atPoint.x = pointX;
-            atPoint.y = pointY;
-        }
-
+        
         private void MarkPointTerrainTexture(int pointX,int pointY)
         {
             PointRecord pointRecord = _mapRecord.GetPointAt(pointY, pointX);

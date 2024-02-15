@@ -1,5 +1,6 @@
 using System;
 using comet.res;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,13 @@ namespace comet.combat
         private MapRecord _mapRecord = null;
         private GfxWorld _world = null;
         public GfxWorld World { get { return _world; } }
-        
+
+
+        private TerrainCrossPointSelector _crossPointSelector = null;
         private CameraCtrl _cameraCtrl = null;
         private ActorCtrl _actorCtrl = null;
         private TerrainTextureCtrl _terrainTextureCtrl = null;
+        private TerrainHeightCtrl _terrainHeightCtrl = null;
 
         public TerrainTextureCtrl TerrainTextureCtrl => _terrainTextureCtrl;
 
@@ -32,9 +36,14 @@ namespace comet.combat
             _cameraCtrl = new CameraCtrl();
             _actorCtrl = new ActorCtrl(this);
             _terrainTextureCtrl = new TerrainTextureCtrl(this);
+            _terrainHeightCtrl = new TerrainHeightCtrl(this);
+            _crossPointSelector = new TerrainCrossPointSelector(_mapRecord,_terrainTextureCtrl,_terrainHeightCtrl);
+            
+            _crossPointSelector.Init(mainCamera);
             _cameraCtrl.Init(mainCamera);
             _actorCtrl.Init(mainCamera);
-            _terrainTextureCtrl.Init(mainCamera,_mapRecord);
+            _terrainTextureCtrl.Init(mainCamera,_mapRecord,_crossPointSelector);
+            _terrainHeightCtrl.Init(mainCamera,_mapRecord);
         }
 
         public void Start()
@@ -47,7 +56,7 @@ namespace comet.combat
         {
             _cameraCtrl.OnUpdate(deltaTime);
             _actorCtrl.OnUpdate(deltaTime);
-            _terrainTextureCtrl.OnUpdate();
+            _crossPointSelector.OnUpdate();
             _world?.OnUpdate(deltaTime);
         }
 
@@ -69,6 +78,9 @@ namespace comet.combat
         
         public void Dispose()
         {
+            _crossPointSelector.Dispose();
+            _crossPointSelector = null;
+            
             _cameraCtrl = null;
             _mapRecord?.Dispose();
             _world.Dispose();

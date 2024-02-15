@@ -18,6 +18,13 @@ namespace comet.combat
         Blight,
     }
 
+    public enum ETerrainHeightCtrlType
+    {
+        Upper,
+        Lower,
+        
+        None,
+    }
 
     public enum ETerrainTextureLayer
     {

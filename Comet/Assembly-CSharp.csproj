@@ -45,7 +45,6 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets/Scripts/Combat/Ctrl/TerrainGridSelector.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/Comp/GfxActorComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CmdComp.cs" />
      <Compile Include="Assets/Scripts/Combat/HUD/MiniMap.cs" />
@@ -55,10 +54,12 @@
      <Compile Include="Assets/Scripts/UI/GridDebug.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/BaseSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/MapComp.cs" />
+     <Compile Include="Assets/Scripts/UI/TerrainHeightEditor.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/GridRecord.cs" />
      <Compile Include="Assets/Scripts/Comet.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/PathFinding.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/RoutePlanSys.cs" />
+     <Compile Include="Assets/Scripts/Combat/Ctrl/TerrainCrossPointSelector.cs" />
      <Compile Include="Assets/Scripts/Config/Config.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/BaseComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Metrics.cs" />
@@ -74,6 +75,7 @@
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxActor.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/UserCtrlComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/ActorComp.cs" />
+     <Compile Include="Assets/Scripts/Combat/Ctrl/ITerrainModifier.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/GfxMapMeshGenerator.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/System/GfxCreationSys.cs" />
      <Compile Include="Assets/Scripts/PostEffect/PostEffect.cs" />

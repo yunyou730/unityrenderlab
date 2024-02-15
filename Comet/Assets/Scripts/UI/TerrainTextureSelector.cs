@@ -10,7 +10,6 @@ namespace comet
 
         private CombatManager _combat = null;
         
-        
         private bool _bShow = true;
         private Rect _expandRect = new Rect(300, 10, 250, 350);
         private Rect _hideRect = new Rect(300, 10, 250, 50);

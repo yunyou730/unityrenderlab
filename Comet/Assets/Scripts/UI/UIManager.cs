@@ -9,6 +9,7 @@ namespace comet
         
         private GridDebug _gridDebug = null;
         private TerrainTextureSelector _terrainTexture = null;
+        private TerrainHeightEditor _terrainHeight = null;
 
         public void Init()
         {
@@ -16,20 +17,25 @@ namespace comet
             
             _gridDebug = new GridDebug();
             _terrainTexture = new TerrainTextureSelector();
+            _terrainHeight = new TerrainHeightEditor();
             
             _gridDebug.Init();
             _terrainTexture.Init();
+            _terrainHeight.Init();
         }
 
         public void OnGUI()
         {
             _gridDebug?.OnGUI();
             _terrainTexture?.OnGUI();
+            _terrainHeight?.OnGUI();
         }
 
         public void Dispose()
         {
             _gridDebug = null;
+            _terrainTexture = null;
+            _terrainHeight = null;
         }
     }
 }
