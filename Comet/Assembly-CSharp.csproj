@@ -92,6 +92,7 @@
      <Compile Include="Assets/Scripts/Combat/Ctrl/ActorCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/Enum.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/CameraCtrl.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/GfxFogOfWar.cs" />
      <Compile Include="Assets/Scripts/Combat/CombatManager.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/GfxGridMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CreationComp.cs" />
