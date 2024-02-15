@@ -1,8 +1,6 @@
 using System;
-using comet.core;
 using comet.input;
 using comet.res;
-using UnityEditor;
 using UnityEngine;
 
 namespace comet.combat
@@ -72,7 +70,6 @@ namespace comet.combat
                 {
                     MarkPointTerrainTexture(pointCoord.x,pointCoord.y);
                 }
-                
             }
         }
 
@@ -120,36 +117,7 @@ namespace comet.combat
                 _cmdComp.AddCmd(cmd);
             }
         }
-
-        // private void MarkGridsTerrainTexture(int gridX,int gridY)
-        // {
-        //     Vector2Int[] gridCoords = new Vector2Int[4]; 
-        //     gridCoords[0] = new Vector2Int(gridX,gridY);
-        //     gridCoords[1] = new Vector2Int(gridX - 1,gridY);
-        //     gridCoords[2] = new Vector2Int(gridX,gridY - 1);
-        //     gridCoords[3] = new Vector2Int(gridX - 1,gridY - 1);
-        //     
-        //     for (int i = 0;i < gridCoords.Length;i++)
-        //     {
-        //         // var param = new SetGridTypeParam();
-        //         // param.GridX = gridCoords[i].x;
-        //         // param.GridY = gridCoords[i].y;
-        //         // param.GridType = EGridType.Wall;
-        //         //
-        //         // Cmd cmd = new Cmd(ECmd.SetGridType,param);
-        //         // _cmdComp.AddCmd(cmd);
-        //
-        //         var param = new SetGridTextureTypeParam();
-        //         param.GridX = gridCoords[i].x;
-        //         param.GridY = gridCoords[i].y;
-        //         param.TextureLayer = GetLayerIndex();
-        //         param.GridTextureType = _selectedTerrainTexture;
-        //         
-        //         Cmd cmd = new Cmd(ECmd.SetGridTexture,param);
-        //         _cmdComp.AddCmd(cmd);
-        //     }
-        // }
-
+        
         private ETerrainTextureLayer GetLayerIndex()
         {
             switch (_selectedTerrainTexture)

@@ -10,41 +10,59 @@ namespace comet
 
         private CombatManager _combat = null;
         
+        
+        private bool _bShow = true;
+        private Rect _expandRect = new Rect(300, 10, 250, 350);
+        private Rect _hideRect = new Rect(300, 10, 250, 50);
+        private Rect _windowRect;
+        
         public void Init()
         {
             _combat = Comet.Instance.ServiceLocator.Get<CombatManager>();
+            _windowRect = _expandRect;
         }
         
         public void OnGUI()
         {
-            GUI.Box(new Rect(300,10,250,350),"Terrain Texture");
-            
-            if (GUI.Button(new Rect(330,40,kWidth,kHeight),"None"))
+            _windowRect = GUI.Window(1, _windowRect, TextureSelectorWindow, "Terrain Texture");
+        }
+        
+        private void TextureSelectorWindow(int windowID)
+        {
+            _bShow = GUI.Toggle(new Rect(30,0,100,30),_bShow,"");
+            if (_bShow)
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.None;
-            }
+                _windowRect = _expandRect;
+                
+                if (GUI.Button(new Rect(30,40,kWidth,kHeight),"None"))
+                {
+                    _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.None;
+                }
     
-            if (GUI.Button(new Rect(330,100,kWidth,kHeight),"Ground"))
-            {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Ground;
+                if (GUI.Button(new Rect(30,100,kWidth,kHeight),"Ground"))
+                {
+                    _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Ground;
+                }
+            
+                if (GUI.Button(new Rect(30,160,kWidth,kHeight),"Grass"))
+                {
+                    _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Grass;
+                }
+            
+                if (GUI.Button(new Rect(30,220,kWidth,kHeight),"Dirt-Rough"))
+                {
+                    _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.DirtRough;
+                }
+            
+                if (GUI.Button(new Rect(30,280,kWidth,kHeight),"Blight"))
+                {
+                    _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Blight;
+                }
             }
-            
-            if (GUI.Button(new Rect(330,160,kWidth,kHeight),"Grass"))
+            else
             {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Grass;
+                _windowRect = _hideRect;
             }
-            
-            if (GUI.Button(new Rect(330,220,kWidth,kHeight),"Dirt-Rough"))
-            {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.DirtRough;
-            }
-            
-            if (GUI.Button(new Rect(330,280,kWidth,kHeight),"Blight"))
-            {
-                _combat.TerrainTextureCtrl.SelectedTerrainTexture = ETerrainTextureType.Blight;
-            }
-            
-            
         }
     }
 }

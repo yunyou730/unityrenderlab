@@ -1,5 +1,5 @@
 using System;
-using VSCodeEditor;
+//using VSCodeEditor;
 
 namespace comet.combat
 {
