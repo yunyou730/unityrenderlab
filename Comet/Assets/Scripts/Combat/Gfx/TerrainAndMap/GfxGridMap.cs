@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using comet.res;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace comet.combat
@@ -39,14 +37,6 @@ namespace comet.combat
          */
         private Texture2D _mapPointsTexture = null;
         private Color[] _mapPointsData = null;
-        
-        /*
-         * Terrain data textures
-         */
-        //private const int kTerrainLayers = (int)ETerrainTextureLayer.Max;
-        //private Texture2D[] _terrainDataTextures = new Texture2D[kTerrainLayers];
-        //private Dictionary<int, Color[]> _terrainColorData = new Dictionary<int, Color[]>();
-        //public Texture2D[] TerrainDataTextures => _terrainDataTextures;
         
         /*
          * Render State Flags
@@ -87,14 +77,6 @@ namespace comet.combat
             _mapPointsTexture = new Texture2D(_mapRecord.GridCols + 1,_mapRecord.GridRows + 1);
             _mapPointsTexture.filterMode = FilterMode.Point;
             _mapPointsData = new Color[_mapRecord.PointsInRow * _mapRecord.PointsInCol];
-            
-            // // Data Texture of Terrain 
-            // for (int i = 0;i < kTerrainLayers;i++)
-            // {
-            //     _terrainDataTextures[i] = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
-            //     _terrainDataTextures[i].filterMode = FilterMode.Point;
-            //     _terrainColorData.Add(i, new Color[_mapRecord.GridRows * _mapRecord.GridCols]);
-            // }
             
             // terrain textures
             //var terrainTextureGrass = _res.Load<Texture2D>("Textures/TerrainTexture/debug");
@@ -169,14 +151,6 @@ namespace comet.combat
             _gridTexture.SetPixels(_gridData);
             _gridTexture.Apply();
             
-            
-            // for (int i = 0;i < kTerrainLayers;i++)
-            // {
-            //     _terrainDataTextures[i].SetPixels(_terrainColorData[i]);
-            //     _terrainDataTextures[i].Apply();
-            // }
-            
-            
             _mapPointsTexture.SetPixels(_mapPointsData);
             _mapPointsTexture.Apply();
 
@@ -186,21 +160,13 @@ namespace comet.combat
         {
             // Grid blockers textures
             _material.SetTexture(Shader.PropertyToID("_MapGridsDataTex"),_gridTexture);
-            
-            // // Terrain Data Textures
-            // for (int i = 0;i < kTerrainLayers;i++)
-            // {
-            //     string layerUniformName = "_TerrainLayer_" + i;
-            //     _material.SetTexture(Shader.PropertyToID(layerUniformName),_terrainDataTextures[i]);
-            // }
-            
             // Points Texture
             _material.SetTexture(Shader.PropertyToID("_MapPointsDataTex"),_mapPointsTexture);
         }
 
         private void RefreshColorDataAndTexturesForOneGrid(GridRecord gridRecord,int x,int y)
         {
-            int pixelIndex = y * _mapRecord.GridRows + x;
+            int pixelIndex = y * _mapRecord.GridCols + x;
 
             if (pixelIndex >= _gridData.Length)
             {
@@ -219,7 +185,7 @@ namespace comet.combat
 
         private void RefreshColorDataAndTexturesForOnePoint(PointRecord pointRecord,int x,int y)
         {
-            int pixelIndex = y * _mapRecord.PointsInRow + x;
+            int pixelIndex = y * _mapRecord.PointsInCol + x;
             Color col = new Color(0, 0, 0, 1);
             switch (pointRecord.TerrainTextureType)
             {

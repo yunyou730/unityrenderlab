@@ -136,15 +136,6 @@ Shader "Comet/GridMap"
                 return v;
             }
 
-
-            // float4 handleTerrainTexture(float4 col,sampler2D terrainTexture,int tileSetIndex,float2 uvInGrid)
-            // {
-            //     float2 tileSetUV = TileSetIndexToUV(uvInGrid,tileSetIndex);
-            //     float4 terrainColor = tex2D(terrainTexture,tileSetUV);
-            //     float4 result = terrainColor * terrainColor.a + col * (1 - terrainColor.a);
-            //     return result;
-            // }
-
             fixed4 sampleTerrainTexture(v2f i)
             {
                 fixed4 col = float4(0,0,0,1);
@@ -208,7 +199,7 @@ Shader "Comet/GridMap"
                 }
                 return col;
             }
-
+            
             fixed4 showGridLineColor(fixed4 col,float2 uvInGrid)
             {
                 const float kBorderSize = 0.05;
@@ -221,6 +212,24 @@ Shader "Comet/GridMap"
                 }
                 return col;
             }
+
+            fixed4 showGridUV(fixed4 col,float2 uv)
+            {
+                if(_TOGGLE_GRID_UV > 0.5)
+                {
+                    col = float4(uv,0.0,1.0);
+                }
+                return col;
+            }
+
+            fixed4 showWholeMeshUV(fixed4 col,float2 uv)
+            {
+                if(_TOGGLE_MAP_UV > 0.5)
+                {
+                    col = float4(uv,0.0,1.0);
+                }
+                return col;
+            }
             
             fixed4 frag (v2f i) : SV_Target
             {
@@ -229,19 +238,10 @@ Shader "Comet/GridMap"
                 fixed4 col = sampleTerrainTexture(i);
                 // debug color, for walkable
                 col = showWalkableColor(col,gridsData);
-                
-
-                
-                if(_TOGGLE_GRID_UV > 0.5)
-                {
-                    col = float4(i.uv,0.0,1.0);
-                }
-
-                if(_TOGGLE_MAP_UV > 0.5)
-                {
-                    col = float4(i.uv2,0.0,1.0);
-                }
-
+                // debug color for GridUV
+                col = showGridUV(col,i.uv);
+                // debug color for whole mesh UV 
+                col = showWholeMeshUV(col,i.uv2);
                 // debug color, for grid border
                 col = showGridLineColor(col,i.uv);
                 
