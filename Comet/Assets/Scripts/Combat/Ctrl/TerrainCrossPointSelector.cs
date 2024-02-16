@@ -37,7 +37,8 @@ namespace comet.combat
             float gridScale = _mapRecord.GridSize * 2.0f;
             GameObject prefab = _res.Load<GameObject>("Prefabs/TerrainGridSelector");
             _selectorGameObject = GameObject.Instantiate(prefab);
-            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,1);
+            // z large enough ,for present decal on higher terrain grid
+            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,5);   
         }
         
         public void Dispose()

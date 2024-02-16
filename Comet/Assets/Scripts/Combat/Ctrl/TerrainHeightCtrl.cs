@@ -66,7 +66,8 @@ namespace comet.combat
 
         public ETerrainModifyCtrlType GetCtrlType()
         {
-            return ETerrainModifyCtrlType.Click;
+            //return ETerrainModifyCtrlType.Click;
+            return ETerrainModifyCtrlType.Press;
         }
 
         public void Dispose()

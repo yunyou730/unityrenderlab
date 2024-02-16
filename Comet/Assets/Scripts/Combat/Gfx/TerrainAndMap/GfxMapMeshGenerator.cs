@@ -24,13 +24,6 @@ namespace comet.combat
 
         public Mesh CreateMapMesh()
         {
-            // Vector3[] vertices;
-            // Vector2[] uvs;
-            // int[] indices;
-            // Color[] colors;
-            // Vector2[] uvs2;
-            // Vector2[] uvs3;
-            
             GenerateMeshData(out _verticesBuffer,
                 out _uvsBuffer,
                 out _uvs2Buffer,

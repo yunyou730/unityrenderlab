@@ -136,6 +136,7 @@
      <Folder Include="Assets/Scripts/Config" />
      <Folder Include="Assets/Scripts/Input" />
      <None Include="Assets/Resources/Materials/FogOfWarShader.shader" />
+     <None Include="Assets/Resources/Materials/GridSelector.shader" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.14f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
