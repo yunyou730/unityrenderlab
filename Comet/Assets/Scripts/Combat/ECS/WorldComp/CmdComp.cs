@@ -24,8 +24,9 @@ namespace comet.combat
         ActorSelection,
         ActorMoveToGrid,
         SetGridType,
-        //SetGridTexture,
+        
         SpecifyPointTexture,
+        ModifyPointHeight,
         
         None,
     }    
@@ -60,19 +61,19 @@ namespace comet.combat
         public EGridType GridType;
     }
 
-    public struct SetGridTextureTypeParam
-    {
-        public int GridX;
-        public int GridY;
-        public ETerrainTextureLayer TextureLayer;
-        public ETerrainTextureType GridTextureType;
-    }
-
     public struct SpecifyPointTextureTypeParam
     {
         public int PointX;
         public int PointY;
         public ETerrainTextureLayer TextureLayer;
         public ETerrainTextureType PointTextureType;
+    }
+
+    public struct ModifyPointHeightParam
+    {
+        public float DeltaValue;
+        public int PointX;
+        public int PointY;
+        
     }
 }

@@ -16,6 +16,7 @@ namespace comet.combat
         private MeshFilter _meshFilter = null;
         private MeshRenderer _meshRenderer = null;
         private MeshCollider _meshCollider = null;
+        private Mesh _terrainMesh = null;
         
         private float _gridSize;
         private Material _material = null;
@@ -67,6 +68,8 @@ namespace comet.combat
             Mesh mesh = _meshGenrator.CreateMapMesh();
             _meshFilter.mesh = mesh;
             _meshCollider.sharedMesh = mesh;
+            _terrainMesh = mesh;
+            
             
             // Data Texture: blocker and height  
             _gridTexture = new Texture2D(_mapRecord.GridCols,_mapRecord.GridRows);
@@ -216,14 +219,6 @@ namespace comet.combat
             
             Destroy(_mapPointsTexture);
             _mapPointsData = null;
-            
-            // // Release Terrain Data Textures
-            // for (int i = 0;i < kTerrainLayers;i++)
-            // {
-            //     Destroy(_terrainDataTextures[i]);
-            // }
-            //_terrainDataTextures = null;
-            //_terrainColorData = null;
         }
         
         public void ToggleShowGrid()
@@ -248,6 +243,15 @@ namespace comet.combat
         {
             _bShowMapUV = !_bShowMapUV;
             _material.SetFloat(Shader.PropertyToID("_TOGGLE_MAP_UV"),_bShowBlock?1.0f:0.0f);
+        }
+        
+        public void RebuildMesh()
+        {
+            Debug.Log("Rebuild Mesh()");
+            //_meshGenrator.AdjustTerrainMeshVerticesHeight(_meshFilter.sharedMesh);
+            _meshGenrator.AdjustTerrainMeshVerticesHeight(_terrainMesh);
+
+            // @miao @todo
         }
     }    
 }

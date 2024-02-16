@@ -53,6 +53,7 @@ namespace comet.combat
 
         public void OnUpdate()
         {
+            // Shall we show the selector 
             var terrainModifier = GetWorkingTerrainModifier();
             if (terrainModifier == null)
             {
@@ -61,7 +62,7 @@ namespace comet.combat
             }
             SetActive(true);
 
-            // Brush Terrain Texture on Grids
+            // If show, check which points & grids are we selected, and modify properties on them.
             Ray ray = _mainCamera.ScreenPointToRay(_input.MousePosition());
             RaycastHit hit;
             if (Physics.Raycast(ray,out hit))
@@ -70,9 +71,23 @@ namespace comet.combat
                 MoveGridSelector(hit.point, ref pointCoord);
                 
                 GfxGridMap gfxMap = hit.transform.GetComponent<GfxGridMap>();
-                if (gfxMap != null && _input.IsMouseButtonPressing(InputManager.EMouseBtn.Left))
+                if (gfxMap)
                 {
-                    terrainModifier.DoJob(pointCoord.x,pointCoord.y);
+                    // 2 kind of ctrl type 
+                    bool bShallDoJob = terrainModifier.GetCtrlType() == ETerrainModifyCtrlType.Press
+                                       && _input.IsMouseButtonPressing(InputManager.EMouseBtn.Left);
+                    if (!bShallDoJob)
+                    {
+                        bShallDoJob = terrainModifier.GetCtrlType() == ETerrainModifyCtrlType.Click
+                                      && _input.IsMouseButtonDown(InputManager.EMouseBtn.Left);
+                    }
+
+                    // Do job 
+                    if (bShallDoJob)
+                    {
+                        terrainModifier.DoJob(pointCoord.x,pointCoord.y); 
+                    }
+
                 }
             }
         }

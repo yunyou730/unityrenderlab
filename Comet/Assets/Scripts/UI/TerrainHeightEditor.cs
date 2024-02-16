@@ -35,17 +35,17 @@ namespace comet
                 
                 if (GUI.Button(new Rect(30,40,kWidth,kHeight),"None"))
                 {
-
+                    _combat.TerrainHeightCtrl._terrainHeightCtrlType = ETerrainHeightCtrlType.None;
                 }
     
                 if (GUI.Button(new Rect(30,100,kWidth,kHeight),"Height+"))
                 {
-
+                    _combat.TerrainHeightCtrl._terrainHeightCtrlType = ETerrainHeightCtrlType.Higher;
                 }
                 
                 if (GUI.Button(new Rect(30,160,kWidth,kHeight),"Height-"))
                 {
-
+                    _combat.TerrainHeightCtrl._terrainHeightCtrlType = ETerrainHeightCtrlType.Lower;
                 }                
             }
             else

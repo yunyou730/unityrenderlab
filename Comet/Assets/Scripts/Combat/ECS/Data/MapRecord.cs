@@ -59,6 +59,12 @@ namespace comet.combat
                     pointRecord.TerrainHeight = 0.0f;
                     pointRecord.TerrainTextureType = ETerrainTextureType.Ground;
                     _points[pointY * (_cols + 1) + pointX] = pointRecord;
+                    
+                    // // @miao @debug
+                    // if (pointX >= 5 && pointX <= 10)// && pointY == 5)
+                    // {
+                    //     pointRecord.TerrainHeight = 0.4f;
+                    // }
                 }
             }
         }

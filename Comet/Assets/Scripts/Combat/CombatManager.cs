@@ -20,6 +20,7 @@ namespace comet.combat
         private TerrainHeightCtrl _terrainHeightCtrl = null;
 
         public TerrainTextureCtrl TerrainTextureCtrl => _terrainTextureCtrl;
+        public TerrainHeightCtrl TerrainHeightCtrl => _terrainHeightCtrl;
 
         private Config _config = null;
         

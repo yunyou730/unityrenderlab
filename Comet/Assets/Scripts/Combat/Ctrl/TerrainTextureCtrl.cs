@@ -53,7 +53,12 @@ namespace comet.combat
         {
             MarkPointTerrainTexture(crossPointX,crossPointY);
         }
-        
+
+        public ETerrainModifyCtrlType GetCtrlType()
+        {
+            return ETerrainModifyCtrlType.Press;
+        }
+
         public void Dispose()
         {
             

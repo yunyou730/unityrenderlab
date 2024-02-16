@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace comet.combat
 {
@@ -7,6 +8,13 @@ namespace comet.combat
     {
         private MapRecord _mapRecord = null;
         private float _gridSize = 0.0f;
+
+        private Vector3[] _verticesBuffer;
+        private Vector2[] _uvsBuffer;
+        private int[] _indicesBuffer;
+        private Color[] _colorsBuffer;
+        private Vector2[] _uvs2Buffer;
+        private Vector2[] _uvs3Buffer;
         
         public GfxMapMeshGenerator(MapRecord mapRecord,float gridSize)
         {
@@ -16,22 +24,27 @@ namespace comet.combat
 
         public Mesh CreateMapMesh()
         {
-            Vector3[] vertices;
-            Vector2[] uvs;
-            int[] indices;
-            Color[] colors;
-            Vector2[] uvs2;
-            Vector2[] uvs3;
+            // Vector3[] vertices;
+            // Vector2[] uvs;
+            // int[] indices;
+            // Color[] colors;
+            // Vector2[] uvs2;
+            // Vector2[] uvs3;
             
-            GenerateMeshData(out vertices,out uvs,out uvs2,out uvs3,out indices,out colors);
+            GenerateMeshData(out _verticesBuffer,
+                out _uvsBuffer,
+                out _uvs2Buffer,
+                out _uvs3Buffer,
+                out _indicesBuffer,
+                out _colorsBuffer);
             
             Mesh mesh = new Mesh();
-            mesh.SetVertices(vertices);
-            mesh.SetUVs(0,uvs);     // uv:  uv in one Grid
-            mesh.SetUVs(1,uvs2);    // uv2: uv in whole mesh, in size of gridRows x gridCols 
-            mesh.SetUVs(2,uvs3);    // uv3: uv in whole mesh, in size of pointRows x pointCols
-            mesh.SetIndices(indices,MeshTopology.Triangles,0);
-            mesh.SetColors(colors);
+            mesh.SetVertices(_verticesBuffer);
+            mesh.SetUVs(0,_uvsBuffer);     // uv:  uv in one Grid
+            mesh.SetUVs(1,_uvs2Buffer);    // uv2: uv in whole mesh, in size of gridRows x gridCols 
+            mesh.SetUVs(2,_uvs3Buffer);    // uv3: uv in whole mesh, in size of pointRows x pointCols
+            mesh.SetIndices(_indicesBuffer,MeshTopology.Triangles,0);
+            mesh.SetColors(_colorsBuffer);
             
             return mesh;
         }
@@ -60,23 +73,8 @@ namespace comet.combat
                 for (int col = 0; col < _mapRecord.GridCols; col++)
                 {
                     // decide height of grid each vertices
-                    GridRecord gridRecord = _mapRecord.GetGridAt(row, col);
-
-                    GridRecord north = _mapRecord.GetGridAt(row + 1, col);
-                    GridRecord westNorth = _mapRecord.GetGridAt(row + 1, col - 1);
-                    GridRecord eastNorth = _mapRecord.GetGridAt(row + 1, col + 1);
-                    GridRecord west = _mapRecord.GetGridAt(row, col - 1);
-                    GridRecord east = _mapRecord.GetGridAt(row, col + 1);
-                    GridRecord south = _mapRecord.GetGridAt(row - 1, col);
-                    GridRecord westSouth = _mapRecord.GetGridAt(row - 1, col - 1);
-                    GridRecord eastSouth = _mapRecord.GetGridAt(row - 1, col + 1);
-
-                    float y0 = GetGridsMaxHeight(gridRecord, west, westSouth, south);
-                    float y1 = GetGridsMaxHeight(gridRecord, east, eastSouth, south);
-                    float y2 = GetGridsMaxHeight(gridRecord, west, westNorth, north);
-                    float y3 = GetGridsMaxHeight(gridRecord, east, eastNorth, north);
-                    // y0 = y1 = y2 = y3 = gridRecord.Height 
-                    
+                    float y0, y1, y2, y3;
+                    GetGridCornersHeight(row,col,out y0,out y1,out y2,out y3);
                     
                     /*
                      * 2 - 3
@@ -129,8 +127,8 @@ namespace comet.combat
                     
 
                     // vert color , pass Grid Type data to vertices attribute
+                    GridRecord gridRecord = _mapRecord.GetGridAt(row, col);
                     Color color = Color.white;
-                    
                     switch (gridRecord.GridType)
                     {
                         case EGridType.Grass:
@@ -163,13 +161,45 @@ namespace comet.combat
             }
         }
         
-        private float GetGridsMaxHeight(GridRecord g,GridRecord g1,GridRecord g2,GridRecord g3)
+        public void AdjustTerrainMeshVerticesHeight(Mesh mesh)
         {
-            float h = g.Height;
-            if (g1 != null && g1.Height > h) h = g1.Height;
-            if (g2 != null && g2.Height > h) h = g2.Height;
-            if (g3 != null && g3.Height > h) h = g3.Height;
-            return h;
+            int vertIdx = 0;
+            for (int row = 0; row < _mapRecord.GridRows; row++)
+            {
+                for (int col = 0; col < _mapRecord.GridCols; col++)
+                {
+                    float y0, y1, y2, y3;
+                    GetGridCornersHeight(row,col,out y0,out y1,out y2,out y3);
+                    /*
+                     * 2 - 3
+                     * |   |
+                     * 0 - 1
+                     */
+                    // vert position
+                    float baseX = col * _gridSize;
+                    float baseZ = row * _gridSize;
+                    
+                    _verticesBuffer[vertIdx++] = new Vector3(baseX, y0, baseZ);
+                    _verticesBuffer[vertIdx++] = new Vector3(baseX + _gridSize, y1, baseZ);
+                    _verticesBuffer[vertIdx++] = new Vector3(baseX, y2, baseZ + _gridSize);
+                    _verticesBuffer[vertIdx++] = new Vector3(baseX + _gridSize, y3, baseZ + _gridSize);
+                }
+            }
+            
+            mesh.SetVertices(_verticesBuffer);
+        }
+
+        private void GetGridCornersHeight(int gridRow,int gridCol,out float y0,out float y1,out float y2,out float y3)
+        {
+            PointRecord lowerLeftPoint = _mapRecord.GetPointAt(gridRow, gridCol);
+            PointRecord upperLeftPoint = _mapRecord.GetPointAt(gridRow + 1, gridCol);
+            PointRecord lowerRightPoint = _mapRecord.GetPointAt(gridRow, gridCol + 1);
+            PointRecord upperRightPoint = _mapRecord.GetPointAt(gridRow + 1, gridCol + 1);
+
+            y0 = lowerLeftPoint.TerrainHeight;
+            y1 = lowerRightPoint.TerrainHeight;
+            y2 = upperLeftPoint.TerrainHeight;
+            y3 = upperRightPoint.TerrainHeight;
         }
 
         public void Dispose()

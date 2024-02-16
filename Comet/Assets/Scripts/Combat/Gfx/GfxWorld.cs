@@ -17,9 +17,13 @@ namespace comet.combat
         {
             base.RegisterWorldComps();
             
+            // Creation World Comp
             var gfxWorldCreation = RegisterWorldComp<GfxCreationWorldComp>(new GfxCreationWorldComp());
             gfxWorldCreation.MapRecord = _mapRecord;
             gfxWorldCreation.bNeedCreateMap = true;
+            
+            // Terrain Comp
+            RegisterWorldComp(new GfxTerrainMeshComp());
         }
 
         protected override void RegisterSystems()
@@ -27,6 +31,7 @@ namespace comet.combat
             base.RegisterSystems();
             RegisterSys(new GfxCreationSys(this));
             RegisterSys(new GfxSyncPosSys(this));
+            RegisterSys(new GfxRefreshTerrainMapSys(this));
         }
         
         public GfxGridMap GfxGridMap

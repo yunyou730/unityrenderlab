@@ -14,7 +14,7 @@ namespace comet.combat
         public ETerrainTextureType TerrainTextureType { get => _terrainTextureType; set => _terrainTextureType = value; }
         public float TerrainHeight { get => _terrainHeight; set => _terrainHeight = value; }
         public int CliffLevel { get => _cliffLevel; set => _cliffLevel = value; }
-
+        
         public PointRecord()
         {
             _terrainHeight = 0.0f;
@@ -22,6 +22,11 @@ namespace comet.combat
             _terrainTextureType = ETerrainTextureType.Ground;
         }
         
+        public void AddTerrainHeight(float deltaValue)
+        {
+            _terrainHeight += deltaValue;
+        }
+
 
     }   
 }

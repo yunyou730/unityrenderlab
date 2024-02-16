@@ -20,7 +20,7 @@ namespace comet.combat
 
     public enum ETerrainHeightCtrlType
     {
-        Upper,
+        Higher,
         Lower,
         
         None,

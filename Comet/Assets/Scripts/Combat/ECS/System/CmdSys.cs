@@ -8,12 +8,14 @@ namespace comet.combat
         private CmdComp _cmd = null;
         private UserCtrlComp _userCtrl = null;
         private MapComp _map = null;
+        private GfxTerrainMeshComp _terrainMesh = null;
         
         public CmdSys(World world) : base(world)
         {
             _cmd = _world.GetWorldComp<CmdComp>();
             _userCtrl = _world.GetWorldComp<UserCtrlComp>();
             _map = _world.GetWorldComp<MapComp>();
+            _terrainMesh = _world.GetWorldComp<GfxTerrainMeshComp>();
         }
 
         public void OnTick()
@@ -37,14 +39,14 @@ namespace comet.combat
                 case ECmd.ActorMoveToGrid:
                 {
                     var p = (ActorMoveToGridParam)cmd.Param;
-                    for (int i = 0;i < _userCtrl.SelectedActors.Count;i++)
+                    for (int i = 0; i < _userCtrl.SelectedActors.Count; i++)
                     {
                         var uuid = _userCtrl.SelectedActors[i];
                         var entity = _world.GetEntity(uuid);
                         var moveableComp = entity.GetComp<MoveableComp>();
                         if (moveableComp != null)
                         {
-                            HandlePlanRoute(entity,p.GridX,p.GridY);
+                            HandlePlanRoute(entity, p.GridX, p.GridY);
                         }
                     }
                 }
@@ -52,7 +54,7 @@ namespace comet.combat
                 case ECmd.SetGridType:
                 {
                     var p = (SetGridTypeParam)cmd.Param;
-                    GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY,p.GridX);
+                    GridRecord gridRecord = _map.MapRecord.GetGridAt(p.GridY, p.GridX);
                     if (gridRecord != null)
                     {
                         gridRecord.SetGridType(p.GridType);
@@ -66,6 +68,20 @@ namespace comet.combat
                     if (pointRecord != null)
                     {
                         pointRecord.TerrainTextureType = p.PointTextureType;
+                    }
+                }
+                    break;
+                case ECmd.ModifyPointHeight:
+                {
+                    var p = (ModifyPointHeightParam)cmd.Param;
+                    PointRecord pointRecord = _map.MapRecord.GetPointAt(p.PointY, p.PointX);
+                    if (pointRecord != null)
+                    {
+                        pointRecord.AddTerrainHeight(p.DeltaValue);
+                        if (_terrainMesh != null)
+                        {
+                            _terrainMesh.IsDirty = true;
+                        }
                     }
                 }
                     break;
