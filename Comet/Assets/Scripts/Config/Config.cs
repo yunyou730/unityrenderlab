@@ -14,5 +14,7 @@ namespace comet
         
         //public float DefaultGridSize = 5;
         public float DefaultGridSize = 1;
+
+        public string kTerrainlayerName = "Comet_Terrain";
     }
 }

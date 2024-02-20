@@ -96,7 +96,7 @@
      <Compile Include="Assets/Scripts/Combat/Ctrl/ActorCtrl.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/Enum.cs" />
      <Compile Include="Assets/Scripts/Combat/Ctrl/CameraCtrl.cs" />
-     <Compile Include="Assets/Scripts/Combat/Gfx/GfxFogOfWar.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/FogOfWar/GfxFogOfWar.cs" />
      <Compile Include="Assets/Scripts/Combat/CombatManager.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/GfxGridMap.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/CreationComp.cs" />
@@ -116,7 +116,10 @@
      <Folder Include="Assets/Scripts/Combat/Gfx/Utils" />
      <Folder Include="Assets/Resources/Materials" />
      <Folder Include="Assets/Scripts/Combat/HUD" />
+     <Folder Include="Assets/Scripts/Combat/Gfx/FogOfWar" />
      <Folder Include="Assets/Scenes" />
+     <None Include="Assets/Resources/PostEffectMaterials/FogOfWar.shader" />
+     <Folder Include="Assets/Resources/PostEffectMaterials" />
      <Folder Include="Assets/Scripts/Combat/ECS/Utils" />
      <Folder Include="Assets/Scripts/Combat/ECS/System" />
      <Folder Include="Assets/Scripts/Combat/Gfx/Comp" />

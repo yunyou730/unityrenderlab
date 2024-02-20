@@ -9,6 +9,7 @@ namespace comet.combat
     public class GfxGridMap : MonoBehaviour
     {
         private ResManager _res = null;
+        private Config _config = null;
         
         private MapRecord _mapRecord = null;
         public MapRecord MapRecord => _mapRecord;
@@ -21,7 +22,7 @@ namespace comet.combat
         private float _gridSize;
         private Material _material = null;
 
-        private GfxMapMeshGenerator _meshGenrator = null;
+        private GfxMapMeshGenerator _meshGenerator = null;
         
         /*
          Base data texture.
@@ -55,6 +56,9 @@ namespace comet.combat
             _material = _meshRenderer.material;
 
             _res = Comet.Instance.ServiceLocator.Get<ResManager>();
+            _config = Comet.Instance.ServiceLocator.Get<Config>();
+            
+            gameObject.layer = LayerMask.NameToLayer(_config.kTerrainlayerName);
         }
         
         public void RefreshWithMapRecord(MapRecord mapRecord)
@@ -64,8 +68,8 @@ namespace comet.combat
             _gridSize = mapRecord.GridSize;
             
             // refresh gfx
-            _meshGenrator = new GfxMapMeshGenerator(mapRecord, _gridSize);
-            Mesh mesh = _meshGenrator.CreateMapMesh();
+            _meshGenerator = new GfxMapMeshGenerator(mapRecord, _gridSize);
+            Mesh mesh = _meshGenerator.CreateMapMesh();
             _meshFilter.mesh = mesh;
             _meshCollider.sharedMesh = mesh;
             _terrainMesh = mesh;
@@ -210,8 +214,8 @@ namespace comet.combat
 
         private void OnDestroy()
         {
-            _meshGenrator.Dispose();
-            _meshGenrator = null;
+            _meshGenerator.Dispose();
+            _meshGenerator = null;
             
             // Release Textures & Texture's Data
             Destroy(_gridTexture);
@@ -249,7 +253,7 @@ namespace comet.combat
         {
             Debug.Log("Rebuild Mesh()");
             //_meshGenrator.AdjustTerrainMeshVerticesHeight(_meshFilter.sharedMesh);
-            _meshGenrator.AdjustTerrainMeshVerticesHeight(_terrainMesh);
+            _meshGenerator.AdjustTerrainMeshVerticesHeight(_terrainMesh);
 
             // @miao @todo
         }

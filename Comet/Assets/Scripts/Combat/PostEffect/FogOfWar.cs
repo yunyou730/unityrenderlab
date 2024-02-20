@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
-namespace comet.combat
+namespace comet.combat.PostEffect
 {
-    public class FogOfWar
+    public class FogOfWar : MonoBehaviour
     {
+        private Material _postEffectMaterial = null;
         
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            
+        }
     }
 }

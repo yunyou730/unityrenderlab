@@ -11,17 +11,21 @@ namespace comet.combat
         private MapRecord _mapRecord = null;
         private GfxWorld _world = null;
         public GfxWorld World { get { return _world; } }
-
-
+        
+        // terrain controller
         private TerrainCrossPointSelector _crossPointSelector = null;
         private CameraCtrl _cameraCtrl = null;
         private ActorCtrl _actorCtrl = null;
         private TerrainTextureCtrl _terrainTextureCtrl = null;
         private TerrainHeightCtrl _terrainHeightCtrl = null;
-
+        
         public TerrainTextureCtrl TerrainTextureCtrl => _terrainTextureCtrl;
         public TerrainHeightCtrl TerrainHeightCtrl => _terrainHeightCtrl;
-
+        
+        // Fog of war
+        private GfxFogOfWar _fogOfWar = null;
+        
+        
         private Config _config = null;
         
         public void Init(Camera mainCamera,Image imgMiniMap)
@@ -45,6 +49,10 @@ namespace comet.combat
             _actorCtrl.Init(mainCamera);
             _terrainTextureCtrl.Init(mainCamera,_mapRecord,_crossPointSelector);
             _terrainHeightCtrl.Init(mainCamera,_mapRecord);
+            
+            // Fog of war
+            _fogOfWar = new GfxFogOfWar();
+            _fogOfWar.Init(mainCamera);
         }
 
         public void Start()
@@ -58,6 +66,9 @@ namespace comet.combat
             _cameraCtrl.OnUpdate(deltaTime);
             _actorCtrl.OnUpdate(deltaTime);
             _crossPointSelector.OnUpdate();
+            
+            _fogOfWar?.OnUpdate();
+            
             _world?.OnUpdate(deltaTime);
         }
 
@@ -83,8 +94,13 @@ namespace comet.combat
             _crossPointSelector = null;
             
             _cameraCtrl = null;
+            
+            _fogOfWar.Dispose();
+            _fogOfWar = null;
+            
             _mapRecord?.Dispose();
             _world.Dispose();
+            
         }
 
         public GfxGridMap GetGfxGridMap()

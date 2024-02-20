@@ -34,19 +34,20 @@ namespace comet
         private void Awake()
         {
             _sInstance = this;
+            
+            _serviceLocator = new ServiceLocator();
+            _serviceLocator.Register(_config = new Config());
+            _serviceLocator.Register(_resManager = new ResManager());
+            _serviceLocator.Register(_inputManager = new InputManager());
+            _serviceLocator.Register(_combatManager = new CombatManager());
+            _serviceLocator.Register(_uiManager = new UIManager());
         }
 
         void Start()
         {
-            _serviceLocator = new ServiceLocator();
-            _serviceLocator.Register(_config = new Config());
-            _serviceLocator.Register(_resManager = new ResManager());
-            _serviceLocator.Register(_inputManager = new InputManager()).Init();
-            _serviceLocator.Register(_combatManager = new CombatManager()).Init(
-                _mainCamera,
-                _miniMapImage
-            );
-            _serviceLocator.Register(_uiManager = new UIManager()).Init();
+            _inputManager.Init();
+            _combatManager.Init(_mainCamera,_miniMapImage);
+            _uiManager.Init();
 
             _combatManager.Start();
         }
