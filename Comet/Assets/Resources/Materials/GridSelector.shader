@@ -2,7 +2,8 @@ Shader "Comet/GridSelector"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _TerrainDepthTexture("TerrainDepthTexture",2D) = "white" {}
     }
     SubShader
     {
@@ -41,8 +42,9 @@ Shader "Comet/GridSelector"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-
+            
             sampler2D _CameraDepthTexture;
+            sampler2D _TerrainDepthTexture;
 
             v2f vert (appdata v)
             {
@@ -55,7 +57,8 @@ Shader "Comet/GridSelector"
 
             float3 DepthToWorldPosition(float4 screenPos)
             {
-                float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture,screenPos)));
+                //float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture,screenPos)));
+                float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_TerrainDepthTexture,screenPos)));
                 float4 ndcPos = (screenPos/screenPos.w) * 2 - 1;    // map [0,1] => [-1,+1]
                 float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _ProjectionParams.z; // z = far plane = mvp result w
 
@@ -74,6 +77,9 @@ Shader "Comet/GridSelector"
                 //clip(abs(localPos.xyz) - float3(0.5,0.5,0.5));
                 
                 //fixed4 col = tex2D(_MainTex, i.uv);
+
+
+                //fixed4 col = tex2D(_TerrainDepthTexture,i.uv);
                 fixed4 col = fixed4(1.0,1.0,0.0,0.5);
                 return col;
             }

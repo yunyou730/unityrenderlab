@@ -48,8 +48,12 @@ Shader "Unlit/FogOfWar"
                 fixed4 col = tex2D(_MainTex, i.uv);
 
                 fixed4 depthCol = tex2D(_TerrainDepthTexture,i.uv);
+
+                
                 //col *= fixed4(0,0,1,1);
-                return depthCol;
+                //return depthCol;
+
+                return col;
             }
             ENDCG
         }

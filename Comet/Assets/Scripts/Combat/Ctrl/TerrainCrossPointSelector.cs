@@ -8,6 +8,7 @@ namespace comet.combat
     public class TerrainCrossPointSelector : IDisposable
     {
         private GameObject _selectorGameObject = null;
+        private Material _selectorGameObjectMaterial = null;
 
         private InputManager _input = null;
         private ResManager _res = null;
@@ -18,7 +19,12 @@ namespace comet.combat
         private TerrainHeightCtrl _terrainHeightCtrl = null;
         private TerrainTextureCtrl _terrainTextureCtrl = null;
 
-        public TerrainCrossPointSelector(MapRecord mapRecord,TerrainTextureCtrl terrainTextureCtrl,TerrainHeightCtrl terrainHeightCtrl)
+        private TerrainDepthTextureProvider _terrainDepthTextureProvider = null;
+
+        public TerrainCrossPointSelector(MapRecord mapRecord,
+                                        TerrainTextureCtrl terrainTextureCtrl,
+                                        TerrainHeightCtrl terrainHeightCtrl,
+                                        TerrainDepthTextureProvider terrainDepthTextureProvider)
         {
             _res = Comet.Instance.ServiceLocator.Get<ResManager>();
             _input = Comet.Instance.ServiceLocator.Get<InputManager>();
@@ -27,6 +33,8 @@ namespace comet.combat
             
             _terrainTextureCtrl = terrainTextureCtrl;
             _terrainHeightCtrl = terrainHeightCtrl;
+
+            _terrainDepthTextureProvider = terrainDepthTextureProvider;
         }
 
         public void Init(Camera mainCamera)
@@ -38,7 +46,12 @@ namespace comet.combat
             GameObject prefab = _res.Load<GameObject>("Prefabs/TerrainGridSelector");
             _selectorGameObject = GameObject.Instantiate(prefab);
             // z large enough ,for present decal on higher terrain grid
-            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,5);   
+            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,5);
+            
+            // Assign terrain depth texture to material
+            _selectorGameObjectMaterial = _selectorGameObject.GetComponent<MeshRenderer>().material;
+            _selectorGameObjectMaterial.SetTexture(Shader.PropertyToID("_TerrainDepthTexture"),_terrainDepthTextureProvider.GetTerrainDepthTexture());
+            
         }
         
         public void Dispose()
