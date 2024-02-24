@@ -46,7 +46,7 @@ namespace comet.combat
             GameObject prefab = _res.Load<GameObject>("Prefabs/TerrainGridSelector");
             _selectorGameObject = GameObject.Instantiate(prefab);
             // z large enough ,for present decal on higher terrain grid
-            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,5);
+            _selectorGameObject.transform.localScale = new Vector3(gridScale,gridScale,10);
             
             // Assign terrain depth texture to material
             _selectorGameObjectMaterial = _selectorGameObject.GetComponent<MeshRenderer>().material;

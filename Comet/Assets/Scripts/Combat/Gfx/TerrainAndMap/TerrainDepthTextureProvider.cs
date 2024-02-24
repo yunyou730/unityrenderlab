@@ -33,13 +33,6 @@ namespace comet.combat
             _terrainDepthCamera.cullingMask = (1 << LayerMask.NameToLayer(_config.kTerrainlayerName));
             SetupTerrainDepthCamera(_mainCamera,_terrainDepthCamera);
         }
-        
-        // private void PassTerrainDepthTextureToMaterial()
-        // {
-        //     var postEffect = _mainCamera.GetComponent<posteffect.PostEffect>();
-        //     var material = postEffect.GetFogOfWarMaterial();
-        //     material.SetTexture(Shader.PropertyToID("_TerrainDepthTexture"),_terrainDepthCamera.targetTexture);
-        // }
 
         private void SetupTerrainDepthCamera(Camera src,Camera dest)
         {
@@ -76,6 +69,11 @@ namespace comet.combat
         public RenderTexture GetTerrainDepthTexture()
         {
             return _terrainDepthCamera.targetTexture;
+        }
+
+        public Camera GetDepthCamera()
+        {
+            return _terrainDepthCamera;
         }
 
         public void Dispose()

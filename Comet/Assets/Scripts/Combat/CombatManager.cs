@@ -23,9 +23,8 @@ namespace comet.combat
         public TerrainHeightCtrl TerrainHeightCtrl => _terrainHeightCtrl;
         
         // Fog of war
-        // private GfxFogOfWar _fogOfWar = null;
+        private GfxFogOfWar _fogOfWar = null;
         private TerrainDepthTextureProvider _terrainDepthTextureProvider = null;
-        
         
         private Config _config = null;
         
@@ -55,10 +54,8 @@ namespace comet.combat
             _terrainHeightCtrl.Init(mainCamera,_mapRecord);
             
             // Fog of war
-            // _fogOfWar = new GfxFogOfWar();
-            // _fogOfWar.Init(mainCamera);
-
-            
+            _fogOfWar = new GfxFogOfWar(this);
+            _fogOfWar.Init(mainCamera,_terrainDepthTextureProvider);
         }
 
         public void Start()
@@ -73,7 +70,7 @@ namespace comet.combat
             _actorCtrl.OnUpdate(deltaTime);
             _crossPointSelector.OnUpdate();
             
-            // _fogOfWar?.OnUpdate();
+            _fogOfWar?.OnUpdate();
             _terrainDepthTextureProvider?.OnUpdate();
             
             _world?.OnUpdate(deltaTime);
@@ -102,8 +99,8 @@ namespace comet.combat
             
             _cameraCtrl = null;
             
-            // _fogOfWar.Dispose();
-            // _fogOfWar = null;
+            _fogOfWar.Dispose();
+            _fogOfWar = null;
             
             _terrainDepthTextureProvider.Dispose();
             _terrainDepthTextureProvider = null;
@@ -116,6 +113,11 @@ namespace comet.combat
         public GfxGridMap GetGfxGridMap()
         {
             return _world.GfxGridMap;
+        }
+
+        public MapRecord GetMapRecord()
+        {
+            return _mapRecord;
         }
 
         private void SpawnActor()

@@ -59,6 +59,7 @@ Shader "Comet/GridSelector"
             {
                 //float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture,screenPos)));
                 float depth = Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_TerrainDepthTexture,screenPos)));
+                //float depth = 1.0 - Linear01Depth(UNITY_SAMPLE_DEPTH(tex2Dproj(_TerrainDepthTexture,screenPos)));
                 float4 ndcPos = (screenPos/screenPos.w) * 2 - 1;    // map [0,1] => [-1,+1]
                 float3 clipPos = float3(ndcPos.x,ndcPos.y,1) * _ProjectionParams.z; // z = far plane = mvp result w
 

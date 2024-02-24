@@ -9,75 +9,88 @@ namespace comet.combat
     public class GfxFogOfWar : IDisposable
     {
         private Camera _mainCamera = null;
-        private Camera _terrainDepthCamera = null;
+        private TerrainDepthTextureProvider _terrainDepthTextureProvider = null;
 
         private Config _config = null;
-        
-        public void Init(Camera mainCamera)
+
+        private CombatManager _combat = null;
+
+        private posteffect.PostEffect _postEffect = null;
+
+        private GfxGridMap _gfxGridMap = null;
+
+        public GfxFogOfWar(CombatManager combatManager)
+        {
+            _combat = combatManager;
+        }
+
+        public void Init(Camera mainCamera,TerrainDepthTextureProvider terrainDepthTextureProvider)
         {
             _mainCamera = mainCamera;
+            _terrainDepthTextureProvider = terrainDepthTextureProvider;
             _config = Comet.Instance.ServiceLocator.Get<Config>();
-            CreateTerrainDepthCamera();
-            PassTerrainDepthTextureToMaterial();
             
+            InitPostEffectMaterial();
+            DebugShowTerrainDepthTexture();
+        }
+
+        private void DebugShowTerrainDepthTexture()
+        {
             // Debug display depth texture
             var testDepthGO = GameObject.Find("TestDepthTexture");
             if (testDepthGO != null)
             {
                 var testDepthImage = testDepthGO.GetComponent<Image>();
-                testDepthImage.material.SetTexture(Shader.PropertyToID("_MainTex"),_terrainDepthCamera.targetTexture);
+                testDepthImage.material.SetTexture(Shader.PropertyToID("_MainTex"), _terrainDepthTextureProvider.GetTerrainDepthTexture());
             }
         }
         
-        private void CreateTerrainDepthCamera()
+        private void InitPostEffectMaterial()
         {
-            var depthTerrainCameraGameObject = new GameObject("[depthTerrainCameraGameObject]");
-            _terrainDepthCamera = depthTerrainCameraGameObject.AddComponent<Camera>();
-            _terrainDepthCamera.cullingMask = (1 << LayerMask.NameToLayer(_config.kTerrainlayerName));
-            SetupTerrainDepthCamera(_mainCamera,_terrainDepthCamera);
-        }
-        
-        private void PassTerrainDepthTextureToMaterial()
-        {
-            var postEffect = _mainCamera.GetComponent<posteffect.PostEffect>();
-            var material = postEffect.GetFogOfWarMaterial();
-            material.SetTexture(Shader.PropertyToID("_TerrainDepthTexture"),_terrainDepthCamera.targetTexture);
-        }
-
-        private void SetupTerrainDepthCamera(Camera src,Camera dest)
-        {
-            dest.fieldOfView = src.fieldOfView;
-            dest.nearClipPlane = src.nearClipPlane;
-            dest.farClipPlane = src.farClipPlane;
-
-            dest.transform.position = src.transform.position;
-            dest.transform.rotation = src.transform.rotation;
+            _postEffect = _mainCamera.GetComponent<posteffect.PostEffect>();
+            var material = _postEffect.GetFogOfWarMaterial();
             
+            // Terrain Depth Texture 
+            material.SetTexture(Shader.PropertyToID("_TerrainDepthTexture"),_terrainDepthTextureProvider.GetTerrainDepthTexture());
             
-            dest.depthTextureMode = DepthTextureMode.Depth;
-            dest.clearFlags = CameraClearFlags.Depth;
-
-            int width = Screen.width;
-            int height = Screen.height;
+            // MapRecord Grid Size Params
+            MapRecord mapRecord = _combat.GetMapRecord();
+            Vector4 gridSizeParam = new Vector4(mapRecord.GridCols, mapRecord.GridRows, mapRecord.GridSize, 0);
+            material.SetVector(Shader.PropertyToID("_TerrainSizeParam"),gridSizeParam);
             
-            RenderTexture rt = new RenderTexture(
-                width,
-                height,
-                32,
-                RenderTextureFormat.Depth);
-            dest.targetTexture = rt;
         }
         
         public void OnUpdate()
         {
-            _terrainDepthCamera.transform.position = _mainCamera.transform.position;
-            _terrainDepthCamera.transform.rotation = _mainCamera.transform.rotation;
+            UpdatePostEffectMaterial();
+        }
+
+
+        private void UpdatePostEffectMaterial()
+        {
+            if (_gfxGridMap == null)
+            {
+                _gfxGridMap = _combat.World.GfxGridMap;
+            }
+
+            if (_gfxGridMap == null)
+                return;
+            
+            var material = _postEffect.GetFogOfWarMaterial();
+            
+            Camera depthCamera = _terrainDepthTextureProvider.GetDepthCamera();
+            // @miao @todo
+            material.SetFloat(Shader.PropertyToID("_CameraFarPlane"),depthCamera.farClipPlane);
+            material.SetMatrix(Shader.PropertyToID("_CameraInvProjMatrix"),depthCamera.projectionMatrix.inverse);
+            material.SetMatrix(Shader.PropertyToID("_CameraViewToWorldMatrix"), depthCamera.cameraToWorldMatrix);
+            material.SetMatrix(Shader.PropertyToID("_CameraWorldToViewMatrix"),depthCamera.worldToCameraMatrix);
+            
+            //depthCamera.GetStereoViewMatrix()
         }
 
         public void Dispose()
         {
-            //GameObject.Destroy(_terrainDepthCamera.gameObject);
-            //_terrainDepthCamera = null;
+            
         }
     }
 }

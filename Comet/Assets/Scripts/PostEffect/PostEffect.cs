@@ -13,6 +13,7 @@ namespace comet.posteffect
         private ResManager _res = null;
         private CombatManager _combat = null;
         private Material _fogOfWarMaterial = null;
+        private MapRecord _mapRecord = null;
         
         void Start()
         {
@@ -20,6 +21,16 @@ namespace comet.posteffect
             Shader shader = _res.Load<Shader>("PostEffectMaterials/FogOfWar");
             _fogOfWarMaterial = new Material(shader);
             _combat = Comet.Instance.ServiceLocator.Get<CombatManager>();
+            _mapRecord = _combat.GetMapRecord();
+
+            //Vector4 sizeParam = new Vector4(_mapRecord.GridCols, _mapRecord.GridRows, _mapRecord.GridSize, 0);
+            //_fogOfWarMaterial.SetVector(Shader.PropertyToID("_TerrainSizeParam"),sizeParam);
+
+        }
+
+        public void Init()
+        {
+            
         }
 
         private void Update()

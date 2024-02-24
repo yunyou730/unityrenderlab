@@ -65,6 +65,7 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Metrics.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Entity.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/PointRecord.cs" />
+     <Compile Include="Assets/Scripts/Combat/Gfx/TerrainAndMap/TerrainDepthTextureProvider.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Utils/Math.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/WorldComp/GfxTerrainMeshComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/MoveableComp.cs" />
@@ -72,7 +73,6 @@
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/VisionComp.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/System/CreationSys.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Comp/PositionComp.cs" />
-     <Compile Include="Assets/Scripts/Combat/Gfx/TerrainDepthTextureProvider.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/Data/MapRecord.cs" />
      <Compile Include="Assets/Scripts/Combat/Gfx/GfxActor.cs" />
      <Compile Include="Assets/Scripts/Combat/ECS/WorldComp/UserCtrlComp.cs" />
