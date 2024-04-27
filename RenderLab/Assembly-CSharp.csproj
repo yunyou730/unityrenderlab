@@ -66,8 +66,11 @@
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/MovementController.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/CameraController.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/Metrics.cs" />
+     <Compile Include="Assets/Scenes/MarchingSquares/TerrainGenerator.cs" />
+     <Compile Include="Assets/Scenes/MarchingSquares/Square.cs" />
      <Compile Include="Assets/Scenes/ComputeShaderTest/sample/SampleCompute.cs" />
      <Compile Include="Assets/Scenes/RadialBlur/RadialBlur.cs" />
+     <Compile Include="Assets/Scenes/MarchingSquares/SquareMeshBuilder.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/Tilemap.cs" />
      <Compile Include="Assets/Scenes/CircleWithNoise/PostEffect.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/ObstacleManager.cs" />
@@ -121,6 +124,7 @@
      <Folder Include="Assets/Scenes/Decal" />
      <None Include="Assets/Scenes/CmdBuffer/CmdBufTest2.shader" />
      <None Include="Assets/CatLikeCoding/Shaders/My Lighting Input.cginc" />
+     <Folder Include="Assets/Scenes/MarchingSquares" />
      <Folder Include="Assets/CatLikeCoding/Shaders" />
      <Folder Include="Assets/CatLikeCoding/Textures/Bumps" />
      <None Include="Assets/Scenes/SDF2D/SDF2D.shader" />
@@ -397,9 +401,6 @@
      </Reference>
      <Reference Include="UnityEditor.UnityConnectModule">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
-     </Reference>
-     <Reference Include="Newtonsoft.Json">
-     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.2.1/Runtime/Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/NetStandard/ref/2.1.0/netstandard.dll</HintPath>
@@ -770,17 +771,11 @@
      <Reference Include="Unity.Timeline">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Services.Core.Environments">
-     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.Services.Core.Environments.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.PlasticSCM.Editor">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Timeline.Editor">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Services.Core">
-     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.Services.Core.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualStudio.Editor">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
@@ -790,9 +785,6 @@
      </Reference>
      <Reference Include="UnityEditor.UI">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Services.Core.Analytics">
-     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/Unity.Services.Core.Analytics.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
