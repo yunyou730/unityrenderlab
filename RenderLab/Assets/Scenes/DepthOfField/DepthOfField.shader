@@ -124,13 +124,27 @@ Shader "ayy/DepthOfField"
 					float2(0.30901712, -0.9510565),
 					float2(0.80901694, -0.5877853),
 				};
-				
+
+    			
 				for (int k = 0; k < kernelSampleCount; k++) {
 					float2 o = kernel[k];
 					o *= _MainTex_TexelSize.xy * _blurKernelSize;
+					//
+					// float3 c = tex2D(_MainTex, i.uv + o).rgb;
+					// if(c.r > 1.0)
+					// {
+					// 	return half4(1,0,1,1);
+					// }
 					color += tex2D(_MainTex, i.uv + o).rgb;
 				}
 				color *= 1.0 / kernelSampleCount;
+
+    			// color = tex2D(_MainTex,i.uv).rgb;
+    			// if(color.r > 1.0)
+    			// {
+    			//  	return half4(1,0,1,1);
+    			//  }
+    			//  return half4(0,0,0,1);
     			
     			return half4(color,1);
     		}
