@@ -109,6 +109,7 @@
      <Folder Include="Assets/CatLikeCoding/Textures/Circuitry" />
      <Folder Include="Assets/Scenes/ComputeShaderTest/ImageProcessing" />
      <Folder Include="Assets/SimpleNaturePack" />
+     <Folder Include="Assets/Scenes/PremultiplyAlpha" />
      <None Include="Assets/Scenes/Brush2D/Brush.shader" />
      <Folder Include="Assets/Scenes/CellurarNoise" />
      <Folder Include="Assets/Scenes/RPGDemo/Prefabs" />
@@ -130,6 +131,7 @@
      <None Include="Assets/Scenes/RayMarchingInScene/RayMarchingInScene.shader" />
      <None Include="Assets/Scenes/RadialBlur/RadialBlur.shader" />
      <None Include="Assets/CatLikeCoding/Shaders/My Shadows.cginc" />
+     <None Include="Assets/Scenes/PremultiplyAlpha/PremultiplyAlphaTest.shader" />
      <None Include="Assets/Scenes/CellurarNoise/CellularNoise.shader" />
      <Folder Include="Assets/Scenes/FlowMap/Materials" />
      <Folder Include="Assets/SimpleNaturePack/Textures" />
