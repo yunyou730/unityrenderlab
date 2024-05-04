@@ -91,19 +91,28 @@ Shader "ayy/LUTShader"
             	float2 uv1 = float2(pixelIndex.x / 512.0,pixelIndex.y / 512.0);
 
             	float4 lutCol1 = tex2D(_LutTex,uv1);
+
+            	
              	//float2 quad1 = getGrid(floor(blueColor));
 				//float2 uv1 = getUVByGrid(quad1,col);
              	//float4 lutCol1 = tex2D(_LutTex,uv1);
 
-            	/*
-             	float2 quad2 = getGrid(ceil(blueColor));
-				float2 uv2 = getUVByGrid(quad2,col);
-             	float4 lutCol2 = tex2D(_LutTex,uv2);
-             	*/
+    //          	float2 quad2 = getGrid(ceil(blueColor));
+				// float2 uv2 = getUVByGrid(quad2,col);
+    //          	float4 lutCol2 = tex2D(_LutTex,uv2);
 
-            	return lutCol1;
 
-            	//return lerp(lutCol1,lutCol2,frac(blueColor));
+            	//return lutCol1;
+
+				float2 grid2 = getGrid(ceil(blueColor));
+            	float2 pixelIndex2 = getGridPixelIndex(grid2);
+            	float2 pixelIndexOffset2 = getOffsetPixelIndex(col);
+            	pixelIndex2 = pixelIndex2 + pixelIndexOffset2 + float2(0.5,0.5);
+            	float2 uv2 = float2(pixelIndex2.x / 512.0,pixelIndex2.y / 512.0);
+
+            	float4 lutCol2 = tex2D(_LutTex,uv2);
+
+            	return lerp(lutCol1,lutCol2,frac(blueColor));
             	//return float4(1.0,1.0,0.0,1.0);
             	
             	//return fixed4(i.uv.x,i.uv.y,0.0,1.0);
