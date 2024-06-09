@@ -48,6 +48,7 @@
      <Compile Include="Assets/Custom RP/Runtime/CustomRenderPipeline.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CustomRenderPipelineAsset.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.cs" />
+     <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.Editor.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets/Textures" />
      <Folder Include="Assets/Custom RP" />
