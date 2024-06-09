@@ -50,6 +50,8 @@
      <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.Editor.cs" />
      <Folder Include="Assets" />
+     <Folder Include="Assets/Custom RP/Shaders" />
+     <None Include="Assets/Custom RP/Shaders/Unlit.shader" />
      <Folder Include="Assets/Textures" />
      <Folder Include="Assets/Custom RP" />
      <Folder Include="Assets/Custom RP/Runtime" />
