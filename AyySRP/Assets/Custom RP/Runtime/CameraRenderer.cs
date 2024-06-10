@@ -29,7 +29,10 @@ namespace ayy.srp
         private string _sampleName = kBufferName;  
 #endif
         
-        public void Render(ScriptableRenderContext context,Camera camera)
+        public void Render(ScriptableRenderContext context,
+                            Camera camera,
+                            bool useDynamicBatching,
+                            bool useGPUInstancing)
         {
             this._context = context;
             this._camera = camera;
@@ -45,7 +48,7 @@ namespace ayy.srp
             }
 
             Setup();
-            DrawVisibleGeometry();
+            DrawVisibleGeometry(useDynamicBatching,useGPUInstancing);
 #if UNITY_EDITOR
             DrawUnsupportedSettings();
             DrawGizmos();
@@ -96,11 +99,15 @@ namespace ayy.srp
             _buffer.Clear();
         }
 
-        private void DrawVisibleGeometry()
+        private void DrawVisibleGeometry(bool useDynamicBatching,bool useGPUInstancing)
         {
             // Drawing GameObject's renderers. Opaque. 
             var sortSettings = new SortingSettings { criteria = SortingCriteria.CommonOpaque };
-            var drawingSettings = new DrawingSettings(s_unlitShader, sortSettings);
+            var drawingSettings = new DrawingSettings(s_unlitShader, sortSettings)
+            {
+                enableDynamicBatching = useDynamicBatching,
+                enableInstancing = useGPUInstancing
+            };
             var filterSettings = new FilteringSettings(RenderQueueRange.opaque);
             _context.DrawRenderers(_cullingResults, ref drawingSettings, ref filterSettings);
 

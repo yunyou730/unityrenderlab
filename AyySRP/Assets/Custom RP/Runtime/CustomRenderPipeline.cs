@@ -10,18 +10,24 @@ namespace ayy.srp
     {
         private CameraRenderer _renderer = new CameraRenderer();
 
+        private bool _useDynamicBatching;
+        private bool _useGPUInstancing;
+        private bool _useSRPBatcher;
 
-        public CustomRenderPipeline()
+
+        public CustomRenderPipeline(bool useDynamicBatching,bool useGPUInstancing,bool useSRPBatcher)
         {
-            //GraphicsSettings.useScriptableRenderPipelineBatching = true;
-            GraphicsSettings.useScriptableRenderPipelineBatching = false;
+            _useDynamicBatching = useDynamicBatching;
+            _useGPUInstancing = useGPUInstancing;
+            _useSRPBatcher = useSRPBatcher;
+            GraphicsSettings.useScriptableRenderPipelineBatching = _useSRPBatcher;
         }
 
         protected override void Render(ScriptableRenderContext context, Camera[] cameras)
         {
             for (int i = 0;i < cameras.Length;i++)
             {
-                _renderer.Render(context,cameras[i]);
+                _renderer.Render(context,cameras[i],_useDynamicBatching,_useGPUInstancing);
             }
 
         }
