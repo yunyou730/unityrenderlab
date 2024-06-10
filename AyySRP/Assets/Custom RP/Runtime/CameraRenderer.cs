@@ -58,9 +58,17 @@ namespace ayy.srp
         {
             _context.SetupCameraProperties(_camera);
             CameraClearFlags flags = _camera.clearFlags;
+            // _buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth,
+            //     flags == CameraClearFlags.Color,
+            //     flags == CameraClearFlags.Color ? _camera.backgroundColor.linear : Color.clear);
+            
+            // _buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth,
+            //     flags == CameraClearFlags.Color,
+            //     flags == CameraClearFlags.Color ? _camera.backgroundColor.linear : Color.clear);
+            
             _buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth,
-                flags == CameraClearFlags.Color,
-                flags == CameraClearFlags.Color ? _camera.backgroundColor.linear : Color.clear);   
+                flags <= CameraClearFlags.Color,
+                flags == CameraClearFlags.Color ? _camera.backgroundColor.linear : Color.clear);               
             _buffer.BeginSample(_sampleName);
             ExecuteBuffer();
         }

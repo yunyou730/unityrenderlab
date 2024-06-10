@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets/Custom RP/Runtime/CustomRenderPipeline.cs" />
+     <Compile Include="Assets/Scripts/PerObjectMaterialProperties.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CustomRenderPipelineAsset.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.cs" />
      <Compile Include="Assets/Custom RP/Runtime/CameraRenderer.Editor.cs" />
@@ -154,11 +155,13 @@
      <Folder Include="Assets/Custom RP/Runtime" />
      <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_SDF_SSD.cginc" />
      <None Include="Library/PackageCache/com.unity.collab-proxy@2.2.0/ValidationConfig.json" />
+     <Folder Include="Assets/Prefabs" />
      <Folder Include="Assets/Materials" />
      <Folder Include="Library/PackageCache/com.unity.ide.vscode@1.2.5" />
      <Folder Include="Library/PackageCache/com.unity.modules.vehicles@1.0.0" />
      <None Include="Library/PackageCache/com.unity.modules.xr@1.0.0/package.json" />
      <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Tests" />
+     <Folder Include="Assets/Scripts" />
      <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_Properties.cginc" />
      <Folder Include="Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Tests" />
      <Folder Include="Assets/Scenes" />

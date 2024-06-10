@@ -11,6 +11,9 @@ Shader "Custom RP/Unlit"
         {
             HLSLPROGRAM
             #include "UnlitPass.hlsl"
+
+            
+            #pragma multi_compile_instancing
             #pragma vertex UnlitPassVertex
             #pragma fragment UnlitPassFragment
             
