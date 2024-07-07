@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7496992494454673187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860aaef4b2a28486aa4f50ac27cce532, type: 3}
+  m_Name: BlurRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _settings:
+    horizontalBlur: 0.019
+    verticalBlur: 0.021
+  _shader: {fileID: 4800000, guid: 0c29cd8b08aa24d57a6adc84d1374a9e, type: 3}
 --- !u!114 &-1994858836503114272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,7 +54,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1994858836503114272}
   - {fileID: 6245710704914706620}
-  m_RendererFeatureMap: e0cd2e1975d650e4bcb04b80cb38ad56
+  - {fileID: -7496992494454673187}
+  m_RendererFeatureMap: e0cd2e1975d650e4bcb04b80cb38ad56dd70420c0c55f597
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -92,5 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2860290b62231432da7dfffb6d6e3b85, type: 3}
   m_Name: MyRenderFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   _shader: {fileID: 4800000, guid: bf4a5781518af4ae690491f7ac063a2f, type: 3}

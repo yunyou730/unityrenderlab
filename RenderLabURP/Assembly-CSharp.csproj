@@ -45,6 +45,8 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets/Scripts/BlurRenderPass.cs" />
+     <Compile Include="Assets/Scripts/BlurRenderFeature.cs" />
      <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
      <Compile Include="Assets/Scripts/MyRenderFeature.cs" />
      <Compile Include="Assets/Scripts/Bokeh.cs" />
@@ -163,6 +165,7 @@
      <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_SDF_SSD.cginc" />
      <Folder Include="Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Textures/BlueNoise16" />
      <None Include="Library/PackageCache/com.unity.collab-proxy@2.4.3/ValidationConfig.json" />
+     <None Include="Assets/Materials/BlurShader.shader" />
      <Folder Include="Library/PackageCache/com.unity.ide.vscode@1.2.5" />
      <Folder Include="Library/PackageCache/com.unity.modules.vehicles@1.0.0" />
      <None Include="Library/PackageCache/com.unity.modules.xr@1.0.0/package.json" />
