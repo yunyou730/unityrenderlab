@@ -32,7 +32,7 @@ MonoBehaviour:
     m_Value: 1
   horizontalBlur:
     m_OverrideState: 1
-    m_Value: 0.202
+    m_Value: 0
   verticalBlur:
     m_OverrideState: 1
-    m_Value: 0.121
+    m_Value: 0
