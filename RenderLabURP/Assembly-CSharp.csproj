@@ -52,6 +52,7 @@
      <Compile Include="Assets/Scripts/Bokeh.cs" />
      <Compile Include="Assets/Scripts/RedTintRenderPass.cs" />
      <Compile Include="Assets/Scripts/EnqueuePass.cs" />
+     <Compile Include="Assets/Scripts/CustomVolumeComponent.cs" />
      <Folder Include="Assets" />
      <None Include="Library/PackageCache/com.unity.modules.subsystems@1.0.0/package.json" />
      <None Include="Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/package.json" />

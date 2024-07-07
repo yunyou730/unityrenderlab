@@ -72,11 +72,30 @@ public class BlurRenderPass : ScriptableRenderPass
         if (_blurTextureHandle != null) _blurTextureHandle.Release();
     }
     
+    // private void UpdateBlurSettings()
+    // {
+    //     if (_material == null)
+    //         return;
+    //     _material.SetFloat(_horizontalBlurId,_defaultSettings.horizontalBlur);
+    //     _material.SetFloat(_verticalBlurId,_defaultSettings.verticalBlur);
+    //     
+    //     
+    // }
+    
     private void UpdateBlurSettings()
     {
-        if (_material == null)
-            return;
-        _material.SetFloat(_horizontalBlurId,_defaultSettings.horizontalBlur);
-        _material.SetFloat(_verticalBlurId,_defaultSettings.verticalBlur);
+        if (_material == null) return;
+
+        // Use the Volume settings or the default settings if no Volume is set.
+        var volumeComponent =
+            VolumeManager.instance.stack.GetComponent<CustomVolumeComponent>();
+        float horizontalBlur = volumeComponent.horizontalBlur.overrideState ?
+            volumeComponent.horizontalBlur.value : _defaultSettings.horizontalBlur;
+        float verticalBlur = volumeComponent.verticalBlur.overrideState ?
+            volumeComponent.verticalBlur.value : _defaultSettings.verticalBlur;
+        _material.SetFloat(_horizontalBlurId, horizontalBlur);
+        _material.SetFloat(_verticalBlurId, verticalBlur);
     }
+    
+    
 }

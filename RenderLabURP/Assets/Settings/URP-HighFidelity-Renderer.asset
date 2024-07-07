@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   _settings:
-    horizontalBlur: 0.019
-    verticalBlur: 0.021
+    horizontalBlur: 0
+    verticalBlur: 0
   _shader: {fileID: 4800000, guid: 0c29cd8b08aa24d57a6adc84d1374a9e, type: 3}
 --- !u!114 &-1994858836503114272
 MonoBehaviour:
