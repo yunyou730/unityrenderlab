@@ -58,6 +58,7 @@
      <Compile Include="Assets/Scenes/RadialBlur/TyndallByRadialBlur.cs" />
      <Compile Include="Assets/Scenes/CmdBuffer/Entry.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/TilemapManager.cs" />
+     <Compile Include="Assets/Scenes/PlanarReflection/PlanarReflection.cs" />
      <Compile Include="Assets/Scenes/DepthTextureTest/CameraCtrl.cs" />
      <Compile Include="Assets/Scenes/RPGDemo/Scripts/VisionManager.cs" />
      <Compile Include="Assets/Scenes/RayMarchingInScene/RayMarchingInScene.cs" />
@@ -88,6 +89,7 @@
      <None Include="Library/PackageCache/com.unity.modules.screencapture@1.0.0/package.json" />
      <None Include="Library/PackageCache/com.unity.modules.cloth@1.0.0/package.json" />
      <Folder Include="Library/PackageCache/com.unity.modules.imgui@1.0.0" />
+     <None Include="Assets/Scenes/PlanarReflection/FloorStencil.shader" />
      <Folder Include="Assets/Scenes" />
      <None Include="Library/PackageCache/com.unity.modules.unitywebrequesttexture@1.0.0/package.json" />
      <None Include="Library/PackageCache/com.unity.modules.ai@1.0.0/package.json" />
@@ -144,6 +146,7 @@
      <Folder Include="Assets/Scenes/ComputeShaderTest/ImageProcessing" />
      <Folder Include="Assets/SimpleNaturePack" />
      <Folder Include="Library/PackageCache/com.unity.ext.nunit@1.0.6" />
+     <Folder Include="Assets/Scenes/PlanarReflection" />
      <Folder Include="Assets/Scenes/PremultiplyAlpha" />
      <None Include="Assets/Scenes/Brush2D/Brush.shader" />
      <None Include="Library/PackageCache/com.unity.ide.visualstudio@2.0.22/package.json" />
@@ -159,6 +162,7 @@
      <None Include="Library/PackageCache/com.unity.ide.rider@3.0.26/package.json" />
      <None Include="Library/PackageCache/com.unity.modules.video@1.0.0/package.json" />
      <Folder Include="Assets/Scenes/RPGDemo/Prefabs" />
+     <None Include="Assets/Scenes/PlanarReflection/PlanarReflection.shader" />
      <Folder Include="Assets/CatLikeCoding/Textures" />
      <Folder Include="Assets/Scenes/CircleWithNoise" />
      <Folder Include="Assets/CatLikeCoding/Materials" />
