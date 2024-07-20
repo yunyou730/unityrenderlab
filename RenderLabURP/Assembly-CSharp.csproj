@@ -48,6 +48,7 @@
      <Compile Include="Assets/Scripts/BlurRenderPass.cs" />
      <Compile Include="Assets/Scripts/BlurRenderFeature.cs" />
      <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
+     <Compile Include="Assets/Scenes/PlanarReflection/PlanarReflectionManager.cs" />
      <Compile Include="Assets/Scripts/MyRenderFeature.cs" />
      <Compile Include="Assets/Scripts/Bokeh.cs" />
      <Compile Include="Assets/Scripts/RedTintRenderPass.cs" />
@@ -90,6 +91,7 @@
      <None Include="Library/PackageCache/com.unity.modules.terrainphysics@1.0.0/package.json" />
      <None Include="Library/PackageCache/com.unity.mathematics@1.2.6/package.json" />
      <Folder Include="Assets/Scripts" />
+     <Folder Include="Assets/Scenes/PlanarReflection" />
      <Folder Include="Library/PackageCache/com.unity.modules.screencapture@1.0.0" />
      <None Include="Library/PackageCache/com.unity.visualscripting@1.8.0/package.json" />
      <None Include="Library/PackageCache/com.unity.timeline@1.7.4/ValidationExceptions.json" />
@@ -105,6 +107,7 @@
      <None Include="Library/PackageCache/com.unity.render-pipelines.core@14.0.8/ValidationConfig.json" />
      <None Include="Library/PackageCache/com.unity.render-pipelines.core@14.0.8/package.json" />
      <Folder Include="Library/PackageCache/com.unity.modules.imageconversion@1.0.0" />
+     <Folder Include="Assets/Scenes/SRPExampleScene" />
      <Folder Include="Library/PackageCache/com.unity.modules.terrainphysics@1.0.0" />
      <None Include="Library/PackageCache/com.unity.modules.imageconversion@1.0.0/package.json" />
      <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequest@1.0.0" />
@@ -160,6 +163,7 @@
      <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6" />
      <Folder Include="Library/PackageCache/com.unity.ide.rider@3.0.24" />
      <None Include="Library/PackageCache/com.unity.modules.unitywebrequestwww@1.0.0/package.json" />
+     <Folder Include="Assets/Scenes/ExampleRenderObjectsRendererFeature" />
      <Folder Include="Library/PackageCache/com.unity.render-pipelines.core@14.0.8" />
      <None Include="Library/PackageCache/com.unity.modules.unitywebrequestaudio@1.0.0/package.json" />
      <Folder Include="Library/PackageCache/com.unity.searcher@4.9.2/Tests" />

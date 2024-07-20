@@ -33,7 +33,6 @@ public class PlanarReflection : MonoBehaviour
         
         // set render target for the reflection camera
         _renderTarget = new RenderTexture(Screen.width, Screen.height, 24);
-        
     }
     
     void Update()
