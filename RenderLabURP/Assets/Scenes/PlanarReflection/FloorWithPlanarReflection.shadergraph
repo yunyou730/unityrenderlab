@@ -251,8 +251,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 108.00011444091797,
-            "y": -316.0
+            "x": 77.00009155273438,
+            "y": -264.5000305175781
         },
         "m_Blocks": [
             {
@@ -913,10 +913,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -537.0,
-            "y": 196.5,
-            "width": 161.00003051757813,
-            "height": 34.00004577636719
+            "x": -446.5000305175781,
+            "y": -53.0,
+            "width": 160.99996948242188,
+            "height": 34.00003433227539
         }
     },
     "m_Slots": [
@@ -1248,10 +1248,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -718.4999389648438,
-            "y": -528.5,
-            "width": 182.99993896484376,
-            "height": 249.99996948242188
+            "x": -718.5,
+            "y": -527.5,
+            "width": 183.0,
+            "height": 250.0
         }
     },
     "m_Slots": [
@@ -1324,9 +1324,9 @@
         "m_Position": {
             "serializedVersion": "2",
             "x": -865.5,
-            "y": -494.0,
+            "y": -493.0,
             "width": 140.5,
-            "height": 33.999969482421878
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -1406,10 +1406,10 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "b13c018346134981a9bdc871639cca34",
-    "m_Title": "New Group",
+    "m_Title": "Sample Mesh Texture with Vertex UV",
     "m_Position": {
-        "x": -890.479248046875,
-        "y": -586.8703002929688
+        "x": -890.5,
+        "y": -586.0
     }
 }
 
@@ -1765,7 +1765,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "f88cdfffc1884f3c807b475d43d073b4",
-    "m_Title": "Sample Reflection Texture",
+    "m_Title": "Sample Reflection Texture with Screen UV",
     "m_Position": {
         "x": -1606.0,
         "y": -202.49996948242188
