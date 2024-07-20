@@ -12,11 +12,11 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{d71020fb-e741-175e-17a0-afb716189443}</ProjectGuid>
+    <ProjectGuid>{7d144152-0e2b-246e-4f44-d4b2e50ea28c}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Unity.TextMeshPro</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -25,7 +25,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Temp\Bin\Debug\Assembly-CSharp\</OutputPath>
+    <OutputPath>Temp\Bin\Debug\Unity.TextMeshPro\</OutputPath>
     <DefineConstants>UNITY_2022_3_4;UNITY_2022_3;UNITY_2022;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_OSX;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_SPATIALTRACKING;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,219 +45,67 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets/Scenes/RayMarching/RayMarchingTest.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/VisionRange.cs" />
-     <Compile Include="Assets/Scenes/ComputeShaderTest/ImageProcessing/CSImageProc.cs" />
-     <Compile Include="Assets/Scenes/FilterLUT/LUTFilter.cs" />
-     <Compile Include="Assets/Scenes/DepthOfField/DepthOfField.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/InputManager.cs" />
-     <Compile Include="Assets/Scenes/Brush2D/Brush2D.cs" />
-     <Compile Include="Assets/Scenes/SDF2D_2/SDF2DV2.cs" />
-     <Compile Include="Assets/Scenes/CellurarNoise/CellularNoise.cs" />
-     <Compile Include="Assets/Scenes/PointInPolygon/PointsInPolygon.cs" />
-     <Compile Include="Assets/Scenes/RadialBlur/TyndallByRadialBlur.cs" />
-     <Compile Include="Assets/Scenes/CmdBuffer/Entry.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/TilemapManager.cs" />
-     <Compile Include="Assets/Scenes/DepthTextureTest/CameraCtrl.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/VisionManager.cs" />
-     <Compile Include="Assets/Scenes/RayMarchingInScene/RayMarchingInScene.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/RPG.cs" />
-     <Compile Include="Assets/Scenes/SDF2D/SDF2D.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/MovementController.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/CameraController.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/Metrics.cs" />
-     <Compile Include="Assets/Scenes/MarchingSquares/TerrainGenerator.cs" />
-     <Compile Include="Assets/Scenes/MarchingSquares/Square.cs" />
-     <Compile Include="Assets/Scenes/ComputeShaderTest/sample/SampleCompute.cs" />
-     <Compile Include="Assets/Scenes/RadialBlur/RadialBlur.cs" />
-     <Compile Include="Assets/Scenes/MarchingSquares/SquareMeshBuilder.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/Tilemap.cs" />
-     <Compile Include="Assets/Scenes/CircleWithNoise/PostEffect.cs" />
-     <Compile Include="Assets/Scenes/RPGDemo/Scripts/ObstacleManager.cs" />
-     <Folder Include="Assets" />
-     <None Include="Assets/Scenes/RadialBlur/RadialBlurByDir.shader" />
-     <Folder Include="Assets/Scenes/Brush2D" />
-     <None Include="Assets/Scenes/FilterLUT/LUTShader.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.subsystems@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.jsonserialize@1.0.0/package.json" />
-     <None Include="Assets/CatLikeCoding/Shaders/My First Lighting Shader.shader" />
-     <Folder Include="Assets/Scenes/DepthOfField/Materials" />
-     <Folder Include="Library/PackageCache/com.unity.test-framework@1.1.33" />
-     <Folder Include="Assets/Scenes/ComputeShaderTest" />
-     <Folder Include="Assets/Scenes/RPGDemo" />
-     <None Include="Library/PackageCache/com.unity.modules.screencapture@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.cloth@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.imgui@1.0.0" />
-     <Folder Include="Assets/Scenes" />
-     <None Include="Library/PackageCache/com.unity.modules.unitywebrequesttexture@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.ai@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/FlowMap" />
-     <None Include="Assets/Scenes/CmdBuffer/CmdBufTest.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.animation@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.ugui@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/RadialBlur/Materials" />
-     <Folder Include="Library/PackageCache/com.unity.modules.xr@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.ext.nunit@1.0.6/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.ide.rider@3.0.26/Rider" />
-     <Folder Include="Assets/Scenes/ScreenCoord" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources" />
-     <None Include="Assets/CatLikeCoding/Shaders/My Lighting.cginc" />
-     <None Include="Library/PackageCache/com.unity.modules.assetbundle@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/package.json" />
-     <None Include="Assets/Scenes/PointInPolygon/PointsInPoly.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.imgui@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/CmdBuffer" />
-     <None Include="Library/PackageCache/com.unity.modules.tilemap@1.0.0/package.json" />
-     <None Include="Assets/Scenes/ComputeShaderTest/ImageProcessing/CSImgProc.compute" />
-     <Folder Include="Assets/Scenes/RadialBlur" />
-     <Folder Include="Assets/Scenes/RPGDemo/Materials" />
-     <None Include="Assets/Scenes/RayMarching/RayMarchingTest.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.assetbundle@1.0.0" />
-     <None Include="Assets/Scenes/Slash/TestLineRenderer.shader" />
-     <Folder Include="Assets/SimpleNaturePack/Models" />
-     <None Include="Library/PackageCache/com.unity.timeline@1.7.6/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom" />
-     <None Include="Assets/Scenes/CircleWithNoise/CircleWithNoise.shader" />
-     <Folder Include="Assets/Scenes/RayMarchingInScene" />
-     <Folder Include="Assets/Scenes/DepthOfField" />
-     <None Include="Assets/CatLikeCoding/Shaders/FXAA.shader" />
-     <None Include="Assets/Scenes/Brush2D/Present.shader" />
-     <None Include="Library/PackageCache/com.unity.ide.visualstudio@2.0.22/ValidationConfig.json" />
-     <Folder Include="Assets/CatLikeCoding/Textures/Lava" />
-     <Folder Include="Library/PackageCache/com.unity.ext.nunit@1.0.6/net35" />
-     <Folder Include="Assets/Scenes/Slash" />
-     <None Include="Assets/Scenes/DepthTextureTest/DepthShowing.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.terrainphysics@1.0.0/package.json" />
-     <None Include="Assets/Scenes/FlowMap/FlowMap.shader" />
-     <Folder Include="Assets/SimpleNaturePack/Prefabs" />
-     <Folder Include="Library/PackageCache/com.unity.modules.screencapture@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.timeline@1.7.6/ValidationExceptions.json" />
-     <Folder Include="Assets/Scenes/SDF2D_2" />
-     <None Include="Library/PackageCache/com.unity.collab-proxy@2.2.0/package.json" />
-     <Folder Include="Assets/Scenes/FilterLUT" />
-     <None Include="Assets/CatLikeCoding/Shaders/My Lightmapping.cginc" />
-     <Folder Include="Library/PackageCache/com.unity.timeline@1.7.6" />
-     <Folder Include="Assets/CatLikeCoding/Textures/Circuitry" />
-     <Folder Include="Library/PackageCache/com.unity.modules.cloth@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/PackageConversionData.json" />
-     <None Include="Library/PackageCache/com.unity.modules.unitywebrequestassetbundle@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/ComputeShaderTest/ImageProcessing" />
-     <Folder Include="Assets/SimpleNaturePack" />
-     <Folder Include="Library/PackageCache/com.unity.ext.nunit@1.0.6" />
-     <Folder Include="Assets/Scenes/PremultiplyAlpha" />
-     <None Include="Assets/Scenes/Brush2D/Brush.shader" />
-     <None Include="Library/PackageCache/com.unity.ide.visualstudio@2.0.22/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.imageconversion@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.terrainphysics@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.modules.imageconversion@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequest@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/ValidationExceptions.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequestassetbundle@1.0.0" />
-     <Folder Include="Assets/Scenes/CellurarNoise" />
-     <None Include="Library/PackageCache/com.unity.modules.unityanalytics@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.subsystems@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.ide.rider@3.0.26/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.video@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/RPGDemo/Prefabs" />
-     <Folder Include="Assets/CatLikeCoding/Textures" />
-     <Folder Include="Assets/Scenes/CircleWithNoise" />
-     <Folder Include="Assets/CatLikeCoding/Materials" />
-     <None Include="Library/PackageCache/com.unity.test-framework@1.1.33/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unityanalytics@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.physics@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts" />
-     <Folder Include="Library/PackageCache/com.unity.modules.vr@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.physics2d@1.0.0" />
-     <None Include="Assets/Scenes/ScreenCoord/ScreenCoord.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.particlesystem@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/ComputeShaderTest/sample" />
-     <Folder Include="Assets/Scenes/Decal" />
-     <Folder Include="Library/PackageCache/com.unity.modules.wind@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.modules.physics2d@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.vr@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.uielements@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequestaudio@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.particlesystem@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.ide.visualstudio@2.0.22/ValidationExceptions.json" />
-     <None Include="Library/PackageCache/com.unity.modules.wind@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.ugui@1.0.0/Tests" />
-     <None Include="Library/PackageCache/com.unity.modules.umbra@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Textures" />
-     <None Include="Assets/Scenes/CmdBuffer/CmdBufTest2.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.tilemap@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.ui@1.0.0" />
-     <None Include="Assets/CatLikeCoding/Shaders/My Lighting Input.cginc" />
-     <Folder Include="Assets/Scenes/MarchingSquares" />
-     <Folder Include="Assets/CatLikeCoding/Shaders" />
-     <Folder Include="Library/PackageCache/com.unity.modules.androidjni@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Gizmos" />
-     <None Include="Library/PackageCache/com.unity.modules.audio@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.physics@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.collab-proxy@2.2.0" />
-     <Folder Include="Assets/CatLikeCoding/Textures/Bumps" />
-     <None Include="Assets/Scenes/SDF2D/SDF2D.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.vehicles@1.0.0/package.json" />
-     <None Include="Assets/Scenes/RPGDemo/Materials/VisionRange.shader" />
-     <None Include="Assets/Scenes/RadialBlur/TyndallByRaidialBlur.shader" />
-     <Folder Include="Assets/Scenes/SDF2D" />
-     <Folder Include="Assets/Scenes/RPGDemo/Scripts" />
-     <None Include="Assets/Scenes/RayMarchingInScene/RayMarchingInScene.shader" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6" />
-     <None Include="Assets/Scenes/RadialBlur/RadialBlur.shader" />
-     <Folder Include="Library/PackageCache/com.unity.ide.rider@3.0.26" />
-     <None Include="Library/PackageCache/com.unity.modules.unitywebrequestwww@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.unitywebrequestaudio@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_SDF_SSD.cginc" />
-     <None Include="Assets/CatLikeCoding/Shaders/My Shadows.cginc" />
-     <None Include="Library/PackageCache/com.unity.collab-proxy@2.2.0/ValidationConfig.json" />
-     <Folder Include="Library/PackageCache/com.unity.ide.vscode@1.2.5" />
-     <Folder Include="Library/PackageCache/com.unity.modules.vehicles@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.modules.xr@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Tests" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_Properties.cginc" />
-     <None Include="Assets/Scenes/PremultiplyAlpha/PremultiplyAlphaTest.shader" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders/TMP_SDF Internal Editor.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.umbra@1.0.0" />
-     <None Include="Assets/Scenes/CellurarNoise/CellularNoise.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequestwww@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.collab-proxy@2.2.0/Lib" />
-     <None Include="Library/PackageCache/com.unity.modules.director@1.0.0/package.json" />
-     <Folder Include="Assets/Scenes/FlowMap/Materials" />
-     <None Include="Library/PackageCache/com.unity.ide.vscode@1.2.5/ValidationExceptions.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.jsonserialize@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources/Shaders" />
-     <Folder Include="Library/PackageCache/com.unity.modules.director@1.0.0" />
-     <Folder Include="Assets/SimpleNaturePack/Textures" />
-     <Folder Include="Library/PackageCache/com.unity.modules.audio@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.modules.terrain@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.ide.visualstudio@2.0.22" />
-     <None Include="Assets/CatLikeCoding/Shaders/DepthOfFieldShader.shader" />
-     <None Include="Library/PackageCache/com.unity.modules.androidjni@1.0.0/package.json" />
-     <None Include="Assets/Scenes/Decal/ShowDepthTexture.shader" />
-     <Folder Include="Library/PackageCache/com.unity.modules.video@1.0.0" />
-     <Folder Include="Library/PackageCache/com.unity.modules.ai@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/PackageConversionData_Assets.json" />
-     <Folder Include="Assets/Scenes/PointInPolygon" />
-     <None Include="Assets/Scenes/CmdBuffer/CmdBufTest1.shader" />
-     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Package Resources" />
-     <Folder Include="Library/PackageCache/com.unity.modules.terrain@1.0.0" />
-     <None Include="Library/PackageCache/com.unity.modules.animation@1.0.0/package.json" />
-     <None Include="Assets/Scenes/ComputeShaderTest/sample/SampleCompute.compute" />
-     <Folder Include="Assets/CatLikeCoding" />
-     <None Include="Assets/Scenes/DepthOfField/DepthOfField.shader" />
-     <None Include="Assets/Scenes/Decal/Decal.shader" />
-     <Folder Include="Assets/SimpleNaturePack/Materials" />
-     <None Include="Library/PackageCache/com.unity.modules.unitywebrequest@1.0.0/package.json" />
-     <None Include="Library/PackageCache/com.unity.modules.uielements@1.0.0/package.json" />
-     <Folder Include="Library/PackageCache/com.unity.modules.unitywebrequesttexture@1.0.0" />
-     <Folder Include="Assets/Scenes/RayMarching" />
-     <Folder Include="Library/PackageCache/com.unity.ugui@1.0.0" />
-     <Folder Include="Assets/Scenes/DepthTextureTest" />
-     <None Include="Library/PackageCache/com.unity.modules.ui@1.0.0/package.json" />
-     <Folder Include="Assets/SimpleNaturePack/Scenes" />
-     <None Include="Assets/Scenes/CmdBuffer/TestShader1.shader" />
-     <None Include="Assets/Scenes/SDF2D_2/SDF_2D_V2.shader" />
-     <None Include="Library/PackageCache/com.unity.ide.vscode@1.2.5/package.json" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Dropdown.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextElement_Legacy.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_CharacterInfo.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontFeatureTable.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SelectionCaret.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TextMeshPro.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Compatibility.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontAssetCommon.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextParsingUtilities.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SpriteCharacter.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextElement.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_DefaultControls.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ObjectPool.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Asset.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_InputField.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/ITextPreProcessor.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SubMesh.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_EditorResourceManager.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TextMeshProUGUI.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_InputValidator.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontAssetUtilities.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TextContainer.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_LineInfo.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_ExtensionMethods.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ListPool.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextUtilities.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/MaterialReferenceManager.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_UpdateManager.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ShaderUtilities.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextProcessingStack.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_TextInfo.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SpriteAssetImportFormats.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Style.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Character.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontFeaturesCommon.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SubMeshUI.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SpriteAsset.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_UGUI_Private.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_RichTextTagsCommon.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_UpdateRegistery.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_PackageResourceImporter.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/FastAction.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_MeshUtilities.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ScrollbarEventHandler.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ColorGradient.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_MeshInfo.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontAsset.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_ResourcesManager.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SpriteAnimator.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Settings.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Sprite.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/AssemblyInfo.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_Private.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_EventManager.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_StyleSheet.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_CoroutineTween.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_SpriteGlyph.cs" />
+     <Compile Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_MaterialManager.cs" />
+     <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/Unity.TextMeshPro.asmdef" />
+     <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
@@ -506,6 +354,24 @@
      </Reference>
      <Reference Include="UnityEditor.UnityConnectModule">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEditor.Graphs">
+     <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed/UnityEditor.Graphs.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEditor.OSXStandalone.Extensions">
+     <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.Plastic.Antlr3.Runtime">
+     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/PackageCache/com.unity.collab-proxy@2.2.0/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+     </Reference>
+     <Reference Include="unityplastic">
+     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/PackageCache/com.unity.collab-proxy@2.2.0/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.Plastic.Newtonsoft.Json">
+     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/PackageCache/com.unity.collab-proxy@2.2.0/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+     </Reference>
+     <Reference Include="log4netPlastic">
+     <HintPath>/Users/Shared/coding/rendering/RenderLab/Library/PackageCache/com.unity.collab-proxy@2.2.0/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/NetStandard/ref/2.1.0/netstandard.dll</HintPath>
@@ -875,45 +741,13 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.Timeline.csproj">
-      <Project>{339eeb5c-b955-97b5-0a6c-b26f5b246e71}</Project>
-      <Name>Unity.Timeline</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
-      <Project>{46d3ad06-f93d-e00f-a5c8-11e387c83a5e}</Project>
-      <Name>Unity.PlasticSCM.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Timeline.Editor.csproj">
-      <Project>{e903aa91-83f8-590a-e9f5-9046a13d9237}</Project>
-      <Name>Unity.Timeline.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
-      <Project>{c4d8c8c3-6f6b-e340-fb23-6a2c57a40f84}</Project>
-      <Name>Unity.VisualStudio.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.TextMeshPro.csproj">
-      <Project>{7d144152-0e2b-246e-4f44-d4b2e50ea28c}</Project>
-      <Name>Unity.TextMeshPro</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{fddafe4c-48d5-99aa-e604-0e2e8e276bd9}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
-      <Project>{b4570e87-7b68-1b25-b514-372dfe8e6424}</Project>
-      <Name>Unity.TextMeshPro.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
       <Project>{ac970e68-cb8d-b207-0f7a-b7fed3844c18}</Project>
       <Name>UnityEngine.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Rider.Editor.csproj">
-      <Project>{23eb3137-8b4f-a7b2-2dea-6cebc48f41b0}</Project>
-      <Name>Unity.Rider.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.VSCode.Editor.csproj">
-      <Project>{3f3ec723-6905-5bdc-76e9-22e5c5da09f7}</Project>
-      <Name>Unity.VSCode.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
