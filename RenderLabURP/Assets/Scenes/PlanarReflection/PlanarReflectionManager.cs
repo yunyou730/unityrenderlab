@@ -16,8 +16,7 @@ public class PlanarReflectionManager : MonoBehaviour
         _planarMaterial = _planar.GetComponent<MeshRenderer>().material;
         
         // create render texture for reflection camera 
-        //_reflectionRenderTarget = new RenderTexture(Screen.width,Screen.height,24);
-        _reflectionRenderTarget = new RenderTexture(Screen.width,Screen.height,0);
+        _reflectionRenderTarget = new RenderTexture(Screen.width,Screen.height,24);
         _reflectionCamera.targetTexture = _reflectionRenderTarget;
         _reflectionCamera.enabled = true;
         
