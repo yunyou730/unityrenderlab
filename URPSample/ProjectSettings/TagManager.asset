@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - MainLight
+  - CinemachineTarget
+  - ScreenCamera
+  - cockpit_capitalLaser
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Temp_Post
+  - Water
+  - UI
+  - Terminal
+  - Location
+  - LookInteractor
+  - Screen
+  - Occluder
+  - Camera
+  - MainCameraOnly
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Cockpit
+  - Cockpit_3DSkybox
+  - Cockpit_3DSkybox_BG
+  - Cockpit_Ally
+  - Cockpit_Invader
+  - Cockpit_BG
+  - Cockpit_DepthClear
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
