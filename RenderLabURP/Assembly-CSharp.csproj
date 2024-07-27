@@ -73,6 +73,7 @@
      <Folder Include="Library/PackageCache/com.unity.modules.xr@1.0.0" />
      <None Include="Library/PackageCache/com.unity.ext.nunit@1.0.6/package.json" />
      <Folder Include="Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Textures/SMAA" />
+     <None Include="Assets/Scenes/VolumeCloud/HLSL/Raymarch.hlsl" />
      <Folder Include="Library/PackageCache/com.unity.ide.rider@3.0.24/Rider" />
      <Folder Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/Editor Resources" />
      <None Include="Library/PackageCache/com.unity.modules.assetbundle@1.0.0/package.json" />
@@ -98,7 +99,9 @@
      <None Include="Library/PackageCache/com.unity.timeline@1.7.4/ValidationExceptions.json" />
      <None Include="Library/PackageCache/com.unity.collab-proxy@2.4.3/package.json" />
      <Folder Include="Library/PackageCache/com.unity.timeline@1.7.4" />
+     <Folder Include="Assets/Scenes/VolumeCloud/HLSL" />
      <Folder Include="Library/PackageCache/com.unity.modules.cloth@1.0.0" />
+     <Folder Include="Assets/Scenes/VolumeCloud" />
      <None Include="Library/PackageCache/com.unity.textmeshpro@3.0.6/PackageConversionData.json" />
      <None Include="Library/PackageCache/com.unity.modules.unitywebrequestassetbundle@1.0.0/package.json" />
      <Folder Include="Library/PackageCache/com.unity.ext.nunit@1.0.6" />
