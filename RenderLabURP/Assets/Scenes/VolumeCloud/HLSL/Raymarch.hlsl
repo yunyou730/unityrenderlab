@@ -1,5 +1,8 @@
 ﻿//Based on code from DMEville https://www.youtube.com/watch?v=0G8CVQZhMXw
 
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Packing.hlsl"
+
 //Uses 3D texture and lighting 
 void raymarch_float( float3 rayOrigin, float3 rayDirection, float numSteps, float stepSize,
                      float densityScale, UnityTexture3D volumeTex, UnitySamplerState volumeSampler,
@@ -52,7 +55,7 @@ void raymarchv1_float( float3 rayOrigin, float3 rayDirection, float numSteps, fl
 {
 	float density = 0;
 	
-	for(int i =0; i< numSteps; i++){
+	for(int i = 0; i < numSteps; i++){
 		rayOrigin += (rayDirection*stepSize);
 					
 		//Calculate density
