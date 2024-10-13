@@ -54,7 +54,7 @@ void AyyTestFunc2_float(UnityTexture2D tex,UnitySamplerState samplerState,float2
     float2 polarUV,cartesianUV;
     AyyPolarUV_float(uv - float2(0.5,0.5),polarUV);
 
-    polarUV.y += sin(Time) * polarUV.x;
+    polarUV.y += sin(Time * 0.2) * polarUV.x;
     
     AyyCartesianUV_float(polarUV,cartesianUV);
     cartesianUV += float2(0.5,0.5);
