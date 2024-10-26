@@ -55,9 +55,9 @@ Shader "Ayy/AyyUnlit"
             {
                 float3 center = float3(0.0,0.0,0.0);
                 float3 viewer = TransformWorldToObject(_CameraPosition);
-
+                
                 float3 normalDir = viewer - center;
-                normalDir.y = normalDir.y * _VerticalBillboard;
+                normalDir.y = normalDir.y * _VerticalBillboard;     // _VerticalBillboard
                 normalDir = normalize(normalDir);
 
 
@@ -71,9 +71,35 @@ Shader "Ayy/AyyUnlit"
                 return localPos;
             }
 
+            float3 RecalculateAsBillboard2(float3 originLocalPos)
+            {
+                float3 center = float3(0.0,0.0,0.0);
+                float3 viewer = TransformWorldToObject(_CameraPosition);
+
+                float3 normalDir = viewer - center;
+                normalDir.y = normalDir.y * _VerticalBillboard;     // _VerticalBillboard
+                normalDir = normalize(normalDir);
+                
+                float3 upDir = abs(normalDir.y) > 0.999 ? float3(0,0,1) : float3(0,1,0);
+                float3 rightDir = normalize(cross(upDir,normalDir));
+                upDir = normalize(cross(normalDir,rightDir));
+
+
+                float3x3 rotationMatrix = float3x3(-rightDir,upDir,normalDir);
+                float3 localPos = mul(rotationMatrix,originLocalPos.xyz);
+
+                /*
+                float3 centerOffset = originLocalPos - center;
+                float3 localPos = center + rightDir * centerOffset.x + upDir * centerOffset.y + normalDir * centerOffset.z;
+                */
+
+                return localPos;
+            }            
+
             Varyings vert(Attributes IN)
             {
                 float3 localPos = RecalculateAsBillboard1(IN.positionOS.xyz);
+                //localPos = RecalculateAsBillboard2(IN.positionOS.xyz);
 
                 /*
                 float3 cameraDir = normalize(cameraPosInObjectSpace);
