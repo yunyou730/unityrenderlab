@@ -5,6 +5,7 @@ Shader "Ayy/AyyUnlit"
         _BaseColor("Base Color",Color) = (1,1,1,1)
         _CameraPosition("Camera Position",Vector) = (0.0,0.0,0.0)
         _VerticalBillboard("Vertical Billboarding",Range(0,1)) = 1
+        _FuncMode("Func Mode",Range(0,2)) = 0.5
         
         _LocalXOffset("Local X",Range(-10.0,10.0)) = 0.0
         _LocalYOffset("Local Y",Range(-10.0,10.0)) = 0.0
@@ -44,13 +45,13 @@ Shader "Ayy/AyyUnlit"
             float _DebugDistance;
             float3 _CameraPosition;
             float _VerticalBillboard;
+            float _FuncMode;
 
             float _LocalXOffset;
             float _LocalYOffset;
             float _LocalZOffset;
             CBUFFER_END
-
-
+            
             float3 RecalculateAsBillboard1(float3 originLocalPos)
             {
                 float3 center = float3(0.0,0.0,0.0);
@@ -66,6 +67,13 @@ Shader "Ayy/AyyUnlit"
                 upDir = normalize(cross(normalDir,rightDir));
                 
                 float3 centerOffset = originLocalPos - center;
+
+                /*
+                 * 这里 用 加法，而不用 矩阵 变换的原因是 
+                 * 矩阵变换的几何含义：一个坐标在坐标系A的描述, 改为坐标系B 的描述;
+                 * 而这里, 并不是换个B坐标系 来描述, 而是 在 B 坐标系下  每个顶点的相对位置
+                 * 因此 方法2 是错误的 , 这个方法是正确的. 必须用坐标加法 来做 
+                 */
                 float3 localPos = center + rightDir * centerOffset.x + upDir * centerOffset.y + normalDir * centerOffset.z;
 
                 return localPos;
@@ -85,21 +93,23 @@ Shader "Ayy/AyyUnlit"
                 upDir = normalize(cross(normalDir,rightDir));
 
 
-                float3x3 rotationMatrix = float3x3(-rightDir,upDir,normalDir);
+                float3x3 rotationMatrix = float3x3(rightDir,upDir,normalDir);
                 float3 localPos = mul(rotationMatrix,originLocalPos.xyz);
-
-                /*
-                float3 centerOffset = originLocalPos - center;
-                float3 localPos = center + rightDir * centerOffset.x + upDir * centerOffset.y + normalDir * centerOffset.z;
-                */
-
+                
                 return localPos;
             }            
 
             Varyings vert(Attributes IN)
             {
-                float3 localPos = RecalculateAsBillboard1(IN.positionOS.xyz);
-                //localPos = RecalculateAsBillboard2(IN.positionOS.xyz);
+                float3 localPos;
+                if(_FuncMode >= 0.0 && _FuncMode <= 1.0)
+                {
+                    localPos = RecalculateAsBillboard1(IN.positionOS.xyz);   
+                }
+                else if(_FuncMode > 1.0 && _FuncMode <= 2.0)
+                {
+                    localPos = RecalculateAsBillboard2(IN.positionOS.xyz);   
+                }
 
                 /*
                 float3 cameraDir = normalize(cameraPosInObjectSpace);
