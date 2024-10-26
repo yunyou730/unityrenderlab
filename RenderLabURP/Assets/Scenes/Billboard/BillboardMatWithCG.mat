@@ -24,7 +24,13 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _DebugDistance: 0
+    - _LocalXOffset: 0
+    - _LocalYOffset: 2.25
+    - _LocalZOffset: 1.17
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CameraPosition: {r: -1.2100213, g: 1.0872945, b: -3.615919, a: 0}
     - _Color: {r: 0.26825464, g: 0.8773585, b: 0.012415428, a: 1}
   m_BuildTextureStacks: []
