@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BillboardMatWithCG
+  m_Name: BillboardMatWithShaderCode
   m_Shader: {fileID: 4800000, guid: 80ddb3fa2d67a4a51b6fe93814ca0944, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -22,15 +22,22 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 1a46273957dff4678910ebc0d32b74a1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _DebugDistance: 0
-    - _LocalXOffset: 0
-    - _LocalYOffset: 2.25
+    - _FuncMode: 0
+    - _LocalXOffset: 0.93
+    - _LocalYOffset: 0.7
     - _LocalZOffset: 1.17
+    - _ShowTexOrUV: 0
+    - _VerticalBillboard: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraPosition: {r: -1.2100213, g: 1.0872945, b: -3.615919, a: 0}
+    - _CameraPosition: {r: 3.5169444, g: 1.1048806, b: -6.180811, a: 0}
     - _Color: {r: 0.26825464, g: 0.8773585, b: 0.012415428, a: 1}
   m_BuildTextureStacks: []
