@@ -236,7 +236,7 @@ Transform:
   m_GameObject: {fileID: 602842297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.52509755, z: -0, w: 0.85104203}
-  m_LocalPosition: {x: 3.681, y: 1.07, z: -0.521}
+  m_LocalPosition: {x: 2.172, y: 1.07, z: -0.509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -256,6 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FrameCountInRow: 4
   FrameCountInCol: 4
+  FrameRate: 12
 --- !u!1 &928070314
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,13 +627,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102083823}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.58, z: 0}
+  m_LocalRotation: {x: -0, y: 0.41168696, z: -0, w: 0.91132534}
+  m_LocalPosition: {x: -0.403, y: 0.8, z: -4.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 48.622, z: 0}
 --- !u!114 &1102083828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,6 +765,7 @@ GameObject:
   - component: {fileID: 1632232058}
   - component: {fileID: 1632232057}
   - component: {fileID: 1632232056}
+  - component: {fileID: 1632232061}
   m_Layer: 0
   m_Name: Quad (1)
   m_TagString: Untagged
@@ -825,7 +827,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 78242bf0852ad4c369d531391258d55b, type: 2}
+  - {fileID: 2100000, guid: 0704f360a7935d7478ef94beb462398b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -864,12 +866,27 @@ Transform:
   m_GameObject: {fileID: 1632232055}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6, y: 0.58, z: -33.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.736, y: 2.89, z: -1.678}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632232061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632232055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6525647ed9d5e438674abb967e7fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrameCountInRow: 8
+  FrameCountInCol: 8
+  FrameRate: 24
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
