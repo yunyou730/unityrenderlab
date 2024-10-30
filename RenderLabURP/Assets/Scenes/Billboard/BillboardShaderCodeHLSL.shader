@@ -8,11 +8,7 @@ Shader "Ayy/BillboardBasic"
         _CameraPosition("Camera Position",Vector) = (0.0,0.0,0.0)
         _VerticalBillboard("Vertical Billboarding",Range(0,1)) = 1
         _FuncMode("Func Mode",Range(0,3)) = 0.5
-        
-        _LocalXOffset("Local X",Range(-10.0,10.0)) = 0.0
-        _LocalYOffset("Local Y",Range(-10.0,10.0)) = 0.0
-        _LocalZOffset("Local Z",Range(-10.0,10.0)) = 0.0
-        
+                
         _ShowTexOrUV("Show Texture Or UV",Range(0,1)) = 0
     }
     SubShader
@@ -53,10 +49,6 @@ Shader "Ayy/BillboardBasic"
             float _VerticalBillboard;
             float _FuncMode;
 
-            float _LocalXOffset;
-            float _LocalYOffset;
-            float _LocalZOffset;
-
             float _ShowTexOrUV;
             CBUFFER_END
             
@@ -89,22 +81,17 @@ Shader "Ayy/BillboardBasic"
 
             float3 RecalculateAsBillboard2(float3 originLocalPos)
             {
-                float3 center = float3(0.0,0.0,0.0);
-                float3 viewer = TransformWorldToObject(_CameraPosition);
-
-                float3 normalDir = viewer - center;
-                normalDir.y = normalDir.y * _VerticalBillboard;     // _VerticalBillboard
-                normalDir = normalize(normalDir);
+                float3 cameraPosInObjectSpace = TransformWorldToObject(_CameraPosition);
+                float3 cameraDir = normalize(cameraPosInObjectSpace);
+                float3 tempUpDir = float3(0.0,1.0,0.0);
                 
-                float3 upDir = abs(normalDir.y) > 0.999 ? float3(0,0,1) : float3(0,1,0);
-                float3 rightDir = normalize(cross(upDir,normalDir));
-                upDir = normalize(cross(normalDir,rightDir));
-            
-                // 这一步明显是错误的 
-                float3x3 rotationMatrix = float3x3(rightDir,upDir,normalDir);
-                float3 localPos = mul(rotationMatrix,originLocalPos.xyz);
+                float3 right = normalize(cross(cameraDir,tempUpDir));
+                float3 up = normalize(cross(right,cameraDir));
                 
-                return localPos;
+                float3 pos = originLocalPos;
+                pos = right * pos.x + up * pos.y + cameraDir * pos.z;
+                
+                return pos;
             }            
 
             Varyings vert(Attributes IN)
@@ -123,23 +110,7 @@ Shader "Ayy/BillboardBasic"
                     localPos = IN.positionOS.xyz;
                 }
 
-                /*
-                float3 cameraDir = normalize(cameraPosInObjectSpace);
-                float3 tempUpDir = float3(0.0,1.0,0.0);
-                
-                float3 right = normalize(cross(cameraDir,tempUpDir));
-                float3 up = normalize(cross(right,cameraDir));
-                
-    
-                float3x3 rotMat = float3x3(right,up,cameraDir);
-                float3 pos = IN.positionOS.xyz;
-                pos = right * pos.x + up * pos.y + cameraDir * pos.z;
-                //pos = mul(rotMat,pos);
-                
-                Varyings OUT;
-                OUT.positionHCS = TransformObjectToHClip(pos);
-                OUT.uv = IN.uv;
-                */
+
                 Varyings OUT;
                 OUT.positionHCS = TransformObjectToHClip(localPos);
                 OUT.uv = IN.uv;
@@ -148,16 +119,6 @@ Shader "Ayy/BillboardBasic"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                //float3 pos = _WorldSpaceCameraPos;
-                //_WorldSpaceCameraPos
-                //float3 cameraPosInObjectSpace = TransformWorldToObject(_CameraPosition);
-                //float3 cameraDir = normalize(cameraPosInObjectSpace);
-                //cameraDir = cameraDir * 2 - 1;
-                
-                //float4 ret = float4(cameraDir,1.0); 
-                //ret *= _BaseColor;
-
-
                 float4 ret = float4(IN.uv.x,IN.uv.y,0.0,1.0);
                 if(_ShowTexOrUV <= 0.5)
                 {
