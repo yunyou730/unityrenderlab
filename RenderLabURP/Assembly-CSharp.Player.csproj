@@ -46,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BlurRenderPass.cs" />
+    <Compile Include="Assets\Scenes\Billboard\FrameSequence.cs" />
+    <Compile Include="Assets\Scenes\Billboard\CameraMovement.cs" />
+    <Compile Include="Assets\Scenes\Billboard\Billboard.cs" />
     <Compile Include="Assets\Scripts\BlurRenderFeature.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scenes\PlanarReflection\AutoMoveTest.cs" />

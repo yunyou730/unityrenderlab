@@ -38,6 +38,6 @@ Material:
     - _VerticalBillboard: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraPosition: {r: 3.5169444, g: 1.1048806, b: -6.180811, a: 0}
+    - _CameraPosition: {r: 0, g: 1, b: -10, a: 0}
     - _Color: {r: 0.26825464, g: 0.8773585, b: 0.012415428, a: 1}
   m_BuildTextureStacks: []

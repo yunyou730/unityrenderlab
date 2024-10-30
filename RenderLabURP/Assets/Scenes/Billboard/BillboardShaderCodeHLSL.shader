@@ -1,4 +1,4 @@
-Shader "Ayy/AyyUnlit"
+Shader "Ayy/BillboardBasic"
 {
     Properties
     {
