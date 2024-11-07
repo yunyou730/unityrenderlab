@@ -9,30 +9,31 @@ namespace ayy
 {
     public class PrepareMeshPaintingTextureRenderPass : ScriptableRenderPass
     {
-        private Material _customMaterial;
-        
-        public PrepareMeshPaintingTextureRenderPass(Material material)
+        public PrepareMeshPaintingTextureRenderPass()
         {
-            _customMaterial = material;
+            
         }
-
+        
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             //var camera = renderingData.cameraData.camera;
             //var cullResults = renderingData.cullResults;
-            
             CommandBuffer cmd = CommandBufferPool.Get("ayy.PrepareMeshPaintingTextureRenderPass");
             using (new ProfilingScope(cmd, new ProfilingSampler("ayy.PrepareMeshPaintingTextureRenderPass"))) 
             {
                 cmd.Clear();
-                cmd.ClearRenderTarget(true,true,Color.green);
+                //cmd.ClearRenderTarget(true,true,Color.green);      
                 
                 var renderers = GetRenderers();
                 foreach (var renderer in renderers)
                 {
                     PaintableMesh paintable = renderer.GetComponent<PaintableMesh>();
-                    cmd.SetRenderTarget(paintable.GetUnwrapUVTexture());
-                    cmd.DrawRenderer(renderer,_customMaterial);
+                    if (paintable.GetUnwrapUVMaterial() != null)
+                    {
+                        cmd.SetRenderTarget(paintable.GetUnwrapUVTexture());
+                        cmd.ClearRenderTarget(true,true,Color.cyan);
+                        cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());                        
+                    }
                 }
                 context.ExecuteCommandBuffer(cmd);
             }

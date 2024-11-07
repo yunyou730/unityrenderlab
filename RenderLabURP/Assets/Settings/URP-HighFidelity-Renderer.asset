@@ -30,9 +30,6 @@ MonoBehaviour:
   m_Name: PrepareMeshPaintingTextureRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &-1994858836503114272
 MonoBehaviour:
   m_ObjectHideFlags: 0

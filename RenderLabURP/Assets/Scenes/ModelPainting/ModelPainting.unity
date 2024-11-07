@@ -378,6 +378,7 @@ GameObject:
   - component: {fileID: 1645554496}
   - component: {fileID: 1645554495}
   - component: {fileID: 1645554498}
+  - component: {fileID: 1645554499}
   m_Layer: 0
   m_Name: Suzanne
   m_TagString: ayy.paintable
@@ -405,7 +406,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e16bec1c9e17d407ca9486b945fc59cc, type: 2}
+  - {fileID: 2100000, guid: 4f06d28f37bf3403eb03cec64d658478, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -462,6 +463,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686abb79d88ba442791135dacc413ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _unwrapTexture: {fileID: 0}
+--- !u!64 &1645554499
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645554494}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2222346464153789849, guid: 3fe3cd83ab0b0462380afed7c8234373, type: 3}
 --- !u!1 &1882665122
 GameObject:
   m_ObjectHideFlags: 0
