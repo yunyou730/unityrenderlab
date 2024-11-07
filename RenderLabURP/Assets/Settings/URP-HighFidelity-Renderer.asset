@@ -17,6 +17,22 @@ MonoBehaviour:
     horizontalBlur: 0
     verticalBlur: 0
   _shader: {fileID: 4800000, guid: 0c29cd8b08aa24d57a6adc84d1374a9e, type: 3}
+--- !u!114 &-3060242839802154097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a465ddae58e74f2da860d66222a9605, type: 3}
+  m_Name: PrepareMeshPaintingTextureRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &-1994858836503114272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +76,8 @@ MonoBehaviour:
   - {fileID: -7496992494454673187}
   - {fileID: 9172040728121301630}
   - {fileID: 1294102845699035857}
-  m_RendererFeatureMap: e0cd2e1975d650e4bcb04b80cb38ad56dd70420c0c55f5977eda155972a2497fd192b684ae93f511
+  - {fileID: -3060242839802154097}
+  m_RendererFeatureMap: e0cd2e1975d650e4bcb04b80cb38ad56dd70420c0c55f5977eda155972a2497fd192b684ae93f5118ff328df59d587d5
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

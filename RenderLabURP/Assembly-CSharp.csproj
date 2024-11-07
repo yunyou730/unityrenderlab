@@ -53,8 +53,11 @@
     <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
     <Compile Include="Assets/Scenes/PlanarReflection/AutoMoveTest.cs" />
     <Compile Include="Assets/Scenes/PlanarReflection/PlanarReflectionManager.cs" />
+    <Compile Include="Assets/Scenes/ModelPainting/PrepareMeshPaintingTextureRenderFeature.cs" />
     <Compile Include="Assets/Scripts/MyRenderFeature.cs" />
+    <Compile Include="Assets/Scenes/ModelPainting/PaintableMesh.cs" />
     <Compile Include="Assets/Scripts/Bokeh.cs" />
+    <Compile Include="Assets/Scenes/ModelPainting/PrepareMeshPaintingTextureRenderPass.cs" />
     <Compile Include="Assets/Scripts/RedTintRenderPass.cs" />
     <Compile Include="Assets/Scenes/ModelPainting/ModelPainting.cs" />
     <Compile Include="Assets/Scripts/EnqueuePass.cs" />

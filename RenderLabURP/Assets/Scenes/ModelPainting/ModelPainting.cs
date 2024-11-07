@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 [ExecuteInEditMode]
 public class ModelPainting : MonoBehaviour
 {
+    void Start()
+    {
+
+    }
+
     void Update()
     {
         if (Input.GetMouseButton(0))

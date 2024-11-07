@@ -13,7 +13,7 @@ Shader "ayy/ModelPaintingTest"
             "RenderPipeline" = "UniversalPipeline"
             "Queue" = "Geometry"
         }
-        // Cull Off 
+        Cull Off 
         // ZTest Off 
         // ZWrite Off        
         
@@ -34,6 +34,7 @@ Shader "ayy/ModelPaintingTest"
             {
                 float4 positionHCS :SV_POSITION;    // HCS: Homogeneous Clipping Space
                 float2 uv : TEXCOORD0;
+                float4 testValue: TEXCOORD1;
             };
 
         CBUFFER_START(UnityPerMaterial)
@@ -47,13 +48,14 @@ Shader "ayy/ModelPaintingTest"
                 float2 uv = IN.uv;
 
                 float4 temp = float4(0,0,0,1);
-                float2 factor = uv * 2 - 1;
-                temp.xy = float2(1,_ProjectionParams.x) * factor;
+                temp.xy = float2(uv * 2 - 1) * float2(1,_ProjectionParams.x);
                 
                 Varyings OUT;
                 //OUT.positionHCS = TransformObjectToHClip(localPos);
                 OUT.positionHCS = temp;
                 OUT.uv = IN.uv;
+
+                OUT.testValue = _ProjectionParams;
                 return OUT;
             }
 
@@ -64,6 +66,8 @@ Shader "ayy/ModelPaintingTest"
                 float2 uv = IN.uv;
                 float4 texCol = tex2D(_MainTex,uv);
                 float4 ret = texCol;//float4(IN.uv.x,IN.uv.y,0.0,1.0);
+
+                //ret = float4(IN.testValue.x,IN.testValue.x,IN.testValue.x,1.0);
                 return ret;
             }
             ENDHLSL
