@@ -50,7 +50,11 @@ Shader "ayy/ModelPaintingTest"
 
                 float4 temp = float4(0,0,0,1);
                 temp.xy = float2(uv * 2 - 1) * float2(1,_ProjectionParams.x);
-                
+
+                // @miao @temp
+                // 让 uv 贴图 有一点点 深透 & 溢出
+                //temp.xy *= 1.01;
+            
                 Varyings OUT;
                 //OUT.positionHCS = TransformObjectToHClip(localPos);
                 OUT.positionHCS = temp;
@@ -60,16 +64,17 @@ Shader "ayy/ModelPaintingTest"
                 return OUT;
             }
 
-            half4 frag(Varyings IN) : SV_Target
+            float4 frag(Varyings IN) : SV_Target
             {
-                half4 ret1 = half4(1.0,1.0,0.0,1.0);
-                if(distance(IN.positionWS,_PaintingPoint.xyz) < 0.3)
+                float2 uv = IN.uv;
+                float4 ret1 = tex2D(_MainTex,uv);
+                if(distance(IN.positionWS,_PaintingPoint.xyz) < 0.1)
                 {
                     ret1 = half4(1.0,0.0,0.0,1.0);
                 }
                 return ret1;
                 
-                float2 uv = IN.uv;
+                //float2 uv = IN.uv;
                 float4 texCol = tex2D(_MainTex,uv);
                 half4 ret = texCol;//float4(IN.uv.x,IN.uv.y,0.0,1.0);
 

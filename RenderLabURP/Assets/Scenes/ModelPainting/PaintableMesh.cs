@@ -8,23 +8,38 @@ public class PaintableMesh : MonoBehaviour
 {
     public Vector3? DrawPointWorldPos = null;
     
-    public RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
+    private RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
     private Material _unwrapUVMaterial = null;
+
+    
+    private bool _bPresentSlot1 = true;
+    private RenderTexture _unwrapTex1 = null;
+    private RenderTexture _unwrapTex2 = null;
     
     void Start()
     {
-        _unwrapTexture = new RenderTexture(1024,1024,32,DefaultFormat.LDR);
-        _unwrapTexture.enableRandomWrite = true;
+        _unwrapTexture = CreatePresentRenderTexture();
+        _unwrapTex1 = CreatePresentRenderTexture();
+        _unwrapTex2 = CreatePresentRenderTexture();
         
         // 设置最终 需要绘制的 material 
         var meshRenderer = GetComponent<MeshRenderer>();
         var material = meshRenderer.material;
-        material.SetTexture(Shader.PropertyToID("_PaintingChannel"),_unwrapTexture);
+        //material.SetTexture(Shader.PropertyToID("_PaintingChannel"),_unwrapTexture);
+        material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetPresentUVTexture());
         
         // 初始化 unwrap uv 的 material 
         _unwrapUVMaterial = new Material(Shader.Find("ayy/ModelPaintingTest"));
     }
     
+    private RenderTexture CreatePresentRenderTexture()
+    {
+        var rt = new RenderTexture(1024,1024,32,DefaultFormat.LDR);
+        rt.enableRandomWrite = true;
+        rt.filterMode = FilterMode.Point;
+        return rt;
+    }
+
     void Update()
     {
         if (DrawPointWorldPos != null)
@@ -41,13 +56,33 @@ public class PaintableMesh : MonoBehaviour
                 _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PaintingPoint"),posInWS);   
             }
         }
+        if (_unwrapUVMaterial.HasProperty(Shader.PropertyToID("_MainTex")))
+        {
+            _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
+        }        
     }
 
     public RenderTexture GetUnwrapUVTexture()
     {
+        
         return _unwrapTexture;
     }
-    
+
+    public RenderTexture GetPresentUVTexture()
+    {
+        return _bPresentSlot1 ? _unwrapTex1 : _unwrapTex2;
+    }
+
+    public RenderTexture GetBackupUVTexture()
+    {
+        return (!_bPresentSlot1) ? _unwrapTex1 : _unwrapTex2;
+    }
+
+    public void SwapUVTexture()
+    {
+        _bPresentSlot1 = !_bPresentSlot1;
+    }
+
     public Material GetUnwrapUVMaterial()
     {
         return _unwrapUVMaterial;
