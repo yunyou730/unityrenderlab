@@ -6,11 +6,11 @@ using UnityEngine.Experimental.Rendering;
 
 public class PaintableMesh : MonoBehaviour
 {
-    public Vector3? DrawPointWorldPos = null;
+    public Vector3? _curDrawPointWS = null;
+    public Vector3? _prevDrawPointsWS = null;
     
-    private RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
+    //private RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
     private Material _unwrapUVMaterial = null;
-
     
     private bool _bPresentSlot1 = true;
     private RenderTexture _unwrapTex1 = null;
@@ -18,7 +18,7 @@ public class PaintableMesh : MonoBehaviour
     
     void Start()
     {
-        _unwrapTexture = CreatePresentRenderTexture();
+        //_unwrapTexture = CreatePresentRenderTexture();
         _unwrapTex1 = CreatePresentRenderTexture();
         _unwrapTex2 = CreatePresentRenderTexture();
         
@@ -42,12 +42,12 @@ public class PaintableMesh : MonoBehaviour
 
     void Update()
     {
-        if (DrawPointWorldPos != null)
+        if (_curDrawPointWS != null)
         {
             Vector4 posInWS = new Vector4(
-                DrawPointWorldPos.Value.x,
-                DrawPointWorldPos.Value.y,
-                DrawPointWorldPos.Value.z,
+                _curDrawPointWS.Value.x,
+                _curDrawPointWS.Value.y,
+                _curDrawPointWS.Value.z,
                 1.0f
             );
             
@@ -62,11 +62,10 @@ public class PaintableMesh : MonoBehaviour
         }        
     }
 
-    public RenderTexture GetUnwrapUVTexture()
-    {
-        
-        return _unwrapTexture;
-    }
+    // public RenderTexture GetUnwrapUVTexture()
+    // {
+    //     return _unwrapTexture;
+    // }
 
     public RenderTexture GetPresentUVTexture()
     {
@@ -87,14 +86,24 @@ public class PaintableMesh : MonoBehaviour
     {
         return _unwrapUVMaterial;
     }
+    
+    public void SetCurrentDrawPointWS(Vector3 pos)
+    {
+        _curDrawPointWS = pos;
+    }
+    
+    //public Vector3? _curDrawPointWS = null;
+    //public Vector3? _prevDrawPointsWS = null;
 
     void OnDestroy()
     {
+        /*
         if (_unwrapTexture != null)
         {
             _unwrapTexture.Release();
             Destroy(_unwrapTexture);
             _unwrapTexture = null;            
         }
+        */
     }
 }

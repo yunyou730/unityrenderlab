@@ -30,7 +30,8 @@ public class ModelPainting : MonoBehaviour
             PaintableMesh paintable = null;
             if (hit.collider.TryGetComponent<PaintableMesh>(out paintable))
             {
-                paintable.DrawPointWorldPos = hit.point;
+                //paintable.DrawPointWorldPos = hit.point;
+                paintable.SetCurrentDrawPointWS(hit.point);
             }
         }
     }
