@@ -30,18 +30,13 @@ namespace ayy
                     PaintableMesh paintable = renderer.GetComponent<PaintableMesh>();
                     if(paintable.GetUnwrapUVMaterial() != null)
                     {
-                        //cmd.Blit(paintable.GetPresentUVTexture(),paintable.GetBackupUVTexture());
                         cmd.Blit(paintable.GetBackupUVTexture(),paintable.GetPresentUVTexture());
-                        
                         cmd.SetRenderTarget(paintable.GetPresentUVTexture());
                         //cmd.ClearRenderTarget(true,true,Color.cyan);
-                        // @miao @todo 
-                        // 这样为什么 材质的 MainTex 参数传不进去 
-                        //cmd.SetGlobalTexture(Shader.PropertyToID("_MainTex"),paintable.GetPresentUVTexture());
                         cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());
                         
-                        //
-                        paintable.SwapUVTexture();
+                        // swap the painting flag 
+                        //paintable.SwapUVTexture();
                     }
                 }
                 context.ExecuteCommandBuffer(cmd);

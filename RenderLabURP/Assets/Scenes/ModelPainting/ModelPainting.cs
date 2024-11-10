@@ -19,9 +19,24 @@ public class ModelPainting : MonoBehaviour
         {
             CheckMouseCollision();            
         }
+        else
+        {
+            // @miao @todo
+            /*
+            var paintableGameObjects = GameObject.FindGameObjectsWithTag("ayy.paintable");
+            foreach (var go in paintableGameObjects)
+            {
+                PaintableMesh paintalbe = null;
+                if (go.TryGetComponent<PaintableMesh>(out paintalbe))
+                {
+                    paintalbe.ClearDrawPoints();
+                }
+            }
+            */
+        }
     }
     
-    void CheckMouseCollision()
+    PaintableMesh CheckMouseCollision()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -32,7 +47,11 @@ public class ModelPainting : MonoBehaviour
             {
                 //paintable.DrawPointWorldPos = hit.point;
                 paintable.SetCurrentDrawPointWS(hit.point);
+
+                return paintable;
             }
         }
+
+        return null;
     }
 }

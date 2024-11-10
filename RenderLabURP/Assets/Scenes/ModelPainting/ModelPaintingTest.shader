@@ -3,7 +3,9 @@ Shader "ayy/ModelPaintingTest"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _PaintingPoint ("Painting Points", Vector) = (0, 0, 0, 0)
+        _PaintingPoint ("Painting Point", Vector) = (0, 0, 0, 0)
+        _PrevPoint("Prev Point",Vector) = (0,0,0,0)
+        _PrevPointValid("Prev Point Valid",float) = 0
     }
     SubShader
     {
@@ -34,13 +36,15 @@ Shader "ayy/ModelPaintingTest"
             {
                 float4 positionHCS :SV_POSITION;    // HCS: Homogeneous Clipping Space
                 float2 uv : TEXCOORD0;
-                float4 testValue: TEXCOORD1;
+                //float4 testValue: TEXCOORD1;
                 float3 positionWS : TEXCOORD2;
             };
 
         CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
             float4 _PaintingPoint;
+            float4 _PrevPoint;
+            float _PrevPointValid;
         CBUFFER_END            
 
             Varyings vert(Attributes IN)
@@ -59,10 +63,32 @@ Shader "ayy/ModelPaintingTest"
                 //OUT.positionHCS = TransformObjectToHClip(localPos);
                 OUT.positionHCS = temp;
                 OUT.uv = IN.uv;
-                OUT.testValue = _ProjectionParams;
+                //OUT.testValue = _ProjectionParams;
                 OUT.positionWS = TransformObjectToWorld(localPos);
                 return OUT;
             }
+
+            // 判断点 P 是否在距离线段 AB 的短距离范围内
+            bool IsPointWithinDistance(float3 A, float3 B, float3 P, float dis)
+            {
+                float3 AB = B - A;
+                float3 BA = A - B;
+                float3 AP = P - A;
+                float3 BP = P - B;
+                
+                float3 dirAB = normalize(B - A);
+                if(dot(AP,AB) > 0.0 && dot(BA,BP) > 0.0) // check direction
+                {
+                    // check distance
+                    float3 nAP = normalize(AP);
+                    float3 nAB = normalize(AB);
+                    float theta = acos(dot(nAP,nAB));
+                    float curDis = sin(theta) * length(AP);
+                    return curDis <= dis;
+                }
+            
+                return false;
+            }            
 
             float4 frag(Varyings IN) : SV_Target
             {
@@ -72,14 +98,16 @@ Shader "ayy/ModelPaintingTest"
                 {
                     ret1 = half4(1.0,0.0,0.0,1.0);
                 }
-                return ret1;
+                else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < 0.1)
+                {
+                    ret1 = half4(1.0,1.0,0.0,1.0);
+                }
+                else if(_PrevPointValid > 0.5 && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,0.1))
+                {
+                    ret1 = half4(0.0,1.0,0.0,1.0);
+                }
                 
-                //float2 uv = IN.uv;
-                float4 texCol = tex2D(_MainTex,uv);
-                half4 ret = texCol;//float4(IN.uv.x,IN.uv.y,0.0,1.0);
-
-                //ret = float4(IN.testValue.x,IN.testValue.x,IN.testValue.x,1.0);
-                return ret;
+                return ret1;
             }
             ENDHLSL
         }

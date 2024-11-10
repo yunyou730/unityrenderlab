@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -8,6 +10,10 @@ public class PaintableMesh : MonoBehaviour
 {
     public Vector3? _curDrawPointWS = null;
     public Vector3? _prevDrawPointsWS = null;
+
+    public bool _bEnableTest = true;
+    public Vector4 _testCurPos = new Vector4(3, 3, 0, 1);
+    public Vector4 _testPrevPos = new Vector4(0, 0, 0, 1);
     
     //private RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
     private Material _unwrapUVMaterial = null;
@@ -42,30 +48,44 @@ public class PaintableMesh : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log($"[go]{gameObject.name}: from[A]{_curDrawPointWS} to[B]{_prevDrawPointsWS}");
+        
         if (_curDrawPointWS != null)
         {
+            
             Vector4 posInWS = new Vector4(
                 _curDrawPointWS.Value.x,
                 _curDrawPointWS.Value.y,
                 _curDrawPointWS.Value.z,
                 1.0f
             );
-            
-            if(_unwrapUVMaterial.HasProperty(Shader.PropertyToID("_PaintingPoint")))
+
+
+            Vector4 prevInWS = new Vector4(0, 0, 0, 1);
+            float prevPointValid = 0.0f;
+            if (_prevDrawPointsWS != null)
             {
-                _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PaintingPoint"),posInWS);   
+                prevInWS = new Vector4(
+                    _prevDrawPointsWS.Value.x,
+                    _prevDrawPointsWS.Value.y,
+                    _prevDrawPointsWS.Value.z,
+                    1.0f
+                );
+                prevPointValid = 1.0f;
             }
+            
+            _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PaintingPoint"),posInWS);
+            _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_PrevPointValid"),prevPointValid);
+            _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PrevPoint"),prevInWS);  
+            
         }
+        
+        // Paintable Mask Material mask texture
         if (_unwrapUVMaterial.HasProperty(Shader.PropertyToID("_MainTex")))
         {
             _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
-        }        
+        }
     }
-
-    // public RenderTexture GetUnwrapUVTexture()
-    // {
-    //     return _unwrapTexture;
-    // }
 
     public RenderTexture GetPresentUVTexture()
     {
@@ -89,11 +109,24 @@ public class PaintableMesh : MonoBehaviour
     
     public void SetCurrentDrawPointWS(Vector3 pos)
     {
+        if (_curDrawPointWS != null)
+        {
+            _prevDrawPointsWS = new Vector3(
+                _curDrawPointWS.Value.x,
+                _curDrawPointWS.Value.y,
+                _curDrawPointWS.Value.z); 
+        }
+
         _curDrawPointWS = pos;
+        
+        
     }
-    
-    //public Vector3? _curDrawPointWS = null;
-    //public Vector3? _prevDrawPointsWS = null;
+
+    public void ClearDrawPoints()
+    {
+        _curDrawPointWS = null;
+        _prevDrawPointsWS = null;
+    }
 
     void OnDestroy()
     {
