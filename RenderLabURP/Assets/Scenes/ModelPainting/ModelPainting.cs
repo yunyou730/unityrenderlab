@@ -22,7 +22,6 @@ public class ModelPainting : MonoBehaviour
         else
         {
             // @miao @todo
-            /*
             var paintableGameObjects = GameObject.FindGameObjectsWithTag("ayy.paintable");
             foreach (var go in paintableGameObjects)
             {
@@ -32,7 +31,6 @@ public class ModelPainting : MonoBehaviour
                     paintalbe.ClearDrawPoints();
                 }
             }
-            */
         }
     }
     
