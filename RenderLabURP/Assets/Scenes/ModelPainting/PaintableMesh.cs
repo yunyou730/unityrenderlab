@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
@@ -10,28 +5,17 @@ public class PaintableMesh : MonoBehaviour
 {
     public Vector3? _curDrawPointWS = null;
     public Vector3? _prevDrawPointsWS = null;
-
-    public bool _bEnableTest = true;
-    public Vector4 _testCurPos = new Vector4(3, 3, 0, 1);
-    public Vector4 _testPrevPos = new Vector4(0, 0, 0, 1);
     
-    //private RenderTexture _unwrapTexture = null; // public only for visualize debug in Inspector panel
     private Material _unwrapUVMaterial = null;
-    
-    private bool _bPresentSlot1 = true;
-    private RenderTexture _unwrapTex1 = null;
-    private RenderTexture _unwrapTex2 = null;
+    private RenderTexture _unwrapUVTex = null;
     
     void Start()
     {
-        //_unwrapTexture = CreatePresentRenderTexture();
-        _unwrapTex1 = CreatePresentRenderTexture();
-        _unwrapTex2 = CreatePresentRenderTexture();
+        _unwrapUVTex = CreatePresentRenderTexture();
         
         // 设置最终 需要绘制的 material 
         var meshRenderer = GetComponent<MeshRenderer>();
         var material = meshRenderer.material;
-        //material.SetTexture(Shader.PropertyToID("_PaintingChannel"),_unwrapTexture);
         material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetPresentUVTexture());
         
         // 初始化 unwrap uv 的 material 
@@ -89,19 +73,9 @@ public class PaintableMesh : MonoBehaviour
 
     public RenderTexture GetPresentUVTexture()
     {
-        return _bPresentSlot1 ? _unwrapTex1 : _unwrapTex2;
+        return _unwrapUVTex;
     }
-
-    public RenderTexture GetBackupUVTexture()
-    {
-        return (!_bPresentSlot1) ? _unwrapTex1 : _unwrapTex2;
-    }
-
-    public void SwapUVTexture()
-    {
-        _bPresentSlot1 = !_bPresentSlot1;
-    }
-
+    
     public Material GetUnwrapUVMaterial()
     {
         return _unwrapUVMaterial;
@@ -109,6 +83,7 @@ public class PaintableMesh : MonoBehaviour
     
     public void SetCurrentDrawPointWS(Vector3 pos)
     {
+        // 把 上一次的绘制位置, 记录到 prevDrawPoint 里 
         if (_curDrawPointWS != null)
         {
             _prevDrawPointsWS = new Vector3(
@@ -116,10 +91,9 @@ public class PaintableMesh : MonoBehaviour
                 _curDrawPointWS.Value.y,
                 _curDrawPointWS.Value.z); 
         }
-
+        
+        // 记录 当前绘制位置 到 curDrawPoint 里  
         _curDrawPointWS = pos;
-        
-        
     }
 
     public void ClearDrawPoints()
@@ -130,13 +104,11 @@ public class PaintableMesh : MonoBehaviour
 
     void OnDestroy()
     {
-        /*
-        if (_unwrapTexture != null)
+        if (_unwrapUVTex != null)
         {
-            _unwrapTexture.Release();
-            Destroy(_unwrapTexture);
-            _unwrapTexture = null;            
+            _unwrapUVTex.Release();
+            Destroy(_unwrapUVTex);
+            _unwrapUVTex = null;            
         }
-        */
     }
 }

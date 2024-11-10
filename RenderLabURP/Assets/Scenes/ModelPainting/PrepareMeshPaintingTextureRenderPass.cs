@@ -30,7 +30,7 @@ namespace ayy
                     PaintableMesh paintable = renderer.GetComponent<PaintableMesh>();
                     if(paintable.GetUnwrapUVMaterial() != null)
                     {
-                        cmd.Blit(paintable.GetBackupUVTexture(),paintable.GetPresentUVTexture());
+                        //cmd.Blit(paintable.GetBackupUVTexture(),paintable.GetPresentUVTexture());
                         cmd.SetRenderTarget(paintable.GetPresentUVTexture());
                         //cmd.ClearRenderTarget(true,true,Color.cyan);
                         cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());
