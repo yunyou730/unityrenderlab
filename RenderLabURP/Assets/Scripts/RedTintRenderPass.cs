@@ -59,7 +59,7 @@ public class RedTintRenderPass : ScriptableRenderPass
             Object.DestroyImmediate(_material);
         }
 #else
-            Object.Destroy(material);
+            Object.Destroy(_material);
 #endif
 
         if (_textureHandle != null)

@@ -22,21 +22,15 @@ namespace ayy
             using (new ProfilingScope(cmd, new ProfilingSampler("ayy.PrepareMeshPaintingTextureRenderPass"))) 
             {
                 cmd.Clear();
-                //cmd.ClearRenderTarget(true,true,Color.green);      
-                
                 var renderers = GetRenderers();
                 foreach (var renderer in renderers)
                 {
                     PaintableMesh paintable = renderer.GetComponent<PaintableMesh>();
                     if(paintable.GetUnwrapUVMaterial() != null)
                     {
-                        //cmd.Blit(paintable.GetBackupUVTexture(),paintable.GetPresentUVTexture());
                         cmd.SetRenderTarget(paintable.GetPresentUVTexture());
-                        //cmd.ClearRenderTarget(true,true,Color.cyan);
+                        cmd.ClearRenderTarget(true,true,Color.cyan);
                         cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());
-                        
-                        // swap the painting flag 
-                        //paintable.SwapUVTexture();
                     }
                 }
                 context.ExecuteCommandBuffer(cmd);

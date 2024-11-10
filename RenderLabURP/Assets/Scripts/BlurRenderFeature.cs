@@ -52,7 +52,7 @@ public class BlurRenderFeature : ScriptableRendererFeature
             DestroyImmediate(_material);
         }
 #else
-            Destroy(material);
+            Destroy(_material);
 #endif
     }    
 }

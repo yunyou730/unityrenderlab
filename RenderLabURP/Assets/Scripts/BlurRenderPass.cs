@@ -68,7 +68,7 @@ public class BlurRenderPass : ScriptableRenderPass
             Object.DestroyImmediate(_material);
         }
 #else
-            Object.Destroy(material);
+            Object.Destroy(_material);
 #endif
 
         if (_blurTextureHandle != null) _blurTextureHandle.Release();

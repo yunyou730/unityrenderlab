@@ -20,6 +20,7 @@ public class PaintableMesh : MonoBehaviour
         
         // 初始化 unwrap uv 的 material 
         _unwrapUVMaterial = new Material(Shader.Find("ayy/ModelPaintingTest"));
+        _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
     }
     
     private RenderTexture CreatePresentRenderTexture()
@@ -62,12 +63,6 @@ public class PaintableMesh : MonoBehaviour
             _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_PrevPointValid"),prevPointValid);
             _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PrevPoint"),prevInWS);  
             
-        }
-        
-        // Paintable Mask Material mask texture
-        if (_unwrapUVMaterial.HasProperty(Shader.PropertyToID("_MainTex")))
-        {
-            _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
         }
     }
 

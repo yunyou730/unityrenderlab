@@ -55,15 +55,11 @@ Shader "ayy/ModelPaintingTest"
                 float4 temp = float4(0,0,0,1);
                 temp.xy = float2(uv * 2 - 1) * float2(1,_ProjectionParams.x);
 
-                // @miao @temp
-                // 让 uv 贴图 有一点点 深透 & 溢出
-                //temp.xy *= 1.01;
             
                 Varyings OUT;
                 //OUT.positionHCS = TransformObjectToHClip(localPos);
                 OUT.positionHCS = temp;
                 OUT.uv = IN.uv;
-                //OUT.testValue = _ProjectionParams;
                 OUT.positionWS = TransformObjectToWorld(localPos);
                 return OUT;
             }
@@ -76,7 +72,7 @@ Shader "ayy/ModelPaintingTest"
                 float3 AP = P - A;
                 float3 BP = P - B;
                 
-                float3 dirAB = normalize(B - A);
+                //float3 dirAB = normalize(B - A);
                 if(dot(AP,AB) > 0.0 && dot(BA,BP) > 0.0) // check direction
                 {
                     // check distance
