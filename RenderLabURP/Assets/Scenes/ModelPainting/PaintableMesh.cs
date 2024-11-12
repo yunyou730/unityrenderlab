@@ -8,19 +8,26 @@ public class PaintableMesh : MonoBehaviour
     
     private Material _unwrapUVMaterial = null;
     private RenderTexture _unwrapUVTex = null;
+
+    private Material _bleedingMaterial = null;
+    private RenderTexture _bleedingTexture = null;
     
     void Start()
     {
         _unwrapUVTex = CreatePresentRenderTexture();
+        _bleedingTexture = CreatePresentRenderTexture();
         
         // 设置最终 需要绘制的 material 
         var meshRenderer = GetComponent<MeshRenderer>();
         var material = meshRenderer.material;
-        material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetPresentUVTexture());
+        //material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetPresentUVTexture());
+        material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetBleedingTexture());
         
         // 初始化 unwrap uv 的 material 
         _unwrapUVMaterial = new Material(Shader.Find("ayy/ModelPaintingTest"));
         _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
+
+        _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
     }
     
     private RenderTexture CreatePresentRenderTexture()
@@ -70,12 +77,22 @@ public class PaintableMesh : MonoBehaviour
     {
         return _unwrapUVTex;
     }
-    
+
+    public RenderTexture GetBleedingTexture()
+    {
+        return _bleedingTexture;
+    }
+
     public Material GetUnwrapUVMaterial()
     {
         return _unwrapUVMaterial;
     }
-    
+
+    public Material GetBleedingMaterial()
+    {
+        return _bleedingMaterial;
+    }
+
     public void SetCurrentDrawPointWS(Vector3 pos)
     {
         // 把 上一次的绘制位置, 记录到 prevDrawPoint 里 

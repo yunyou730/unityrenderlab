@@ -100,7 +100,7 @@ Shader "ayy/ModelPaintingTest"
                 }
                 else if(_PrevPointValid > 0.5 && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,0.1))
                 {
-                    ret1 = half4(0.0,1.0,0.0,1.0);
+                    ret1 = half4(1.0,0.0,1.0,1.0);
                 }
                 
                 return ret1;

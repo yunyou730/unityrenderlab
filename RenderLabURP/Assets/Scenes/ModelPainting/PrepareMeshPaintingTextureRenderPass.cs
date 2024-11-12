@@ -28,9 +28,15 @@ namespace ayy
                     PaintableMesh paintable = renderer.GetComponent<PaintableMesh>();
                     if(paintable.GetUnwrapUVMaterial() != null)
                     {
+                        // 展开 uv 为 贴图, 并在其中 增加 轨迹绘制 的功能  
                         cmd.SetRenderTarget(paintable.GetPresentUVTexture());
                         cmd.ClearRenderTarget(true,true,Color.cyan);
                         cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());
+                        
+                        // 给 绘制结果的图片，做一次 uv bleeding ,避免 uv 缝隙处 的问题 
+                        cmd.Blit(paintable.GetPresentUVTexture(),
+                            paintable.GetBleedingTexture(),
+                            paintable.GetBleedingMaterial());
                     }
                 }
                 context.ExecuteCommandBuffer(cmd);
