@@ -64,7 +64,8 @@
     <Compile Include="Assets/Scripts/CustomVolumeComponent.cs" />
     <None Include="Assets/Scenes/Billboard/BillboardShaderCodeHLSL.shader" />
     <None Include="Assets/Scenes/VolumeCloud/HLSL/Raymarch.hlsl" />
-    <None Include="Assets/Scenes/ModelPainting/ModelPaintingTest.shader" />
+    <None Include="Assets/Scenes/ModelPainting/UVBleeding.shader" />
+    <None Include="Assets/Scenes/ModelPainting/UnwrapUVAndModelPainting.shader" />
     <None Include="Assets/Scenes/Billboard/BillboardWithFrameSequence.shader" />
     <None Include="Assets/Materials/BlurShader.shader" />
     <None Include="Assets/Materials/URPShader2.shader" />

@@ -1,11 +1,13 @@
-Shader "ayy/ModelPaintingTest"
+Shader "ayy/UnwrapUVAndModelPainting"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _AdditiveTexture ("Texture", 2D) = "white" {}
         _PaintingPoint ("Painting Point", Vector) = (0, 0, 0, 0)
         _PrevPoint("Prev Point",Vector) = (0,0,0,0)
-        _PrevPointValid("Prev Point Valid",float) = 0
+        _PrevPointValid("Prev Point Valid",Range(0,1)) = 0
+        
+        _DebugUnWrapUV("Enable Debug Unwrap UV",Range(0,1)) = 0
     }
     SubShader
     {
@@ -41,10 +43,11 @@ Shader "ayy/ModelPaintingTest"
             };
 
         CBUFFER_START(UnityPerMaterial)
-            sampler2D _MainTex;
+            sampler2D _AdditiveTexture;
             float4 _PaintingPoint;
             float4 _PrevPoint;
             float _PrevPointValid;
+            float _DebugUnWrapUV;
         CBUFFER_END            
 
             Varyings vert(Attributes IN)
@@ -89,21 +92,29 @@ Shader "ayy/ModelPaintingTest"
             float4 frag(Varyings IN) : SV_Target
             {
                 float2 uv = IN.uv;
-                float4 ret1 = tex2D(_MainTex,uv);
+                float4 addtiveTexColor = tex2D(_AdditiveTexture,uv);
+
+                float4 ret = addtiveTexColor;
                 if(distance(IN.positionWS,_PaintingPoint.xyz) < 0.1)
                 {
-                    ret1 = half4(1.0,0.0,0.0,1.0);
+                    // 最新绘制的点：线段终点 
+                    ret = half4(1.0,0.0,0.0,1.0);
                 }
                 else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < 0.1)
                 {
-                    ret1 = half4(1.0,1.0,0.0,1.0);
+                    // 上一帧绘制的点：线段起点 
+                    ret = half4(1.0,1.0,0.0,1.0);
                 }
                 else if(_PrevPointValid > 0.5 && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,0.1))
                 {
-                    ret1 = half4(1.0,0.0,1.0,1.0);
+                    // 起点 和 终点 中间构成的 线段 
+                    ret = half4(1.0,0.0,1.0,1.0);
                 }
+
+                // 用于 可视化调试 展示 uv 被展开的样子 
+                ret = lerp(ret,float4(0,1,0,1),_DebugUnWrapUV);
                 
-                return ret1;
+                return ret;
             }
             ENDHLSL
         }

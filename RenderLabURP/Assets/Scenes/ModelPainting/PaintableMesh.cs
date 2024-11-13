@@ -3,11 +3,15 @@ using UnityEngine.Experimental.Rendering;
 
 public class PaintableMesh : MonoBehaviour
 {
+    [SerializeField] private bool _bBleedingEnable = true;
+    [SerializeField] private bool _bDebugUnwrapUVEnable = false;
+    
     public Vector3? _curDrawPointWS = null;
     public Vector3? _prevDrawPointsWS = null;
     
     private Material _unwrapUVMaterial = null;
     private RenderTexture _unwrapUVTex = null;
+    private Material _3dMaterial = null;
 
     private Material _bleedingMaterial = null;
     private RenderTexture _bleedingTexture = null;
@@ -19,14 +23,16 @@ public class PaintableMesh : MonoBehaviour
         
         // 设置最终 需要绘制的 material 
         var meshRenderer = GetComponent<MeshRenderer>();
-        var material = meshRenderer.material;
-        //material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetPresentUVTexture());
-        material.SetTexture(Shader.PropertyToID("_PaintingChannel"),GetBleedingTexture());
+        _3dMaterial = meshRenderer.material;
+        RenderTexture presentTexture = _bBleedingEnable ? GetBleedingTexture() : GetPresentUVTexture();
+        _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);
         
         // 初始化 unwrap uv 的 material 
-        _unwrapUVMaterial = new Material(Shader.Find("ayy/ModelPaintingTest"));
-        _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_MainTex"),GetPresentUVTexture());
-
+        _unwrapUVMaterial = new Material(Shader.Find("ayy/UnwrapUVAndModelPainting"));
+        _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPresentUVTexture());
+        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_DebugUnWrapUV"),_bDebugUnwrapUVEnable ? 1.0f:0.0f);        
+        
+        // bleeding 材质, 用于给绘制的 texture 做 膨胀 
         _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
     }
     
@@ -44,7 +50,6 @@ public class PaintableMesh : MonoBehaviour
         
         if (_curDrawPointWS != null)
         {
-            
             Vector4 posInWS = new Vector4(
                 _curDrawPointWS.Value.x,
                 _curDrawPointWS.Value.y,
@@ -69,8 +74,12 @@ public class PaintableMesh : MonoBehaviour
             _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PaintingPoint"),posInWS);
             _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_PrevPointValid"),prevPointValid);
             _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PrevPoint"),prevInWS);  
-            
         }
+        
+        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_DebugUnWrapUV"),_bDebugUnwrapUVEnable ? 1.0f:0.0f);
+        
+        RenderTexture presentTexture = _bBleedingEnable ? GetBleedingTexture() : GetPresentUVTexture();
+        _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);        
     }
 
     public RenderTexture GetPresentUVTexture()
@@ -91,6 +100,16 @@ public class PaintableMesh : MonoBehaviour
     public Material GetBleedingMaterial()
     {
         return _bleedingMaterial;
+    }
+
+    public bool IsBleedingEnable()
+    {
+        return _bBleedingEnable;
+    }
+
+    public void SetBleedingEnable(bool bEnable)
+    {
+        _bBleedingEnable = bEnable;
     }
 
     public void SetCurrentDrawPointWS(Vector3 pos)
