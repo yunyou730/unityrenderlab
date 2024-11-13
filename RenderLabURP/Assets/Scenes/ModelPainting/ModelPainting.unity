@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &62781961
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -598,7 +598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686abb79d88ba442791135dacc413ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bBleedingEnable: 0
+  _bBleedingEnable: 1
 --- !u!64 &1645554499
 MeshCollider:
   m_ObjectHideFlags: 0

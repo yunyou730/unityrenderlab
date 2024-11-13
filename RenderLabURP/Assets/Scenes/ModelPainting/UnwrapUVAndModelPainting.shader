@@ -104,16 +104,16 @@ Shader "ayy/UnwrapUVAndModelPainting"
                 else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < 0.1)
                 {
                     // 上一帧绘制的点：线段起点 
-                    ret = half4(1.0,1.0,0.0,1.0);
+                    ret = half4(1.0,0.95,0.0,1.0);
                 }
                 else if(_PrevPointValid > 0.5 && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,0.1))
                 {
                     // 起点 和 终点 中间构成的 线段 
-                    ret = half4(1.0,0.0,1.0,1.0);
+                    ret = half4(1.0,0.0,0.8,1.0);
                 }
 
                 // 用于 可视化调试 展示 uv 被展开的样子 
-                ret = lerp(ret,float4(0,1,0,1),_ShowUnwrapUVDirectly);
+                ret = lerp(ret,float4(0.0,1,0,1),_ShowUnwrapUVDirectly);
                 
                 return ret;
             }
