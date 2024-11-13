@@ -45,17 +45,26 @@ namespace ayy
         }
 
 
-        private List<MeshRenderer> GetRenderers()
+        private List<Renderer> GetRenderers()
         {
-            List<MeshRenderer> result = new List<MeshRenderer>();
+            List<Renderer> result = new List<Renderer>();
             
             var paintableGameObjects = GameObject.FindGameObjectsWithTag("ayy.paintable");
             foreach (var go in paintableGameObjects)
             {
-                PaintableMesh paintalbe = null;
-                if (go.TryGetComponent<PaintableMesh>(out paintalbe))
+                PaintableMesh paintable = null;
+                if (go.TryGetComponent<PaintableMesh>(out paintable))
                 {
-                    result.Add(go.GetComponent<MeshRenderer>());                    
+                    MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
+                    SkinnedMeshRenderer skinnedMeshRenderer = go.GetComponent<SkinnedMeshRenderer>();
+                    if (skinnedMeshRenderer != null)
+                    {
+                        result.Add(skinnedMeshRenderer);      
+                    }
+                    else if (meshRenderer != null)
+                    {
+                        result.Add(meshRenderer);   
+                    }
                 }
             }
             

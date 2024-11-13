@@ -23,8 +23,12 @@ public class PaintableMesh : MonoBehaviour
         _bleedingTexture = CreatePresentRenderTexture();
         
         // 设置最终 需要绘制的 material 
-        var meshRenderer = GetComponent<MeshRenderer>();
-        _3dMaterial = meshRenderer.material;
+        Renderer renderer = GetComponent<MeshRenderer>();
+        if (renderer == null)
+        {
+            renderer = GetComponent<SkinnedMeshRenderer>();
+        }
+        _3dMaterial = renderer.material;
         RenderTexture presentTexture = _bBleedingEnable ? GetBleedingTexture() : GetPresentUVTexture();
         _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);
         
