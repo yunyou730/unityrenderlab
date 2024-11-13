@@ -224,8 +224,8 @@ Transform:
   m_GameObject: {fileID: 62781960}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.3420465, y: -4.3550005, z: 11.88686}
-  m_LocalScale: {x: 2.54, y: 2.07, z: 1.5400001}
+  m_LocalPosition: {x: -2.3420465, y: 0.18, z: 11.88686}
+  m_LocalScale: {x: 2.54, y: 2.07, z: 2.2054343}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 478771973}
@@ -322,7 +322,7 @@ Transform:
   m_GameObject: {fileID: 411214913}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.5257712, z: -0, w: 0.85062605}
-  m_LocalPosition: {x: -2.8520465, y: -2.0490005, z: 4.25686}
+  m_LocalPosition: {x: -2.8520465, y: -0.39, z: 4.25686}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -713,6 +713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f98fbb25b334dee99b12c504dfe7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _brushColor: {r: 1, g: 0.28306097, b: 0, a: 1}
+  _brushSize: 0.04
 --- !u!1 &2034023148
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,7 +815,7 @@ Transform:
   m_GameObject: {fileID: 2034023148}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.5257712, z: -0, w: 0.85062605}
-  m_LocalPosition: {x: 2.4519536, y: -2.0490005, z: 4.89686}
+  m_LocalPosition: {x: 2.4519536, y: 1.65, z: 4.89686}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4663,7 +4665,6 @@ GameObject:
   - component: {fileID: 9167376507481377753}
   - component: {fileID: 1679954631862556}
   - component: {fileID: 9167376507481377754}
-  - component: {fileID: 9167376507481377755}
   - component: {fileID: 9167376507481377756}
   m_Layer: 0
   m_Name: Ch46
@@ -5421,7 +5422,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1610300807057377704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5438,28 +5439,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bBleedingEnable: 1
---- !u!64 &9167376507481377755
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7873552045375862871}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!64 &9167376507481377756
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -42,9 +42,11 @@ public class PaintableMesh : MonoBehaviour
         
         // bleeding 材质, 用于给绘制的 texture 做 膨胀 
         _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
-
         
         // 是否要 更新 mesh collider 
+        // 因为 Skinned Mesh Renderer 每一帧都根据动画在改变 Mesh 的形态,
+        // 而 MeshCollider 并不会 跟随 动画改变 mesh 形态 , 
+        // 因此 需要 让 Mesh Collider 每一帧都同步 Skinned Mesh 才能正常响应 鼠标点击事件 
         _bNeedUpdateMeshCollider = GetComponent<SkinnedMeshRenderer>() != null && GetComponent<MeshCollider>() != null;
         if (_bNeedUpdateMeshCollider)
         {
@@ -133,16 +135,16 @@ public class PaintableMesh : MonoBehaviour
         return _bleedingMaterial;
     }
 
-    public bool IsBleedingEnable()
+    public void SetBrushSize(float brushSize)
     {
-        return _bBleedingEnable;
+        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),brushSize);
     }
 
-    public void SetBleedingEnable(bool bEnable)
+    public void SetBrushColor(Color color)
     {
-        _bBleedingEnable = bEnable;
+        _3dMaterial.SetColor(Shader.PropertyToID("_PaintingColor"),color);
     }
-
+    
     public void SetCurrentDrawPointWS(Vector3 pos)
     {
         // 把 上一次的绘制位置, 记录到 prevDrawPoint 里 

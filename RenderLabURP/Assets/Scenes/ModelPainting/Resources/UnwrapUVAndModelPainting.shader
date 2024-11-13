@@ -7,8 +7,9 @@ Shader "ayy/UnwrapUVAndModelPainting"
         _PrevPoint("Prev Point",Vector) = (0,0,0,0)
         _PrevPointValid("Prev Point Valid",Range(0,1)) = 0
         
-        //_DebugUnWrapUV("Enable Debug Unwrap UV",Range(0,1)) = 0
         _ShowUnwrapUVDirectly("Show Unwrap UV Directly",Range(0,1)) = 0
+        
+        _BrushSize("Brush Size",Range(0,3)) = 0.1
     }
     SubShader
     {
@@ -49,6 +50,8 @@ Shader "ayy/UnwrapUVAndModelPainting"
             float4 _PrevPoint;
             float _PrevPointValid;
             float _ShowUnwrapUVDirectly;
+
+            float _BrushSize;
         CBUFFER_END            
 
             Varyings vert(Attributes IN)
@@ -95,18 +98,20 @@ Shader "ayy/UnwrapUVAndModelPainting"
                 float2 uv = IN.uv;
                 float4 addtiveTexColor = tex2D(_AdditiveTexture,uv);
 
+                // 输出的 R通道 是给下一个 Pass 使用的 绘制轨迹数据
                 float4 ret = addtiveTexColor;
-                if(distance(IN.positionWS,_PaintingPoint.xyz) < 0.1)
+                if(distance(IN.positionWS,_PaintingPoint.xyz) < _BrushSize)
                 {
                     // 最新绘制的点：线段终点 
                     ret = half4(1.0,0.0,0.0,1.0);
                 }
-                else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < 0.1)
+                else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < _BrushSize)
                 {
                     // 上一帧绘制的点：线段起点 
                     ret = half4(1.0,0.95,0.0,1.0);
                 }
-                else if(_PrevPointValid > 0.5 && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,0.1))
+                else if(_PrevPointValid > 0.5
+                    && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,_BrushSize))
                 {
                     // 起点 和 终点 中间构成的 线段 
                     ret = half4(1.0,0.0,0.8,1.0);
