@@ -16,6 +16,9 @@ public class PaintableMesh : MonoBehaviour
     private RenderTexture _bleedingTexture = null;
 
     private bool HasTextureInit = false;
+
+    private bool _bNeedUpdateMeshCollider = false;
+    private Mesh _colliderMesh = null;
     
     void Start()
     {
@@ -37,9 +40,16 @@ public class PaintableMesh : MonoBehaviour
         _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPresentUVTexture());
         //_unwrapUVMaterial.SetFloat(Shader.PropertyToID("_ShowUnwrapUVDirectly"), 1.0f);  
         
-        
         // bleeding 材质, 用于给绘制的 texture 做 膨胀 
         _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
+
+        
+        // 是否要 更新 mesh collider 
+        _bNeedUpdateMeshCollider = GetComponent<SkinnedMeshRenderer>() != null && GetComponent<MeshCollider>() != null;
+        if (_bNeedUpdateMeshCollider)
+        {
+            _colliderMesh = new Mesh();
+        }
     }
     
     private RenderTexture CreatePresentRenderTexture()
@@ -92,6 +102,15 @@ public class PaintableMesh : MonoBehaviour
         // 动态切换 是否展示为 uv-bleeding 的贴图 
         RenderTexture presentTexture = _bBleedingEnable ? GetBleedingTexture() : GetPresentUVTexture();
         _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);
+        
+        // 更新 Skinned Mesh  & Mesh Collider
+        if (_bNeedUpdateMeshCollider)
+        {
+            var skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+            var meshCollider = GetComponent<MeshCollider>();
+            skinnedMeshRenderer.BakeMesh(_colliderMesh);
+            meshCollider.sharedMesh = _colliderMesh;
+        }
     }
 
     public RenderTexture GetPresentUVTexture()
