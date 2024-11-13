@@ -4,7 +4,6 @@ using UnityEngine.Experimental.Rendering;
 public class PaintableMesh : MonoBehaviour
 {
     [SerializeField] private bool _bBleedingEnable = true;
-    [SerializeField] private bool _bDebugUnwrapUVEnable = false;
     
     public Vector3? _curDrawPointWS = null;
     public Vector3? _prevDrawPointsWS = null;
@@ -15,6 +14,8 @@ public class PaintableMesh : MonoBehaviour
 
     private Material _bleedingMaterial = null;
     private RenderTexture _bleedingTexture = null;
+
+    private bool HasTextureInit = false;
     
     void Start()
     {
@@ -30,7 +31,8 @@ public class PaintableMesh : MonoBehaviour
         // 初始化 unwrap uv 的 material 
         _unwrapUVMaterial = new Material(Shader.Find("ayy/UnwrapUVAndModelPainting"));
         _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPresentUVTexture());
-        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_DebugUnWrapUV"),_bDebugUnwrapUVEnable ? 1.0f:0.0f);        
+        //_unwrapUVMaterial.SetFloat(Shader.PropertyToID("_ShowUnwrapUVDirectly"), 1.0f);  
+        
         
         // bleeding 材质, 用于给绘制的 texture 做 膨胀 
         _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
@@ -76,10 +78,16 @@ public class PaintableMesh : MonoBehaviour
             _unwrapUVMaterial.SetVector(Shader.PropertyToID("_PrevPoint"),prevInWS);  
         }
         
-        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_DebugUnWrapUV"),_bDebugUnwrapUVEnable ? 1.0f:0.0f);
+        // 第1帧 输出 uv展开的 texture; 从第2帧开始, 在第1帧基础上 累加 绘制轨迹图像 
+        _unwrapUVMaterial.SetFloat(Shader.PropertyToID("_ShowUnwrapUVDirectly"),!HasTextureInit ? 1.0f:0.0f);
+        if (!HasTextureInit)
+        { 
+            HasTextureInit = true;
+        }
         
+        // 动态切换 是否展示为 uv-bleeding 的贴图 
         RenderTexture presentTexture = _bBleedingEnable ? GetBleedingTexture() : GetPresentUVTexture();
-        _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);        
+        _3dMaterial.SetTexture(Shader.PropertyToID("_PaintingChannel"),presentTexture);
     }
 
     public RenderTexture GetPresentUVTexture()

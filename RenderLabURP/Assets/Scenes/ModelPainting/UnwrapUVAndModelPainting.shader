@@ -7,7 +7,8 @@ Shader "ayy/UnwrapUVAndModelPainting"
         _PrevPoint("Prev Point",Vector) = (0,0,0,0)
         _PrevPointValid("Prev Point Valid",Range(0,1)) = 0
         
-        _DebugUnWrapUV("Enable Debug Unwrap UV",Range(0,1)) = 0
+        //_DebugUnWrapUV("Enable Debug Unwrap UV",Range(0,1)) = 0
+        _ShowUnwrapUVDirectly("Show Unwrap UV Directly",Range(0,1)) = 0
     }
     SubShader
     {
@@ -47,7 +48,7 @@ Shader "ayy/UnwrapUVAndModelPainting"
             float4 _PaintingPoint;
             float4 _PrevPoint;
             float _PrevPointValid;
-            float _DebugUnWrapUV;
+            float _ShowUnwrapUVDirectly;
         CBUFFER_END            
 
             Varyings vert(Attributes IN)
@@ -112,7 +113,7 @@ Shader "ayy/UnwrapUVAndModelPainting"
                 }
 
                 // 用于 可视化调试 展示 uv 被展开的样子 
-                ret = lerp(ret,float4(0,1,0,1),_DebugUnWrapUV);
+                ret = lerp(ret,float4(0,1,0,1),_ShowUnwrapUVDirectly);
                 
                 return ret;
             }
