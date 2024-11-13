@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686abb79d88ba442791135dacc413ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bBleedingEnable: 1
+  _bBleedingEnable: 0
 --- !u!65 &411214918
 BoxCollider:
   m_ObjectHideFlags: 0

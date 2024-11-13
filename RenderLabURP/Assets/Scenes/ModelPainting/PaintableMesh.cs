@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
@@ -20,6 +21,9 @@ public class PaintableMesh : MonoBehaviour
     private bool _bNeedUpdateMeshCollider = false;
     private Mesh _colliderMesh = null;
     
+    public static Color kUVBgClearColor = new Color(0,0,0,0);
+    public static Color kUVMeshPartClearColor = new Color(0, 0, 0, 0);
+    
     void Start()
     {
         _unwrapUVTex = CreatePresentRenderTexture();
@@ -38,7 +42,8 @@ public class PaintableMesh : MonoBehaviour
         // 初始化 unwrap uv 的 material 
         _unwrapUVMaterial = new Material(Shader.Find("ayy/UnwrapUVAndModelPainting"));
         _unwrapUVMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPresentUVTexture());
-        //_unwrapUVMaterial.SetFloat(Shader.PropertyToID("_ShowUnwrapUVDirectly"), 1.0f);  
+        //_unwrapUVMaterial.SetFloat(Shader.PropertyToID("_ShowUnwrapUVDirectly"), 1.0f);
+        _unwrapUVMaterial.SetColor(Shader.PropertyToID("_MeshPartClearColor"),kUVMeshPartClearColor);
         
         // bleeding 材质, 用于给绘制的 texture 做 膨胀 
         _bleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
@@ -142,7 +147,8 @@ public class PaintableMesh : MonoBehaviour
 
     public void SetBrushColor(Color color)
     {
-        _3dMaterial.SetColor(Shader.PropertyToID("_PaintingColor"),color);
+        _unwrapUVMaterial.SetColor(Shader.PropertyToID("_BrushColor"),color);
+        //_3dMaterial.SetColor(Shader.PropertyToID("_PaintingColor"),color);
     }
     
     public void SetCurrentDrawPointWS(Vector3 pos)

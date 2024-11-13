@@ -30,7 +30,8 @@ namespace ayy
                     {
                         // 展开 uv 为 贴图, 并在其中 增加 轨迹绘制 的功能  
                         cmd.SetRenderTarget(paintable.GetPresentUVTexture());
-                        cmd.ClearRenderTarget(true,true,Color.cyan);
+                        //cmd.ClearRenderTarget(true,true,Color.cyan);
+                        cmd.ClearRenderTarget(true, true, PaintableMesh.kUVBgClearColor);
                         cmd.DrawRenderer(renderer,paintable.GetUnwrapUVMaterial());
                         
                         // 给 绘制结果的图片，做一次 uv bleeding ,避免 uv 缝隙处 的问题 

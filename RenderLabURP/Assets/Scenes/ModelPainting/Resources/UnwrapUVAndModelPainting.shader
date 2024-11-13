@@ -10,6 +10,11 @@ Shader "ayy/UnwrapUVAndModelPainting"
         _ShowUnwrapUVDirectly("Show Unwrap UV Directly",Range(0,1)) = 0
         
         _BrushSize("Brush Size",Range(0,3)) = 0.1
+        _BrushColor("Brush Color",Color) = (1,0,0,1)
+        
+        _ShowDebugColor("Show Debug Color",Range(0,1)) = 0
+        
+        _MeshPartClearColor("Mesh Part Clear Color",Color) = (0,0,0,0)
     }
     SubShader
     {
@@ -52,6 +57,11 @@ Shader "ayy/UnwrapUVAndModelPainting"
             float _ShowUnwrapUVDirectly;
 
             float _BrushSize;
+            float4 _BrushColor;
+            
+            float4 _MeshPartClearColor;
+            
+            float _ShowDebugColor;
         CBUFFER_END            
 
             Varyings vert(Attributes IN)
@@ -102,23 +112,26 @@ Shader "ayy/UnwrapUVAndModelPainting"
                 float4 ret = addtiveTexColor;
                 if(distance(IN.positionWS,_PaintingPoint.xyz) < _BrushSize)
                 {
-                    // 最新绘制的点：线段终点 
-                    ret = half4(1.0,0.0,0.0,1.0);
+                    // 最新绘制的点：线段终点
+                    ret = lerp(_BrushColor,half4(1.0,0.0,0.0,1.0),_ShowDebugColor);
                 }
-                else if(_PrevPointValid > 0.5 && distance(IN.positionWS,_PrevPoint.xyz) < _BrushSize)
+                else if(_PrevPointValid > 0.5
+                    && distance(IN.positionWS,_PrevPoint.xyz) < _BrushSize)
                 {
-                    // 上一帧绘制的点：线段起点 
-                    ret = half4(1.0,0.95,0.0,1.0);
+                    // 上一帧绘制的点：线段起点
+                    ret = lerp(_BrushColor,half4(1.0,1.0,0.0,1.0),_ShowDebugColor);
                 }
                 else if(_PrevPointValid > 0.5
                     && IsPointWithinDistance(_PaintingPoint,_PrevPoint,IN.positionWS,_BrushSize))
                 {
-                    // 起点 和 终点 中间构成的 线段 
-                    ret = half4(1.0,0.0,0.8,1.0);
+                    // 起点 和 终点 中间构成的 线段
+                    ret = lerp(_BrushColor,half4(1.0,0.0,1.0,1.0),_ShowDebugColor);
                 }
 
-                // 用于 可视化调试 展示 uv 被展开的样子 
-                ret = lerp(ret,float4(0.0,1,0,1),_ShowUnwrapUVDirectly);
+                // _ShowUnwrapUVDirectly 为 1: 结果为 uv 展开的 图像, 前景用纯色 
+                // _ShowUnwrapUVDirectly 为 0: 叠加涂鸦笔迹
+                //const float4 meshPartColor = float4(0,1,0,1);
+                ret = lerp(ret,_MeshPartClearColor,_ShowUnwrapUVDirectly);
                 
                 return ret;
             }
