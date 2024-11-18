@@ -27,27 +27,18 @@ namespace ayy
 
         private CommandBuffer _paintingCmdBuf = null;        
         
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _paintingTargetRT1 = CreateRenderTargetForPainting();
             _paintingTargetRT2 = CreateRenderTargetForPainting();
             
             _paintingMaterial = new Material(Shader.Find("ayy/ModelPainting"));
-            
             _presentMaterial = GetPresentMaterial();
-
-
-            var cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
-            cmdbuf.SetRenderTarget(_paintingTargetRT1);
-            cmdbuf.ClearRenderTarget(true,true,new Color(0,1,0,0));
-            cmdbuf.SetRenderTarget(_paintingTargetRT2);
-            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,1,0));
-            Graphics.ExecuteCommandBuffer(cmdbuf);
-            CommandBufferPool.Release(cmdbuf);
+            
+            _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
+            _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),GetPaintingTarget());
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
             _paintingCmdBuf = BuildPaintingCommandBuffer();
@@ -55,9 +46,6 @@ namespace ayy
             
             CheckMousePainting();
             UpdateBrushParameter();
-            
-            _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
-            _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),GetPaintingTarget());
         }
 
         private void OnDisable()
@@ -74,7 +62,6 @@ namespace ayy
             CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
             cmdbuf.Clear();
             cmdbuf.SetRenderTarget(GetPaintingTarget());
-            cmdbuf.SetGlobalTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
             cmdbuf.DrawRenderer(GetRenderer(),GetPaintingMaterial());
             cmdbuf.Blit(GetPaintingTarget(),GetPaintingBackup());
             return cmdbuf;
@@ -128,6 +115,16 @@ namespace ayy
 
             if (worldPos != null)
             {
+                // Previous painting pos
+                if (_hitWorldPos != null)
+                {
+                    _prevWorldPos = _hitWorldPos;
+                    _paintingMaterial.SetVector(Shader.PropertyToID("_PrevPos"),
+                        new Vector4(_prevWorldPos.Value.x,_prevWorldPos.Value.y,_prevWorldPos.Value.z,1.0f));
+                    _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),1.0f);
+                }
+
+                // Current Painting Pos
                 _hitWorldPos = worldPos;
                 _paintingMaterial.SetVector(Shader.PropertyToID("_CurPos"),
                     new Vector4(_hitWorldPos.Value.x,_hitWorldPos.Value.y,_hitWorldPos.Value.z,1.0f));
@@ -136,7 +133,9 @@ namespace ayy
             else
             {
                 _hitWorldPos = null;
+                _prevWorldPos = null;
                 _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableCurPos"),0.0f);
+                _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),0.0f);
             }
         }
 
