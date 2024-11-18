@@ -536,8 +536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7367473827ce1f946aae95aaff7d3088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrushSize: 0.2
-  BrushColor: {r: 1, g: 0, b: 1, a: 1}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +634,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BrushSize: 0.2
   BrushColor: {r: 1, g: 0, b: 1, a: 1}
-  EnableBrushSmooth: 1
+  BrushSmooth: 0.05
+  bEnableSmooth: 1
 --- !u!1 &1776570530
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,8 +757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7367473827ce1f946aae95aaff7d3088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrushSize: 0.1
-  BrushColor: {r: 1, g: 0, b: 1, a: 1}
 --- !u!4 &543450652113577759
 Transform:
   m_ObjectHideFlags: 0
@@ -882,8 +879,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7367473827ce1f946aae95aaff7d3088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrushSize: 0.1
-  BrushColor: {r: 1, g: 0, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

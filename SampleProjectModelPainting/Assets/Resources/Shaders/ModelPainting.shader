@@ -7,8 +7,7 @@ Shader "ayy/ModelPainting"
         _BrushSize("Brush Size",Range(0,3)) = 1.0
         _BrushColor("Brush Color",Color) = (1,1,0,1)
         
-        //_BrushSmooth("Smooth Border",Range(0,0.05)) = 0.03
-        _BrushSmooth("Smooth Border",Range(0,1)) = 0.4
+        _BrushSmooth("Smooth Border",Range(0,0.1)) = 0.05
         _EnableBrushSmooth("Enable Brush Smooth",Range(0,1)) = 1
         
         _EnableCurPos("Enable Cur Pos",Range(0,1)) = 0  // 0 disable, 1 enable
@@ -63,7 +62,7 @@ Shader "ayy/ModelPainting"
             float _BrushSize;
             float4 _BrushColor;
             float _BrushSmooth;
-            // float _EnableBrushSmooth;
+            float _EnableBrushSmooth;
             
             float _EnableCurPos;
             float4 _CurPos;
@@ -142,30 +141,30 @@ Shader "ayy/ModelPainting"
                 if(_EnableCurPos > 0.5 && disToCurPos < _BrushSize)
                 {
                     brushCol.rgb = lerp(_BrushColor,_DebugCurPosColor,step(0.5,_EnableDebugColor)).rgb;
-                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToCurPos));
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize - _BrushSmooth,disToCurPos));
                 }
                 //else if(_EnablePrevPos > 0.5 && disToPrevPos < _BrushSize)
                 if(_EnablePrevPos > 0.5 && disToPrevPos < _BrushSize)
                 {
                     brushCol.rgb = lerp(_BrushColor,_DebugPrevPosColor,step(0.5,_EnableDebugColor)).rgb;
-                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToPrevPos));
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize - _BrushSmooth,disToPrevPos));
                 }
                 //else if(_EnablePrevPos > 0.5 && isNearLineSeg)
                 if(_EnablePrevPos > 0.5 && isNearLineSeg)
                 {
                     brushCol.rgb = lerp(_BrushColor,_DebugLineSegColor,step(0.5,_EnableDebugColor)).rgb;
-                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToLineSeg));
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize - _BrushSmooth,disToLineSeg));
                 }
 
-                if(brushCol.a < texColor.a)
+
+                if(brushCol.a > 0.0)
                 {
-                    brushCol = texColor;
+                    brushCol.a = lerp(1.0,brushCol.a,step(0.5,_EnableBrushSmooth));
                 }
-                //ret.rgb = float3(ret.a,ret.a,ret.a);
-                //ret.rgba = float4(texColor.a,0,0,texColor.a);
-                // float4 ret = lerp(texColor,brushCol,brushCol.a);
                 
-                return brushCol;
+                float3 ret = brushCol.rgb * brushCol.a + texColor.rgb * (1 - brushCol.a);
+                float a = max(texColor.a,brushCol.a);
+                return float4(ret,a);
             }
             ENDHLSL
         }
