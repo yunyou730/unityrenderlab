@@ -12,12 +12,15 @@ namespace ayy
         private Color _brushColor = Color.magenta;
         private float _brushSmooth = 0.03f;
         private bool _bEnableSmooth = true;
+        private bool _bEnableBleeding = true;
         
         private RenderTexture _paintingTargetRT1 = null;
         private RenderTexture _paintingTargetRT2 = null;
+        private RenderTexture _uvBleedingRT = null;
         
         private Material _presentMaterial = null;
         private Material _paintingMaterial = null;
+        private Material _uvBleedingMaterial = null;
         
         private Vector3? _hitWorldPos = null;
         private Vector3? _prevWorldPos = null;
@@ -29,13 +32,16 @@ namespace ayy
         {
             _paintingTargetRT1 = CreateRenderTargetForPainting();
             _paintingTargetRT2 = CreateRenderTargetForPainting();
+            _uvBleedingRT = CreateRenderTargetForPainting();
             
             _paintingMaterial = new Material(Shader.Find("ayy/ModelPainting"));
             _presentMaterial = GetPresentMaterial();
+            _uvBleedingMaterial = new Material(Shader.Find("ayy/UVBleeding"));
             
             _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
-            _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),GetPaintingTarget());
+            _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),_bEnableBleeding ? GetUVBleedingTexture() : GetPaintingTarget());
             
+            // Clear RenderTexture we created just now
             CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
             cmdbuf.Clear();
             cmdbuf.SetRenderTarget(_paintingTargetRT1);
@@ -55,12 +61,13 @@ namespace ayy
             UpdateBrushParameter();
         }
         
-        public void SyncBrushSettings(float brushSize,Color brushColor,float brushSmooth,bool bEnableSmooth)
+        public void SyncBrushSettings(float brushSize,Color brushColor,float brushSmooth,bool bEnableSmooth,bool bEnableBleeding)
         {
             _brushSize = brushSize;
             _brushColor = brushColor;
             _brushSmooth = brushSmooth;
             _bEnableSmooth = bEnableSmooth;
+            _bEnableBleeding = bEnableBleeding;
         }
 
         private void OnDisable()
@@ -79,10 +86,11 @@ namespace ayy
             cmdbuf.SetRenderTarget(GetPaintingTarget());
             cmdbuf.DrawRenderer(GetRenderer(),GetPaintingMaterial());
             cmdbuf.Blit(GetPaintingTarget(),GetPaintingBackup());
+            cmdbuf.Blit(GetPaintingTarget(),GetUVBleedingTexture(),GetUVBleedingMaterial());
             return cmdbuf;
         }
 
-        public Material GetPaintingMaterial()
+        private Material GetPaintingMaterial()
         {
             return _paintingMaterial;
         }
@@ -105,6 +113,11 @@ namespace ayy
             return null;
         }
 
+        private Material GetUVBleedingMaterial()
+        {
+            return _uvBleedingMaterial;
+        }
+
         public RenderTexture GetPaintingTarget()
         {
             return _paintingTargetRT1;
@@ -113,6 +126,11 @@ namespace ayy
         public RenderTexture GetPaintingBackup()
         {
             return _paintingTargetRT2;
+        }
+
+        private RenderTexture GetUVBleedingTexture()
+        {
+            return _uvBleedingRT;
         }
 
         private void CheckMousePainting()
@@ -153,14 +171,14 @@ namespace ayy
                 _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),0.0f);
             }
         }
-
-
+        
         private void UpdateBrushParameter()
         {
             _paintingMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),_brushSize);
             _paintingMaterial.SetColor(Shader.PropertyToID("_BrushColor"),_brushColor);
             _paintingMaterial.SetFloat(Shader.PropertyToID("_BrushSmooth"),_brushSmooth);
             _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableBrushSmooth"),_bEnableSmooth ? 1f:0.0f);
+            _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),_bEnableBleeding ? GetUVBleedingTexture() : GetPaintingTarget());
         }
         
         private Renderer GetRenderer()

@@ -636,6 +636,7 @@ MonoBehaviour:
   BrushColor: {r: 1, g: 0, b: 1, a: 1}
   BrushSmooth: 0.05
   bEnableSmooth: 1
+  bEnableUVBleeding: 0
 --- !u!1 &1776570530
 GameObject:
   m_ObjectHideFlags: 0

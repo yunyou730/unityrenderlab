@@ -46,7 +46,6 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.23f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\PaintableRenderFeature.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\BrushSettings.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
@@ -74,6 +73,7 @@
     <None Include="Library\PackageCache\com.unity.visualscripting\ValidationExceptions.json" />
     <None Include="Library\PackageCache\com.unity.ide.visualstudio\ValidationExceptions.json" />
     <None Include="Library\PackageCache\com.unity.inputsystem\ValidationExceptions.json" />
+    <None Include="Assets\Resources\Shaders\UVBleeding.shader" />
     <None Include="Library\PackageCache\com.unity.collab-proxy\ValidationConfig.json" />
     <None Include="Library\PackageCache\com.unity.ai.navigation\package.json" />
     <None Include="Library\PackageCache\com.unity.visualscripting\ValidationConfig.json" />

@@ -10,6 +10,7 @@ namespace ayy
         [SerializeField] Color BrushColor = Color.magenta;
         [SerializeField,Range(0,0.1f)] float BrushSmooth = 0.05f;
         [SerializeField] private bool bEnableSmooth = true;
+        [SerializeField] private bool bEnableUVBleeding = true;
 
         private Transform _root = null;
 
@@ -22,7 +23,7 @@ namespace ayy
         {
             foreach (var paintable in _root.GetComponentsInChildren<Paintable>())
             {
-                paintable.SyncBrushSettings(BrushSize,BrushColor,BrushSmooth,bEnableSmooth);
+                paintable.SyncBrushSettings(BrushSize,BrushColor,BrushSmooth,bEnableSmooth,bEnableUVBleeding);
             }
         }
     }
