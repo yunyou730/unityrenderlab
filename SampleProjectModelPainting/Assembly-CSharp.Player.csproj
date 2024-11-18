@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PaintableRenderFeature.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\BrushSettings.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <Reference Include="UnityEngine">

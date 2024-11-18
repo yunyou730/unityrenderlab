@@ -8,14 +8,12 @@ namespace ayy
 {
     public class Paintable : MonoBehaviour
     {
-        [SerializeField,Range(0,2)]
-        private float BrushSize = 0.2f;
-        [SerializeField]
-        private Color BrushColor = Color.magenta;
+        private float _brushSize = 0.2f;
+        private Color _brushColor = Color.magenta;
+        private float _brushSmooth = 0.03f;
+        private bool _bEnableSmooth = true;
         
-        [SerializeField]
         private RenderTexture _paintingTargetRT1 = null;
-        [SerializeField]
         private RenderTexture _paintingTargetRT2 = null;
         
         private Material _presentMaterial = null;
@@ -56,6 +54,14 @@ namespace ayy
             CheckMousePainting();
             UpdateBrushParameter();
         }
+        
+        public void SyncBrushSettings(float brushSize,Color brushColor,float brushSmooth,bool bEnableSmooth)
+        {
+            _brushSize = brushSize;
+            _brushColor = brushColor;
+            _brushSmooth = brushSmooth;
+            _bEnableSmooth = bEnableSmooth;
+        }
 
         private void OnDisable()
         {
@@ -85,7 +91,7 @@ namespace ayy
         {
             var ret = new RenderTexture(1024, 1024, 32, DefaultFormat.LDR);
             ret.enableRandomWrite = true;
-            //ret.filterMode = FilterMode.Bilinear;
+            ret.filterMode = FilterMode.Bilinear;
             return ret;
         }
 
@@ -151,8 +157,10 @@ namespace ayy
 
         private void UpdateBrushParameter()
         {
-            _paintingMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),BrushSize);
-            _paintingMaterial.SetColor(Shader.PropertyToID("_BrushColor"),BrushColor);
+            _paintingMaterial.SetFloat(Shader.PropertyToID("_BrushSize"),_brushSize);
+            _paintingMaterial.SetColor(Shader.PropertyToID("_BrushColor"),_brushColor);
+            _paintingMaterial.SetFloat(Shader.PropertyToID("_BrushSmooth"),_brushSmooth);
+            _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableBrushSmooth"),_bEnableSmooth ? 1f:0.0f);
         }
         
         private Renderer GetRenderer()

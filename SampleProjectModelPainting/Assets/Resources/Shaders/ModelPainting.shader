@@ -7,13 +7,16 @@ Shader "ayy/ModelPainting"
         _BrushSize("Brush Size",Range(0,3)) = 1.0
         _BrushColor("Brush Color",Color) = (1,1,0,1)
         
+        //_BrushSmooth("Smooth Border",Range(0,0.05)) = 0.03
+        _BrushSmooth("Smooth Border",Range(0,1)) = 0.4
+        _EnableBrushSmooth("Enable Brush Smooth",Range(0,1)) = 1
+        
         _EnableCurPos("Enable Cur Pos",Range(0,1)) = 0  // 0 disable, 1 enable
         _CurPos("Current Pos",Vector) = (0,0,0,0)
         
         _EnablePrevPos("Enable Prev Pos",Range(0,1)) = 0 // 0 disable, 1 enable
         _PrevPos("Prev Pos",Vector) = (0,0,0,0)
         
-        _SmoothBorder("Smooth Border",Range(0,0.05)) = 0.03
         
         // Debug colors
         _EnableDebugColor("Enable Debug Color",Range(0,1)) = 0  // 0/1 disable/enable debug color
@@ -58,7 +61,9 @@ Shader "ayy/ModelPainting"
             sampler2D _AdditiveTexture;
             
             float _BrushSize;
-            float4 _BrushColor; 
+            float4 _BrushColor;
+            float _BrushSmooth;
+            // float _EnableBrushSmooth;
             
             float _EnableCurPos;
             float4 _CurPos;
@@ -119,32 +124,48 @@ Shader "ayy/ModelPainting"
                 float2 uv = IN.uv;
 
                 float4 texColor = tex2D(_AdditiveTexture,uv);
+
+                // float testa = texColor.a;
                 
                 
-                float4 ret = texColor;//float4(0,0,0,0);
+                // float4 ret = texColor;//float4(0,0,0,0);
 
                 float disToCurPos = distance(IN.positionWS.xyz,_CurPos.xyz);
                 float disToPrevPos = distance(IN.positionWS.xyz,_PrevPos.xyz);
                 float disToLineSeg = 0.0;
                 bool isNearLineSeg = IsPointWithinDistance(_CurPos.xyz,_PrevPos.xyz,IN.positionWS.xyz,_BrushSize,disToLineSeg);
-                
+
+
+                //float4 brushCol = texColor;//float4(0,0,0,texColor.a);
+                // float brushAlpha = 0.0;
+                float4 brushCol = float4(0,0,0,0);
                 if(_EnableCurPos > 0.5 && disToCurPos < _BrushSize)
                 {
-                    float4 col = lerp(_BrushColor,_DebugCurPosColor,step(0.5,_EnableDebugColor));
-                    ret = col;
+                    brushCol.rgb = lerp(_BrushColor,_DebugCurPosColor,step(0.5,_EnableDebugColor)).rgb;
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToCurPos));
                 }
-                else if(_EnablePrevPos > 0.5 && disToPrevPos < _BrushSize)
+                //else if(_EnablePrevPos > 0.5 && disToPrevPos < _BrushSize)
+                if(_EnablePrevPos > 0.5 && disToPrevPos < _BrushSize)
                 {
-                    float4 col = lerp(_BrushColor,_DebugPrevPosColor,step(0.5,_EnableDebugColor));
-                    ret = col;
+                    brushCol.rgb = lerp(_BrushColor,_DebugPrevPosColor,step(0.5,_EnableDebugColor)).rgb;
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToPrevPos));
                 }
-                else if(_EnablePrevPos > 0.5 && isNearLineSeg)
+                //else if(_EnablePrevPos > 0.5 && isNearLineSeg)
+                if(_EnablePrevPos > 0.5 && isNearLineSeg)
                 {
-                    float4 col = lerp(_BrushColor,_DebugLineSegColor,step(0.5,_EnableDebugColor));
-                    ret = col;
+                    brushCol.rgb = lerp(_BrushColor,_DebugLineSegColor,step(0.5,_EnableDebugColor)).rgb;
+                    brushCol.a = max(brushCol.a,smoothstep(_BrushSize,_BrushSize * _BrushSmooth,disToLineSeg));
                 }
+
+                if(brushCol.a < texColor.a)
+                {
+                    brushCol = texColor;
+                }
+                //ret.rgb = float3(ret.a,ret.a,ret.a);
+                //ret.rgba = float4(texColor.a,0,0,texColor.a);
+                // float4 ret = lerp(texColor,brushCol,brushCol.a);
                 
-                return ret;
+                return brushCol;
             }
             ENDHLSL
         }
