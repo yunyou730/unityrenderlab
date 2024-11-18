@@ -13,7 +13,6 @@ namespace ayy
         [SerializeField]
         private Color BrushColor = Color.magenta;
         
-        private bool _paintingRTFlag = true;
         [SerializeField]
         private RenderTexture _paintingTargetRT1 = null;
         [SerializeField]
@@ -59,8 +58,6 @@ namespace ayy
             
             _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
             _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),GetPaintingTarget());
-            
-            //SwapPaintingTexture();
         }
 
         private void OnDisable()
@@ -108,13 +105,12 @@ namespace ayy
 
         public RenderTexture GetPaintingTarget()
         {
-            return _paintingRTFlag ? _paintingTargetRT1 : _paintingTargetRT2;
-            // return _paintingTargetRT1;
+            return _paintingTargetRT1;
         }
 
         public RenderTexture GetPaintingBackup()
         {
-            return _paintingRTFlag ? _paintingTargetRT2 : _paintingTargetRT1;
+            return _paintingTargetRT2;
         }
 
         private void CheckMousePainting()
@@ -154,11 +150,6 @@ namespace ayy
         private Renderer GetRenderer()
         {
             return GetComponent<MeshRenderer>();
-        }
-
-        private void SwapPaintingTexture()
-        {
-            _paintingRTFlag = !_paintingRTFlag;
         }
 
     }
