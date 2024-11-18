@@ -13,6 +13,8 @@ Shader "ayy/ModelPainting"
         _EnablePrevPos("Enable Prev Pos",Range(0,1)) = 0 // 0 disable, 1 enable
         _PrevPos("Prev Pos",Vector) = (0,0,0,0)
         
+        _SmoothBorder("Smooth Border",Range(0,0.05)) = 0.03
+        
         // Debug colors
         _EnableDebugColor("Enable Debug Color",Range(0,1)) = 0  // 0/1 disable/enable debug color
         _DebugCurPosColor("Debug Cur Pos Color",Color) = (1,0,0,1)

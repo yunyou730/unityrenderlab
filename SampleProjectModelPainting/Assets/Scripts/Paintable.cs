@@ -37,6 +37,15 @@ namespace ayy
             
             _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
             _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),GetPaintingTarget());
+            
+            CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
+            cmdbuf.Clear();
+            cmdbuf.SetRenderTarget(_paintingTargetRT1);
+            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
+            cmdbuf.SetRenderTarget(_paintingTargetRT2);
+            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
+            Graphics.ExecuteCommandBuffer(cmdbuf);
+            CommandBufferPool.Release(cmdbuf);
         }
         
         void Update()
