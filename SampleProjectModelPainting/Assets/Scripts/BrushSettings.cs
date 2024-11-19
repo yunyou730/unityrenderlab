@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security;
 using UnityEngine;
 
@@ -21,9 +22,26 @@ namespace ayy
 
         public void Update()
         {
-            foreach (var paintable in _root.GetComponentsInChildren<Paintable>())
+            List<Paintable> paintables = new List<Paintable>();
+            GetPaintablesInChildren(ref paintables,_root);
+            foreach (var paintable in paintables)
             {
                 paintable.SyncBrushSettings(BrushSize,BrushColor,BrushSmooth,bEnableSmooth,bEnableUVBleeding);
+            }
+        }
+
+
+        void GetPaintablesInChildren(ref List<Paintable> res,Transform node)
+        {
+            for(int i = 0;i < node.childCount;i++)
+            {
+                Transform child = node.GetChild(i);
+                var paintable = child.GetComponent<Paintable>(); 
+                if (paintable != null)
+                {
+                    res.Add(paintable);
+                }
+                GetPaintablesInChildren(ref res,child);
             }
         }
     }

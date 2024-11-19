@@ -24,9 +24,10 @@ namespace ayy
         
         private Vector3? _hitWorldPos = null;
         private Vector3? _prevWorldPos = null;
+        
+        private CommandBuffer _paintingCmdBuf = null;
 
-
-        private CommandBuffer _paintingCmdBuf = null;        
+        private Mesh _dynamicBakeSkinMesh = null;
         
         void Start()
         {
@@ -41,15 +42,12 @@ namespace ayy
             _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),GetPaintingBackup());
             _presentMaterial.SetTexture(Shader.PropertyToID("_PaintingTexture"),_bEnableBleeding ? GetUVBleedingTexture() : GetPaintingTarget());
             
-            // Clear RenderTexture we created just now
-            CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
-            cmdbuf.Clear();
-            cmdbuf.SetRenderTarget(_paintingTargetRT1);
-            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
-            cmdbuf.SetRenderTarget(_paintingTargetRT2);
-            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
-            Graphics.ExecuteCommandBuffer(cmdbuf);
-            CommandBufferPool.Release(cmdbuf);
+            ClearCreatedRenderTextures();
+
+            if (IsNeedSyncAnimMesh())
+            {
+                _dynamicBakeSkinMesh = new Mesh();
+            }
         }
         
         void Update()
@@ -59,6 +57,20 @@ namespace ayy
             
             CheckMousePainting();
             UpdateBrushParameter();
+
+            if (IsNeedSyncAnimMesh())
+            {
+                SyncColliderMesh(GetComponent<SkinnedMeshRenderer>(),GetComponent<MeshCollider>());
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_paintingCmdBuf != null)
+            {
+                CommandBufferPool.Release(_paintingCmdBuf);
+                _paintingCmdBuf = null;
+            }
         }
         
         public void SyncBrushSettings(float brushSize,Color brushColor,float brushSmooth,bool bEnableSmooth,bool bEnableBleeding)
@@ -70,13 +82,16 @@ namespace ayy
             _bEnableBleeding = bEnableBleeding;
         }
 
-        private void OnDisable()
+        private void ClearCreatedRenderTextures()
         {
-            if (_paintingCmdBuf != null)
-            {
-                CommandBufferPool.Release(_paintingCmdBuf);
-                _paintingCmdBuf = null;
-            }
+            CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.CreatePaintingCommandBuffer");
+            cmdbuf.Clear();
+            cmdbuf.SetRenderTarget(_paintingTargetRT1);
+            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
+            cmdbuf.SetRenderTarget(_paintingTargetRT2);
+            cmdbuf.ClearRenderTarget(true,true,new Color(0,0,0,0));
+            Graphics.ExecuteCommandBuffer(cmdbuf);
+            CommandBufferPool.Release(cmdbuf);
         }
 
         private CommandBuffer BuildPaintingCommandBuffer()
@@ -105,12 +120,8 @@ namespace ayy
 
         private Material GetPresentMaterial()
         {
-            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-            if (meshRenderer != null)
-            {
-                return meshRenderer.material;
-            }
-            return null;
+            Renderer renderer = GetRenderer();
+            return renderer.material;
         }
 
         private Material GetUVBleedingMaterial()
@@ -118,12 +129,12 @@ namespace ayy
             return _uvBleedingMaterial;
         }
 
-        public RenderTexture GetPaintingTarget()
+        private RenderTexture GetPaintingTarget()
         {
             return _paintingTargetRT1;
         }
 
-        public RenderTexture GetPaintingBackup()
+        private RenderTexture GetPaintingBackup()
         {
             return _paintingTargetRT2;
         }
@@ -148,7 +159,7 @@ namespace ayy
 
             if (worldPos != null)
             {
-                // Previous painting pos
+                // Previous painting pos to material 
                 if (_hitWorldPos != null)
                 {
                     _prevWorldPos = _hitWorldPos;
@@ -157,7 +168,7 @@ namespace ayy
                     _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),1.0f);
                 }
 
-                // Current Painting Pos
+                // Current Painting Pos to material
                 _hitWorldPos = worldPos;
                 _paintingMaterial.SetVector(Shader.PropertyToID("_CurPos"),
                     new Vector4(_hitWorldPos.Value.x,_hitWorldPos.Value.y,_hitWorldPos.Value.z,1.0f));
@@ -165,6 +176,7 @@ namespace ayy
             }
             else
             {
+                // Clear painting pos to material
                 _hitWorldPos = null;
                 _prevWorldPos = null;
                 _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableCurPos"),0.0f);
@@ -183,7 +195,24 @@ namespace ayy
         
         private Renderer GetRenderer()
         {
-            return GetComponent<MeshRenderer>();
+            Renderer renderer = GetComponent<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = GetComponent<SkinnedMeshRenderer>();
+            }
+            Debug.Assert(renderer != null,"There's no renderer on Paintable GameObject");
+            return renderer;
+        }
+
+        private bool IsNeedSyncAnimMesh()
+        {
+            return GetComponent<SkinnedMeshRenderer>() != null && GetComponent<MeshCollider>() != null;
+        }
+
+        private void SyncColliderMesh(SkinnedMeshRenderer skinnedMeshRenderer,MeshCollider meshCollider)
+        {
+            skinnedMeshRenderer.BakeMesh(_dynamicBakeSkinMesh,true);
+            meshCollider.sharedMesh = _dynamicBakeSkinMesh;
         }
 
     }
