@@ -28,6 +28,8 @@ namespace ayy
         private CommandBuffer _paintingCmdBuf = null;
 
         private Mesh _dynamicBakeSkinMesh = null;
+
+        public bool _enableAnimationMeshBake = true; 
         
         void Start()
         {
@@ -206,6 +208,8 @@ namespace ayy
 
         private bool IsNeedSyncAnimMesh()
         {
+            if (!_enableAnimationMeshBake)
+                return false;
             return GetComponent<SkinnedMeshRenderer>() != null && GetComponent<MeshCollider>() != null;
         }
 
