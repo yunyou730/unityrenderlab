@@ -134,8 +134,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 0.0
+            "x": -123.99993896484375,
+            "y": 16.000011444091798
         },
         "m_Blocks": [
             {
@@ -151,8 +151,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 200.0
+            "x": -123.99993896484375,
+            "y": 216.00003051757813
         },
         "m_Blocks": [
             {
@@ -364,10 +364,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1188.0001220703125,
-            "y": 311.0000305175781,
+            "x": -895.0,
+            "y": 309.0,
             "width": 165.0,
-            "height": 33.999969482421878
+            "height": 34.00006103515625
         }
     },
     "m_Slots": [
@@ -690,10 +690,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -944.0,
-            "y": 154.0,
-            "width": 131.0,
-            "height": 34.0
+            "x": -657.9999389648438,
+            "y": 239.00003051757813,
+            "width": 130.99993896484376,
+            "height": 33.999969482421878
         }
     },
     "m_Slots": [
@@ -869,10 +869,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1053.0,
-            "y": 296.0000305175781,
-            "width": 207.99993896484376,
-            "height": 435.0000305175781
+            "x": -710.0,
+            "y": 283.0000305175781,
+            "width": 183.0,
+            "height": 250.99996948242188
         }
     },
     "m_Slots": [
@@ -905,7 +905,7 @@
         "tex2d"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {

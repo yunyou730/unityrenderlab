@@ -48,7 +48,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\BrushSettings.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithUnwrapUV.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <None Include="Library\PackageCache\com.unity.burst\package.json" />
     <None Include="Library\PackageCache\com.unity.test-framework.performance\package.json" />
@@ -77,6 +79,7 @@
     <None Include="Library\PackageCache\com.unity.collab-proxy\ValidationConfig.json" />
     <None Include="Library\PackageCache\com.unity.ai.navigation\package.json" />
     <None Include="Library\PackageCache\com.unity.visualscripting\ValidationConfig.json" />
+    <None Include="Assets\Resources\Shaders\NormalDisplayModel.shader" />
     <None Include="Library\PackageCache\com.unity.collections\package.json" />
     <None Include="Library\PackageCache\com.unity.mathematics\ValidationExceptions.json" />
     <None Include="Library\PackageCache\com.unity.collections\ValidationExceptions.json" />

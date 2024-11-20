@@ -48,7 +48,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\BrushSettings.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithUnwrapUV.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.0.23f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\Variations\mono\Managed\UnityEngine.dll</HintPath>
