@@ -20,6 +20,7 @@ namespace ayy.showcase
             
             // painting uv texture at init
             CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.model_painting");
+            cmdbuf.Clear();
             cmdbuf.SetRenderTarget(_paintingRT);
             cmdbuf.DrawRenderer(GetComponent<MeshRenderer>(),_uvUnwrapMaterial);
             Graphics.ExecuteCommandBuffer(cmdbuf);

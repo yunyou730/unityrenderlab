@@ -51,6 +51,7 @@
     <Compile Include="Assets\Scripts\ShowModelWithUnwrapUV.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithDrawOnePoint.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <None Include="Library\PackageCache\com.unity.burst\package.json" />
     <None Include="Library\PackageCache\com.unity.test-framework.performance\package.json" />
@@ -68,6 +69,7 @@
     <None Include="Library\PackageCache\com.unity.collab-proxy\package.json" />
     <None Include="Library\PackageCache\com.unity.ide.visualstudio\package.json" />
     <None Include="Assets\Resources\Shaders\ModelPainting.shader" />
+    <None Include="Assets\Resources\Shaders\UnwrapUVWithPaintingOnePoint.shader" />
     <None Include="Library\PackageCache\com.unity.ide.rider\package.json" />
     <None Include="Library\PackageCache\com.unity.searcher\package.json" />
     <None Include="Library\PackageCache\com.unity.test-framework\package.json" />
