@@ -46,8 +46,6 @@ namespace ayy.showcase
             Graphics.ExecuteCommandBuffer(cmdbuf);
             CommandBufferPool.Release(cmdbuf);
             
-            //_paintingMaterial.SetFloat(Shader.PropertyToID("_EnableCurPos"),1.0f);
-            
             // Mouse Click
             Vector3? clickWorldPos = CheckMousePainting();
             if (clickWorldPos != null)
