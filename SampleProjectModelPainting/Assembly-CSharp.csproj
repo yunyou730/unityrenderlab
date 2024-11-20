@@ -52,6 +52,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
     <Compile Include="Assets\Scripts\ShowModelWithDrawOnePoint.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithTowPoints.cs" />
     <Compile Include="Assets\Scripts\ShowModelWithAdditive.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <None Include="Library\PackageCache\com.unity.burst\package.json" />
@@ -86,6 +87,7 @@
     <None Include="Assets\Resources\Shaders\NormalDisplayModel.shader" />
     <None Include="Library\PackageCache\com.unity.collections\package.json" />
     <None Include="Library\PackageCache\com.unity.mathematics\ValidationExceptions.json" />
+    <None Include="Assets\Resources\Shaders\UnwrapUVWithTwoPoints.shader" />
     <None Include="Library\PackageCache\com.unity.collections\ValidationExceptions.json" />
     <None Include="Library\PackageCache\com.unity.burst\Unity.Burst.Unsafe.xml" />
     <Reference Include="UnityEngine">

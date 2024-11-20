@@ -5,23 +5,25 @@ using UnityEngine.Rendering;
 
 namespace ayy.showcase
 {
-    public class ShowModelWithTwoPoints : MonoBehaviour
+    public class UnwrapUVWithTwoPoints : MonoBehaviour
     {
         private RenderTexture _paintingRT = null;
+        private RenderTexture _backupRT = null;
+        
         private Material _paintingMaterial = null;
         private Material _renderingMaterial = null;
         
         private Vector3? _hitWorldPos = null;
+        private Vector3? _prevWorldPos = null;
         
         void Start()
         {
             _paintingRT = CreateRenderTargetForPainting();
-            _paintingMaterial = new Material(Shader.Find("ayy/UnwrapUVWithPaintingOnePoint"));
-            _paintingMaterial.SetColor(Shader.PropertyToID("_MainColor"),Color.green);
-
-            Debug.Log("[mat][_EnableCurPos]" + _paintingMaterial.HasProperty(Shader.PropertyToID("_EnableCurPos")));
-            Debug.Log("[mat][_CurPos]" + _paintingMaterial.HasProperty(Shader.PropertyToID("_EnableCurPos")));
+            _backupRT = CreateRenderTargetForPainting();
             
+            _paintingMaterial = new Material(Shader.Find("ayy/UnwrapUVWithTwoPoints"));
+            _paintingMaterial.SetColor(Shader.PropertyToID("_MainColor"),Color.green);
+            _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),_backupRT);
             
             // render modol with paintingRT
             _renderingMaterial = GetComponent<MeshRenderer>().material;
@@ -42,6 +44,7 @@ namespace ayy.showcase
             CommandBuffer cmdbuf = CommandBufferPool.Get("ayy.model_painting");
             cmdbuf.SetRenderTarget(_paintingRT);
             cmdbuf.DrawRenderer(GetComponent<MeshRenderer>(),_paintingMaterial);
+            cmdbuf.Blit(_paintingRT,_backupRT);
             Graphics.ExecuteCommandBuffer(cmdbuf);
             CommandBufferPool.Release(cmdbuf);
             
@@ -49,6 +52,15 @@ namespace ayy.showcase
             Vector3? clickWorldPos = CheckMousePainting();
             if (clickWorldPos != null)
             {
+                if (_hitWorldPos != null)
+                {
+                    _prevWorldPos = _hitWorldPos;
+                    _paintingMaterial.SetVector(Shader.PropertyToID("_PrevPos"),
+                        new Vector4(_prevWorldPos.Value.x,_prevWorldPos.Value.y,_prevWorldPos.Value.z,1.0f));
+                    _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),1.0f);
+                }
+
+                // 1st point
                 _hitWorldPos = clickWorldPos;
                 _paintingMaterial.SetVector(Shader.PropertyToID("_CurPos"),
                     new Vector4(_hitWorldPos.Value.x,_hitWorldPos.Value.y,_hitWorldPos.Value.z,1.0f));
@@ -56,11 +68,10 @@ namespace ayy.showcase
             }
             else
             {
-                if (_hitWorldPos != null)
-                {
-                    _hitWorldPos = null;
-                    _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableCurPos"),0.0f);
-                }
+                _hitWorldPos = null;
+                _prevWorldPos = null;
+                _paintingMaterial.SetFloat(Shader.PropertyToID("_EnableCurPos"),0.0f);
+                _paintingMaterial.SetFloat(Shader.PropertyToID("_EnablePrevPos"),0.0f);
             } 
         }
         

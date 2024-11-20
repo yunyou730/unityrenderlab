@@ -23,10 +23,6 @@ namespace ayy.showcase
             _paintingMaterial = new Material(Shader.Find("ayy/UnwrapUVWithPaintingAdditive"));
             _paintingMaterial.SetColor(Shader.PropertyToID("_MainColor"),Color.green);
             _paintingMaterial.SetTexture(Shader.PropertyToID("_AdditiveTexture"),_backupRT);
-
-            Debug.Log("[mat][_EnableCurPos]" + _paintingMaterial.HasProperty(Shader.PropertyToID("_EnableCurPos")));
-            Debug.Log("[mat][_CurPos]" + _paintingMaterial.HasProperty(Shader.PropertyToID("_EnableCurPos")));
-            
             
             // render modol with paintingRT
             _renderingMaterial = GetComponent<MeshRenderer>().material;

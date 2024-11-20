@@ -52,6 +52,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
     <Compile Include="Assets\Scripts\ShowModelWithDrawOnePoint.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithTowPoints.cs" />
     <Compile Include="Assets\Scripts\ShowModelWithAdditive.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <Reference Include="UnityEngine">
