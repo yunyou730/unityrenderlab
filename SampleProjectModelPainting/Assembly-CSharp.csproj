@@ -52,6 +52,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\SwitchMaterialBetweenNormalAndUnWrap.cs" />
     <Compile Include="Assets\Scripts\ShowModelWithDrawOnePoint.cs" />
+    <Compile Include="Assets\Scripts\ShowModelWithAdditive.cs" />
     <Compile Include="Assets\Scripts\Paintable.cs" />
     <None Include="Library\PackageCache\com.unity.burst\package.json" />
     <None Include="Library\PackageCache\com.unity.test-framework.performance\package.json" />
@@ -65,6 +66,7 @@
     <None Include="Library\PackageCache\com.unity.mathematics\package.json" />
     <None Include="Library\PackageCache\com.unity.burst\ValidationExceptions.json" />
     <None Include="Assets\Resources\Shaders\UnwrapUV.shader" />
+    <None Include="Assets\Resources\Shaders\UnwrapUVWithPaintingAdditive.shader" />
     <None Include="Library\PackageCache\com.unity.visualscripting\package.json" />
     <None Include="Library\PackageCache\com.unity.collab-proxy\package.json" />
     <None Include="Library\PackageCache\com.unity.ide.visualstudio\package.json" />
