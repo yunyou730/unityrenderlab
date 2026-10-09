@@ -42,6 +42,8 @@ Shader "ayy/TriplanarMapping"
             sampler2D _MainTex;
             sampler2D _TopTex;
             
+            float4 _TopTex_ST,_MainTex_ST;
+            
             float _BlendOffset;
             float _BlendExp;
             
@@ -92,10 +94,11 @@ Shader "ayy/TriplanarMapping"
                 // 2. 根据实际需要, 可以让 top texture 和 side texture 不一样
                 // 3. 如果 side texture 有比较强的 "方向感", 会造成 横向 x , z的纹理，在衔接处, 一个横向，一个纵向，不自然. 
                 //   解决办法 (1) 让 x 或 z 方向的  uv 旋转90度; (2) 或者干脆就直接用 4方连续, 没有那么强方向感的贴图
-                half4 colX = tex2D(_MainTex,i.worldPos.yz);
-                //half4 colY = tex2D(_MainTex,i.worldPos.xz);
-                half4 colY = tex2D(_TopTex,i.worldPos.xz);
-                half4 colZ = tex2D(_MainTex,i.worldPos.xy);
+                // 4. 基础版本, 可以不  * st.xy + st.zw ;  考虑进去 st.xy zw 是用于做 纹理的 tiling offset 
+                half4 colX = tex2D(_MainTex,i.worldPos.yz * _MainTex_ST.xy + _MainTex_ST.zw);
+                //half4 colY = tex2D(_MainTex,i.worldPos.xz * _MainTex_ST.xy + _MainTex_ST.zw);
+                half4 colY = tex2D(_TopTex,i.worldPos.xz * _TopTex_ST.xy + _TopTex_ST.zw);
+                half4 colZ = tex2D(_MainTex,i.worldPos.xy * _MainTex_ST.xy + _MainTex_ST.zw);
                 
                 // 输出根据 法线方向的占比, 混合后的颜色
                 return colX * weights.x + colY * weights.y + colZ * weights.z;
