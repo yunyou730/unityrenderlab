@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ColorGrid
+  m_Name: TriplanarMapping
   m_Shader: {fileID: 4800000, guid: 3b2b0dd5a6b4bb9438c7d72491fb0558, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,17 +24,17 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c8882b32d01c2b5409e81e5ca5238a0e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 843cf10d056914b42a96da56cd555b28, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TopTex:
-        m_Texture: {fileID: 2800000, guid: 9e65ce75bf388d049bcc606d69cdfa5f, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 2ad489fa49a82e64db367e29ee557977, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendExp: 9.21
-    - _BlendOffset: 0.034
+    - _BlendExp: 2.61
+    - _BlendOffset: 0.1418
     - _DebugWeights: 0
     - _PowFactor: 5
     m_Colors: []

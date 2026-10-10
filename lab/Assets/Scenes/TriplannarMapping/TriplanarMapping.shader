@@ -8,7 +8,7 @@ Shader "ayy/TriplanarMapping"
         _BlendExp ("Blend Exp", Range(1,10)) = 1
         
         
-        _TopTex ("Texture", 2D) = "white" {}
+        _TopTex ("Top Texture", 2D) = "white" {}
         
         [Toggle] _DebugWeights("Debug Weights",Float) = 0.0
     }
