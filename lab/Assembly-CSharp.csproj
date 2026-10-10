@@ -41,7 +41,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Assets\Scenes\TriplannarMapping\TriplanarMapping.shader" />
+    <None Include="Assets\Scenes\TriplannarMapping\TriplanarMappingLit.shader" />
+    <None Include="Assets\Scenes\TriplannarMapping\TriplanarMappingUnlit.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:\tools_dev\Unity\2022.3.62f3c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

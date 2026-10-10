@@ -1,15 +1,14 @@
-Shader "ayy/TriplanarMapping"
+Shader "ayy/TriplanarMappingUnlit"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        
+
         _BlendOffset ("Blend Offset",Range(0,0.5)) = 0.25
         _BlendExp ("Blend Exp", Range(1,10)) = 1
-        
-        
+
         _TopTex ("Top Texture", 2D) = "white" {}
-        
+
         [Toggle] _DebugWeights("Debug Weights",Float) = 0.0
     }
     SubShader
@@ -34,31 +33,31 @@ Shader "ayy/TriplanarMapping"
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                
+
                 float3 worldPos : TEXCOORD1;
                 float3 worldNormal : TEXCOORD2;
             };
 
             sampler2D _MainTex;
             sampler2D _TopTex;
-            
+
             float4 _TopTex_ST,_MainTex_ST;
-            
+
             float _BlendOffset;
             float _BlendExp;
-            
+
             float _DebugWeights;        // 0: 不调试 weights; 1: 调试 weights;
 
             v2f vert(appdata v)
             {
                 v2f o;
                 o.vertex = TransformObjectToHClip(v.vertex);
-                
+
                 o.worldPos = TransformObjectToWorld(v.vertex.xyz);
                 o.worldNormal = TransformObjectToWorldNormal(v.normal,true);
                 return o;
             }
-            
+
             float3 getWeights(float3 worldNormal)
             {
                 // abs 是为了防负数
@@ -71,11 +70,11 @@ Shader "ayy/TriplanarMapping"
 
                 // pow 是为了把 [0,1] 的线性函数, 转换为更陡峭的曲线, pow的值越多, 上升越快, 边缘越锐利; 否则过度边缘越平缓
                 weights = pow(weights,_BlendExp);
-                
+
                 // 这里这样理解, 无论 输入 weights.xyz 的数值是多少, 假设每个维度的值,分别是 a,b,c
                 // 输出的结果 weights.x + weights.y + weights.z , 一定是 1.0, 从而构造了 3个加和为 1.0 的权重值
-                // 因为 
-                // a / (a + b + c) + b / (a + b + c) + c / (a + b + c) 
+                // 因为
+                // a / (a + b + c) + b / (a + b + c) + c / (a + b + c)
                 // 可以转换为 (a + b + c) / (a + b + c) = 1 结果一定为 1
                 return weights / (weights.x + weights.y + weights.z);
             }
@@ -87,21 +86,21 @@ Shader "ayy/TriplanarMapping"
                 if (_DebugWeights > 0.5)
                 {
                     // 直接输出 weights 当作颜色, 可以调试过度范围, 让过度范围可视化
-                    return float4(weights,1.0);    
+                    return float4(weights,1.0);
                 }
 
                 // 1. world Pos 采样贴图, 依赖于 texture 的 wrap mode 是 repeat, 并且贴图是 4方连续,  就可以让贴图看起来比较自然
                 // 2. 根据实际需要, 可以让 top texture 和 side texture 不一样
-                // 3. 如果 side texture 有比较强的 "方向感", 会造成 横向 x , z的纹理，在衔接处, 一个横向，一个纵向，不自然. 
+                // 3. 如果 side texture 有比较强的 "方向感", 会造成 横向 x , z的纹理，在衔接处, 一个横向，一个纵向，不自然.
                 //   解决办法 (1) 让 x 或 z 方向的  uv 旋转90度; (2) 或者干脆就直接用 4方连续, 没有那么强方向感的贴图
-                // 4. 基础版本, 可以不  * st.xy + st.zw ;  考虑进去 st.xy zw 是用于做 纹理的 tiling offset 
+                // 4. 基础版本, 可以不  * st.xy + st.zw ;  考虑进去 st.xy zw 是用于做 纹理的 tiling offset
                 half4 colX = tex2D(_MainTex,i.worldPos.yz * _MainTex_ST.xy + _MainTex_ST.zw);
                 //half4 colY = tex2D(_MainTex,i.worldPos.xz * _MainTex_ST.xy + _MainTex_ST.zw);
                 half4 colY = tex2D(_TopTex,i.worldPos.xz * _TopTex_ST.xy + _TopTex_ST.zw);
                 half4 colZ = tex2D(_MainTex,i.worldPos.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-                
-                // 输出根据 法线方向的占比, 混合后的颜色
-                return colX * weights.x + colY * weights.y + colZ * weights.z;
+
+                // 输出根据 法线方向的占比, 混合后的颜色 (Unlit: 不参与任何光照计算, 输出原贴图颜色)
+                return half4(colX.rgb * weights.x + colY.rgb * weights.y + colZ.rgb * weights.z, 1.0);
             }
             ENDHLSL
         }

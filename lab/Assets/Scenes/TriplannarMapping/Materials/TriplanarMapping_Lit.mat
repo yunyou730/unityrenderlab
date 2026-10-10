@@ -7,12 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TriplanarMapping
-  m_Shader: {fileID: 4800000, guid: 3b2b0dd5a6b4bb9438c7d72491fb0558, type: 3}
+  m_Name: TriplanarMapping_Lit
+  m_Shader: {fileID: 4800000, guid: a532148664fec8647976c66013275679, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _USEHALFLAMBERT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -37,5 +38,9 @@ Material:
     - _BlendOffset: 0.1418
     - _DebugWeights: 0
     - _PowFactor: 5
-    m_Colors: []
+    - _UseHalfLambert: 1
+    m_Colors:
+    - _AmbientColor: {r: 0.29999998, g: 0.29999998, b: 0.29999998, a: 1}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightDir: {r: -0.7, g: 1, b: 0.3, a: 0}
   m_BuildTextureStacks: []
