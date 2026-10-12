@@ -41,8 +41,11 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s4-1.shader" />
+    <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s4-3.shader" />
     <None Include="Assets\Scenes\TriplannarMapping\Shaders\TriplanarMappingLit.shader" />
     <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s1.shader" />
+    <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s4-4.shader" />
     <None Include="Assets\Scenes\TriplannarMapping\Shaders\TriplanarMappingUnlit.shader" />
     <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s3.shader" />
     <None Include="Assets\Scenes\TriplannarMapping\Shaders\steps\TriplanarMapping_s2.shader" />
