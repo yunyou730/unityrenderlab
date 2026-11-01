@@ -1,0 +1,19 @@
+{
+ "kind": "engine_assets",
+ "version": 1,
+ "scenes": [
+  {
+   "scene": 1,
+   "dir": "",
+   "atlas": "atlas_scene001.png",
+   "atlas_json": "atlas_scene001.json",
+   "scene_json": "scene001.json",
+   "tiles": 213,
+   "atlas_size": [
+    2048,
+    254
+   ],
+   "missing": []
+  }
+ ]
+}
