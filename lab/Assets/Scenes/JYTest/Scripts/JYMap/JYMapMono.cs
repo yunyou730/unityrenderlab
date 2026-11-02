@@ -131,7 +131,7 @@ namespace ayy.jy
                         Vector3 lt = new Vector3(px, 0, py);
                         Vector3 rt = new Vector3(px + JYMapUtils.ISO_TILE_WIDTH, 0, py);
                         Vector3 lb = new Vector3(px, 0, py - JYMapUtils.ISO_TILE_HEIGHT);
-                        Vector3 rb = new Vector3(px + JYMapUtils.ISO_TILE_WIDTH, 0, py);
+                        Vector3 rb = new Vector3(px + JYMapUtils.ISO_TILE_WIDTH, 0, py - JYMapUtils.ISO_TILE_HEIGHT);
                         
                         int vertIndex = vertices.Count;
                         vertices.Add(lt);
