@@ -45,12 +45,17 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.62f3c1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets/Scenes/JYTest/Scripts/JYBaseGridBuilder.cs" />
-    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYMapRecord.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYBaseGridBuilder.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYMapMono.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYBaseGridMono.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYTopDownCameraController.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYTilePreview.cs" />
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYData/JYPaths.cs" />
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYData/JYDto.cs" />
-    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMapRecord.cs" />
+    <None Include="Assets/Scenes/JYTest/Shaders/JYTest_Map.shader" />
     <None Include="Assets/Scenes/TriplannarMapping/Shaders/steps/TriplanarMapping_s4-1.shader" />
+    <None Include="Assets/Scenes/JYTest/Shaders/JYTilePreview.shader" />
     <None Include="Assets/StreamingAssets/JYTest/SubScenes/scene000/index.json" />
     <None Include="Assets/StreamingAssets/JYTest/SubScenes/scene001/index.json" />
     <None Include="Assets/Scenes/TriplannarMapping/Shaders/steps/TriplanarMapping_s4-3.shader" />
@@ -63,7 +68,7 @@
     <None Include="Assets/Scenes/TriplannarMapping/Shaders/TriplanarMappingUnlit.shader" />
     <None Include="Assets/Scenes/TriplannarMapping/Shaders/steps/TriplanarMapping_s3.shader" />
     <None Include="Assets/StreamingAssets/JYTest/SubScenes/scene000/scene000.json" />
-    <None Include="Assets/Scenes/JYTest/Shaders/JYTestUVDebug.shader" />
+    <None Include="Assets/Scenes/JYTest/Shaders/JYTest_BaseGrid.shader" />
     <None Include="Assets/Scenes/TriplannarMapping/Shaders/steps/TriplanarMapping_s2.shader" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Hub/Editor/2022.3.62f3c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
