@@ -3,18 +3,25 @@ using UnityEngine;
 namespace ayy.jy
 {
     /// <summary>
-    /// Keyboard controller for a top-down / isometric perspective camera.
-    /// WASD moves the camera on the ground plane, Q zooms in and E zooms out.
+    /// Keyboard controller for a top-down / isometric orthographic camera.
+    /// WASD moves the camera on the ground plane, Q shrinks the orthographic
+    /// size (zoom in) and E grows it (zoom out).
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Camera))]
     public class JYTopDownCameraController : MonoBehaviour
     {
         public float _moveSpeed = 300.0f;
-        public float _zoomSpeed = 300.0f;
-        public float _minZoomDistance = 30.0f;
-        public float _maxZoomDistance = 3000.0f;
-        public float _groundHeight = 0.0f;
+        public float _zoomSpeed = 100.0f;
+        public float _minOrthoSize = 10.0f;
+        public float _maxOrthoSize = 500.0f;
+
+        private Camera _camera;
+
+        private void Awake()
+        {
+            _camera = GetComponent<Camera>();
+        }
 
         private void Update()
         {
@@ -63,37 +70,24 @@ namespace ayy.jy
                 return;
             }
 
-            Vector3 focusPoint;
-            if (!TryGetGroundFocusPoint(out focusPoint))
+            if (_camera == null)
+            {
+                _camera = GetComponent<Camera>();
+            }
+
+            // The orthographic size only defines the visible area for an
+            // orthographic camera, so zooming is a no-op in perspective mode.
+            if (_camera == null || !_camera.orthographic)
             {
                 return;
             }
 
-            float distance = Vector3.Distance(transform.position, focusPoint);
-            float targetDistance = Mathf.Clamp(
-                distance + zoomInput * _zoomSpeed * deltaTime,
-                _minZoomDistance,
-                _maxZoomDistance);
-
-            // Keep the same view direction and ground focus point. This is a dolly
-            // zoom, so perspective distortion stays constant while zooming.
-            transform.position += transform.forward * (distance - targetDistance);
-        }
-
-        private bool TryGetGroundFocusPoint(out Vector3 focusPoint)
-        {
-            Plane groundPlane = new Plane(Vector3.up, new Vector3(0.0f, _groundHeight, 0.0f));
-            Ray viewRay = new Ray(transform.position, transform.forward);
-
-            float enter;
-            if (groundPlane.Raycast(viewRay, out enter))
-            {
-                focusPoint = viewRay.GetPoint(enter);
-                return true;
-            }
-
-            focusPoint = new Vector3(transform.position.x, _groundHeight, transform.position.z);
-            return false;
+            // The camera stays where it is, so the visible ground region grows
+            // and shrinks around the point under the screen center.
+            _camera.orthographicSize = Mathf.Clamp(
+                _camera.orthographicSize + zoomInput * _zoomSpeed * deltaTime,
+                _minOrthoSize,
+                _maxOrthoSize);
         }
     }
 }

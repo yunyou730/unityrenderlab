@@ -51,6 +51,8 @@ Shader "JYTest/Map"
             half4 frag(Varyings IN) : SV_Target
             {
                 half4 col = tex2D(_MainTex,IN.uv);
+
+                //return half4(IN.uv,0.0,1.0);
                 return col;
             }
             ENDHLSL

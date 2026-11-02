@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYMapRecord.cs" />
+    <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYMapUtils.cs" />
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYBaseGridBuilder.cs" />
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYMapMono.cs" />
     <Compile Include="Assets/Scenes/JYTest/Scripts/JYMap/JYBaseGridMono.cs" />

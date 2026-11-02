@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 1189058814}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1482.9749, y: -154.06998, z: -604.8428}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,7 +266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3929dbcc40f5c4e5d828530b4d843827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseTilePosition: {x: 0, y: 0, z: 0}
   _debugTilePos: 1
   _enableGizmo: 0
 --- !u!23 &1570175302
@@ -690,9 +689,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 300
   _zoomSpeed: 300
-  _minZoomDistance: 30
-  _maxZoomDistance: 3000
-  _groundHeight: 0
+  _minOrthoSize: 10
+  _maxOrthoSize: 500
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
