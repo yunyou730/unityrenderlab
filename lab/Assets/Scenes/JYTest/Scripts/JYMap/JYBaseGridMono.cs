@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ayy.jy
 {
-    public class JYMap : MonoBehaviour
+    public class JYBaseGridMono : MonoBehaviour
     {
         // Tile [0,0] 的位置在哪
         public Vector3 _baseTilePosition = Vector3.zero;
@@ -205,4 +205,3 @@ namespace ayy.jy
     }
     
 }
-
