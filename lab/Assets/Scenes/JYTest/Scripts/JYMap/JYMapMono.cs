@@ -5,6 +5,7 @@ using System.Linq;
 using ayy.jy.data;
 using ayy.jy.record;
 using Newtonsoft.Json;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 namespace ayy.jy
@@ -20,8 +21,6 @@ namespace ayy.jy
             BuildingHeight = 4, // 建筑抬高量 像素
             DecorationHeight = 5,   // 装饰抬高量 像素
         }
-
-
 
         [SerializeField] private string _scenePath = "scene001/scene001.json";
         [SerializeField] // for debugging
@@ -95,13 +94,10 @@ namespace ayy.jy
 
         private Mesh BuildGroundLayerMesh(int tilesX,int tilesY)
         {
-            int quadCount = tilesX * tilesY;
-            
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> uvs = new List<Vector2>();
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
-            
             
             string groundKey = ((int)LayerType.Ground).ToString();
             int[][] tileIds  = _subscene.Grid[groundKey];
@@ -128,10 +124,33 @@ namespace ayy.jy
                         float px, py;
                         JYMapUtils.GetCenterPositionAtTile(tileX,tileY,out px,out py);
                         
+                        /*
+                         * Sequence
+                         *
+                         * lt[0]  ----- rt [1]
+                         * |            |
+                         * |            |
+                         * |            |
+                         * lb[2] ---- rb [3]
+                         * 
+                         */
+                        
+                        // @miao @todo
+                        // 位置也没有考虑到 Offset!
+                        
+                        // 怎么把 offset 算进去呢?
+                        // @miao @todo
+                        float ox = 0.0f;
+                        float oy = 0.0f;
+                        
+                        // 这里，每个格，应该考虑 tile 数据的 size 和 anchor
+                        int tileWidth = tile.Size[0];
+                        int tileHeight = tile.Size[1];
+
                         Vector3 lt = new Vector3(px, 0, py);
-                        Vector3 rt = new Vector3(px + JYMapUtils.ISO_TILE_WIDTH, 0, py);
-                        Vector3 lb = new Vector3(px, 0, py - JYMapUtils.ISO_TILE_HEIGHT);
-                        Vector3 rb = new Vector3(px + JYMapUtils.ISO_TILE_WIDTH, 0, py - JYMapUtils.ISO_TILE_HEIGHT);
+                        Vector3 rt = new Vector3(px + tileWidth, 0, py);
+                        Vector3 lb = new Vector3(px, 0, py - tileHeight);
+                        Vector3 rb = new Vector3(px + tileWidth, 0, py - tileHeight);
                         
                         int vertIndex = vertices.Count;
                         vertices.Add(lt);
@@ -139,31 +158,19 @@ namespace ayy.jy
                         vertices.Add(lb);
                         vertices.Add(rb);
 
-                        // @miao @todo
-                        // UV 没有计算对
-                        // 位置也没有考虑到 Offset!
-                        
-                        /*
-                        uvs.Add(new Vector2(0,1));  // left top
-                        uvs.Add(new Vector2(1,1));  // right top
-                        uvs.Add(new Vector2(0,0));  // left bottom
-                        uvs.Add(new Vector2(0,1));  // right bottom
-                        */
-
-                        int w = tile.Rect[2];
-                        int h = tile.Rect[3];
-                        float uvW = (float)w / (float)_atlasTexture.width;
-                        float uvH = (float)h / (float)_atlasTexture.height;
-
-                        float u = tile.Uv[0];
-                        float v = tile.Uv[1];
-                        
-                        uvs.Add(new Vector2(u, v + uvH));
-                        uvs.Add(new Vector2(u + uvW, v + uvH));
-                        uvs.Add(new Vector2(u, v));
-                        uvs.Add(new Vector2(u + uvW, v));
+                        // uv0 - 左下角 uv
+                        // uv1 - 右上角 uv
+                        float u0 = tile.Uv[0];
+                        float v0 = tile.Uv[1];
+                        float u1 = tile.Uv[2];
+                        float v1 = tile.Uv[3];
+                        uvs.Add(new Vector2(u0, v1));
+                        uvs.Add(new Vector2(u1, v1));
+                        uvs.Add(new Vector2(u0, v0));
+                        uvs.Add(new Vector2(u1, v0));
                         
                         
+                        // triangle index
                         triangles.Add(vertIndex);
                         triangles.Add(vertIndex+1);
                         triangles.Add(vertIndex+2);
@@ -186,6 +193,10 @@ namespace ayy.jy
 
             return mesh;
         }
+        
+        
+        
+        
     }
     
 }
